@@ -1,4 +1,4 @@
-package com.linmalu.MiniGames.Data;
+package com.linmalu.minigames.data;
 
 import org.bukkit.World;
 

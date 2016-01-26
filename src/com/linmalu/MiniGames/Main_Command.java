@@ -1,4 +1,4 @@
-package com.linmalu.MiniGames;
+package com.linmalu.minigames;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import com.linmalu.LinmaluLibrary.API.LinmaluCheckVersion;
-import com.linmalu.LinmaluLibrary.API.LinmaluTellraw;
-import com.linmalu.MiniGames.Data.GameData;
-import com.linmalu.MiniGames.Data.MiniGames;
+import com.linmalu.library.api.LinmaluTellraw;
+import com.linmalu.library.api.LinmaluVersion;
+import com.linmalu.minigames.data.GameData;
+import com.linmalu.minigames.data.MiniGames;
 
 public class Main_Command implements CommandExecutor
 {
@@ -32,11 +32,11 @@ public class Main_Command implements CommandExecutor
 					{
 						list.add(game.toString());
 					}
-					list.add("·£´ı");
-					list.add("Á¾·á");
+					list.add("ëœë¤");
+					list.add("ì¢…ë£Œ");
 					list.add("stop");
-					list.add("¸®¼Ò½ºÆÑÀû¿ë");
-					list.add("¸®¼Ò½ºÆÑÃë¼Ò");
+					list.add("ë¦¬ì†ŒìŠ¤íŒ©ì ìš©");
+					list.add("ë¦¬ì†ŒìŠ¤íŒ©ì·¨ì†Œ");
 					return list;
 				}
 				return null;
@@ -53,15 +53,15 @@ public class Main_Command implements CommandExecutor
 			{
 				if(player.isOp())
 				{
-					if(args[0].equals("Á¾·á") || args[0].equalsIgnoreCase("stop"))
+					if(args[0].equals("ì¢…ë£Œ") || args[0].equalsIgnoreCase("stop"))
 					{
 						if(!data.isGame1())
 						{
-							sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "°ÔÀÓÀÌ ½ÃÀÛµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+							sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "ê²Œì„ì´ ì‹œì‘ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 						}
 						else if(data.isGame1() && !data.isGame2())
 						{
-							sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "Áö±İÀº °ÔÀÓÀ» Á¾·áÇÒ ¼ö ¾ø½À´Ï´Ù.");
+							sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "ì§€ê¸ˆì€ ê²Œì„ì„ ì¢…ë£Œí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 						}
 						else
 						{
@@ -69,16 +69,16 @@ public class Main_Command implements CommandExecutor
 						}
 						return true;
 					}
-					else if(args[0].equals("·£´ı"))
+					else if(args[0].equals("ëœë¤"))
 					{
 						setGame(player, data, MiniGames.values()[new Random().nextInt(MiniGames.values().length)]);
 						return true;
 					}
-					else if(args[0].equals("¸®¼Ò½ºÆÑÀû¿ë"))
+					else if(args[0].equals("ë¦¬ì†ŒìŠ¤íŒ©ì ìš©"))
 					{
 						if(data.isGame1())
 						{
-							sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "°ÔÀÓ Áß¿¡´Â »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.");
+							sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "ê²Œì„ ì¤‘ì—ëŠ” ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 						}
 						else
 						{
@@ -87,15 +87,15 @@ public class Main_Command implements CommandExecutor
 							{
 								p.setResourcePack(Main.resourcePackMiniGames);
 							}
-							sender.sendMessage(Main.getMain().getTitle() + ChatColor.GREEN + "Áö±İºÎÅÍ ¹Ì´Ï°ÔÀÓÃµ±¹ ¸®¼Ò½ºÆÑÀÌ Àû¿ëµË´Ï´Ù.");
+							sender.sendMessage(Main.getMain().getTitle() + ChatColor.GREEN + "ì§€ê¸ˆë¶€í„° ë¯¸ë‹ˆê²Œì„ì²œêµ­ ë¦¬ì†ŒìŠ¤íŒ©ì´ ì ìš©ë©ë‹ˆë‹¤.");
 						}
 						return true;
 					}
-					else if(args[0].equals("¸®¼Ò½ºÆÑÃë¼Ò"))
+					else if(args[0].equals("ë¦¬ì†ŒìŠ¤íŒ©ì·¨ì†Œ"))
 					{
 						if(data.isGame1())
 						{
-							sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "°ÔÀÓ Áß¿¡´Â »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.");
+							sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "ê²Œì„ ì¤‘ì—ëŠ” ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 						}
 						else
 						{
@@ -104,7 +104,7 @@ public class Main_Command implements CommandExecutor
 							{
 								p.setResourcePack(Main.resourcePackDefault);
 							}
-							sender.sendMessage(Main.getMain().getTitle() + ChatColor.GREEN + "Áö±İºÎÅÍ ¹Ì´Ï°ÔÀÓÃµ±¹ ¸®¼Ò½ºÆÑÀÌ Ãë¼ÒµË´Ï´Ù.");
+							sender.sendMessage(Main.getMain().getTitle() + ChatColor.GREEN + "ì§€ê¸ˆë¶€í„° ë¯¸ë‹ˆê²Œì„ì²œêµ­ ë¦¬ì†ŒìŠ¤íŒ©ì´ ì·¨ì†Œë©ë‹ˆë‹¤.");
 						}
 						return true;
 					}
@@ -120,12 +120,12 @@ public class Main_Command implements CommandExecutor
 						}
 					}
 				}
-				if(args[0].equals("Ãë¼Ò"))
+				if(args[0].equals("ì·¨ì†Œ"))
 				{
 					data.cancelPlayer(player);
 					return true;
 				}
-				else if(args[0].equals("°üÀü"))
+				else if(args[0].equals("ê´€ì „"))
 				{
 					data.onlookerPlayer(player);
 					return true;
@@ -139,25 +139,25 @@ public class Main_Command implements CommandExecutor
 					sb.append("$CC:" + ChatColor.YELLOW + mg.toString() + "|/mg " + mg.toString() + "$");
 					sb.append(", ");
 				}
-				sender.sendMessage(ChatColor.GREEN + " = = = = = [ M i n i G a m e s ] = = = = =");
-				LinmaluTellraw.sendCmdChat(player, "/" + label + " ", ChatColor.GOLD + "/" + label + " <¹Ì´Ï°ÔÀÓ>" + ChatColor.GRAY + " : ÁöÁ¤µÈ °ÔÀÓ ½ÃÀÛ");
-				LinmaluTellraw.sendCmdChat(player, "/" + label + " ·£´ı", ChatColor.GOLD + "/" + label + " ·£´ı" + ChatColor.GRAY + " : ·£´ı °ÔÀÓ ½ÃÀÛ");
-				LinmaluTellraw.sendCmdChat(player, "/" + label + " Á¾·á", ChatColor.GOLD + "/" + label + " Á¾·á // stop" + ChatColor.GRAY + " : ¹Ì´Ï°ÔÀÓ ³¡³»±â");
-				LinmaluTellraw.sendCmdChat(player, "/" + label + " ¸®¼Ò½ºÆÑÀû¿ë", ChatColor.GOLD + "/" + label + " ¸®¼Ò½ºÆÑÀû¿ë" + ChatColor.GRAY + " : ¹Ì´Ï°ÔÀÓÃµ±¹ ¸®¼Ò½ºÆÑ Àû¿ë");
-				LinmaluTellraw.sendCmdChat(player, "/" + label + " ¸®¼Ò½ºÆÑÃë¼Ò", ChatColor.GOLD + "/" + label + " ¸®¼Ò½ºÆÑÃë¼Ò" + ChatColor.GRAY + " : ¹Ì´Ï°ÔÀÓÃµ±¹ ¸®¼Ò½ºÆÑ Ãë¼Ò");
-				new LinmaluTellraw(ChatColor.GREEN + "¹Ì´Ï°ÔÀÓÁ¾·ù : " + sb.toString()).changeCmdChat().sendMessage(player);
-				sender.sendMessage(ChatColor.GOLD + "Á¦ÀÛÀÚ : " + ChatColor.AQUA + "¸°¸¶·ç" + ChatColor.WHITE + " - http://blog.linmalu.com");
-				sender.sendMessage(ChatColor.GOLD + "Ä«Æä : " + ChatColor.WHITE + "http://cafe.naver.com/craftproducer");
-				new LinmaluCheckVersion(Main.getMain(), player, Main.getMain().getTitle() + ChatColor.GREEN + "ÃÖ½Å¹öÀüÀÌ Á¸ÀçÇÕ´Ï´Ù.");
+				sender.sendMessage(ChatColor.GREEN + " = = = = = [ Linmalu MiniGames ] = = = = =");
+				LinmaluTellraw.sendCmdChat(sender, "/" + label + " ", ChatColor.GOLD + "/" + label + " <ë¯¸ë‹ˆê²Œì„>" + ChatColor.GRAY + " : ì§€ì •ëœ ê²Œì„ ì‹œì‘");
+				LinmaluTellraw.sendCmdChat(sender, "/" + label + " ëœë¤", ChatColor.GOLD + "/" + label + " ëœë¤" + ChatColor.GRAY + " : ëœë¤ ê²Œì„ ì‹œì‘");
+				LinmaluTellraw.sendCmdChat(sender, "/" + label + " ì¢…ë£Œ", ChatColor.GOLD + "/" + label + " ì¢…ë£Œ // stop" + ChatColor.GRAY + " : ë¯¸ë‹ˆê²Œì„ ëë‚´ê¸°");
+				LinmaluTellraw.sendCmdChat(sender, "/" + label + " ë¦¬ì†ŒìŠ¤íŒ©ì ìš©", ChatColor.GOLD + "/" + label + " ë¦¬ì†ŒìŠ¤íŒ©ì ìš©" + ChatColor.GRAY + " : ë¯¸ë‹ˆê²Œì„ì²œêµ­ ë¦¬ì†ŒìŠ¤íŒ© ì ìš©");
+				LinmaluTellraw.sendCmdChat(sender, "/" + label + " ë¦¬ì†ŒìŠ¤íŒ©ì·¨ì†Œ", ChatColor.GOLD + "/" + label + " ë¦¬ì†ŒìŠ¤íŒ©ì·¨ì†Œ" + ChatColor.GRAY + " : ë¯¸ë‹ˆê²Œì„ì²œêµ­ ë¦¬ì†ŒìŠ¤íŒ© ì·¨ì†Œ");
+				new LinmaluTellraw(ChatColor.GREEN + "ë¯¸ë‹ˆê²Œì„ì¢…ë¥˜ : " + sb.toString()).changeCmdChat().sendMessage(sender);
+				sender.sendMessage(ChatColor.YELLOW + "ì œì‘ì : " + ChatColor.AQUA + "ë¦°ë§ˆë£¨(Linmalu)" + ChatColor.WHITE + " - http://blog.linmalu.com");
+				sender.sendMessage(ChatColor.YELLOW + "ì¹´í˜ : " + ChatColor.WHITE + "http://cafe.naver.com/craftproducer");
+				LinmaluVersion.check(Main.getMain(), sender, Main.getMain().getTitle() + ChatColor.GREEN + "ìµœì‹ ë²„ì „ì´ ì¡´ì¬í•©ë‹ˆë‹¤.");
 			}
 			else
 			{
-				sender.sendMessage(ChatColor.RED + "±ÇÇÑÀÌ ¾ø½À´Ï´Ù.");
+				sender.sendMessage(ChatColor.RED + "ê¶Œí•œì´ ì—†ìŠµë‹ˆë‹¤.");
 			}
 		}
 		else
 		{
-			sender.sendMessage(ChatColor.RED + "±ÇÇÑÀÌ ¾ø½À´Ï´Ù.");
+			sender.sendMessage(ChatColor.RED + "ê¶Œí•œì´ ì—†ìŠµë‹ˆë‹¤.");
 		}
 		return true;
 	}
@@ -165,17 +165,17 @@ public class Main_Command implements CommandExecutor
 	{
 		if(data.isGame1())
 		{
-			player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "ÀÌ¹Ì °ÔÀÓÀÌ ÁøÇàÁßÀÔ´Ï´Ù.");
+			player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "ì´ë¯¸ ê²Œì„ì´ ì§„í–‰ì¤‘ì…ë‹ˆë‹¤.");
 		}
 		else
 		{
 			if(Bukkit.getOnlinePlayers().size() < 2)
 			{
-				player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "ÃÖ¼ÒÀÎ¿ø 2¸íÀÌ µÇÁö ¾Ê½À´Ï´Ù.");
+				player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "ìµœì†Œì¸ì› 2ëª…ì´ ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			}
-			else if(minigame == MiniGames.¶¥µû¸Ô±â && Bukkit.getOnlinePlayers().size() > 16)
+			else if(minigame == MiniGames.ë•…ë”°ë¨¹ê¸° && Bukkit.getOnlinePlayers().size() > 48)
 			{
-				player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "ÃÖ´ëÀÎ¿ø 16¸íÀÌ ³Ñ½À´Ï´Ù.");
+				player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "ìµœëŒ€ì¸ì› 16ëª…ì´ ë„˜ìŠµë‹ˆë‹¤.");
 			}
 			else
 			{

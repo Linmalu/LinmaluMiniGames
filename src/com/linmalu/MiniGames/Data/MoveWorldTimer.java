@@ -1,24 +1,12 @@
-package com.linmalu.MiniGames.Data;
+package com.linmalu.minigames.data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.linmalu.LinmaluLibrary.API.LinmaluBossbar;
-import com.linmalu.MiniGames.Main;
-import com.linmalu.MiniGames.Game00.MG00_Rule;
-import com.linmalu.MiniGames.Game01.MG01_Rule;
-import com.linmalu.MiniGames.Game02.MG02_Rule;
-import com.linmalu.MiniGames.Game03.MG03_Rule;
-import com.linmalu.MiniGames.Game04.MG04_Rule;
-import com.linmalu.MiniGames.Game05.MG05_Rule;
-import com.linmalu.MiniGames.Game06.MG06_Rule;
-import com.linmalu.MiniGames.Game07.MG07_Rule;
-import com.linmalu.MiniGames.Game08.MG08_Rule;
-import com.linmalu.MiniGames.Game09.MG09_Rule;
-import com.linmalu.MiniGames.Game10.MG10_Rule;
-import com.linmalu.MiniGames.Game11.MG11_Rule;
-import com.linmalu.MiniGames.Game12.MG12_Rule;
+import com.linmalu.library.api.LinmaluActionbar;
+import com.linmalu.library.api.LinmaluBossbar;
+import com.linmalu.minigames.Main;
 
 public class MoveWorldTimer implements Runnable
 {
@@ -28,7 +16,7 @@ public class MoveWorldTimer implements Runnable
 
 	public MoveWorldTimer()
 	{
-		gameRule();
+		data.getMinigame().getUtil().sendMessage(data.getPlayers());
 		data.setGamePlayer();
 		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 1L);
 	}
@@ -36,11 +24,13 @@ public class MoveWorldTimer implements Runnable
 	{
 		if(data.isGame1() && time >= 0)
 		{
+			String message = ChatColor.GREEN + data.getMinigame().toString() + "ê²Œìž„ ì‹œìž‘ " + ChatColor.YELLOW + (time / 20) + ChatColor.GREEN + "ì´ˆì „";
 			for(Player player : data.getPlayers())
 			{
 				player.setLevel(time / 20);
 				player.setExp(time % 20 * 0.05F);
-				LinmaluBossbar.setMessage(player, ChatColor.GREEN + data.getMinigame().toString() + "°ÔÀÓ ½ÃÀÛ " + ChatColor.YELLOW + player.getLevel() + ChatColor.GREEN + "ÃÊÀü", player.getExp() * 100);
+				LinmaluActionbar.sendMessage(player, message);
+				LinmaluBossbar.sendMessage(player, message, player.getExp() * 100);
 			}
 			time--;
 		}
@@ -51,51 +41,6 @@ public class MoveWorldTimer implements Runnable
 			{
 				new GameTimer();
 			}
-		}
-	}
-	private void gameRule()
-	{
-		switch(data.getMinigame())
-		{
-		case ´Þ¸®±â:
-			new MG00_Rule();
-			break;
-		case ¸ð·çÇÇÇÏ±â:
-			new MG01_Rule();
-			break;
-		case µî¹Ý:
-			new MG02_Rule();
-			break;
-		case ´«Ä¡:
-			new MG03_Rule();
-			break;
-		case ¶¥ÆÄ±â:
-			new MG04_Rule();
-			break;
-		case ²¿¸®ÇÇÇÏ±â:
-			new MG05_Rule();
-			break;
-		case ¶¥µû¸Ô±â:
-			new MG06_Rule();
-			break;
-		case ÃÑ½Î¿ò:
-			new MG07_Rule();
-			break;
-		case ÆøÅºÇÇÇÏ±â:
-			new MG08_Rule();
-			break;
-		case ¾çÅÐÃ£±â:
-			new MG09_Rule();
-			break;
-		case Ä«Æ®Å¸±â:
-			new MG10_Rule();
-			break;
-		case ½ÅÈ£µîºí·Ï:
-			new MG11_Rule();
-			break;
-		case °æ¸¶:
-			new MG12_Rule();
-			break;
 		}
 	}
 }

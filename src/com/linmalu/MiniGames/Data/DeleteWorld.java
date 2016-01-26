@@ -1,8 +1,8 @@
-package com.linmalu.MiniGames.Data;
+package com.linmalu.minigames.data;
 
 import java.io.File;
 
-import com.linmalu.MiniGames.Main;
+import com.linmalu.minigames.Main;
 
 public class DeleteWorld implements Runnable
 {

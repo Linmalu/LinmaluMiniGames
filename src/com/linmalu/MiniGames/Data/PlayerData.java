@@ -1,4 +1,4 @@
-package com.linmalu.MiniGames.Data;
+package com.linmalu.minigames.data;
 
 import java.util.UUID;
 
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-import com.linmalu.MiniGames.Main;
+import com.linmalu.minigames.Main;
 
 public class PlayerData
 {
@@ -54,6 +54,7 @@ public class PlayerData
 		items = player.getInventory().getContents();
 		skill = true;
 		score = 0;
+		number = 0;
 		cooldown = true;
 		observer = false;
 	}

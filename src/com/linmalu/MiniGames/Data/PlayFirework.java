@@ -1,4 +1,4 @@
-package com.linmalu.MiniGames.Data;
+package com.linmalu.minigames.data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -8,7 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.linmalu.MiniGames.Main;
+import com.linmalu.minigames.Main;
 
 public class PlayFirework implements Runnable
 {

@@ -1,4 +1,4 @@
-package com.linmalu.MiniGames;
+package com.linmalu.minigames;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,12 +25,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
-import com.linmalu.LinmaluLibrary.API.LinmaluAutoRespawn;
-import com.linmalu.LinmaluLibrary.API.LinmaluCheckVersion;
-import com.linmalu.MiniGames.Data.Cooldown;
-import com.linmalu.MiniGames.Data.GameData;
-import com.linmalu.MiniGames.Data.MiniGames;
-import com.linmalu.MiniGames.Data.PlayerData;
+import com.linmalu.library.api.LinmaluAutoRespawn;
+import com.linmalu.library.api.LinmaluVersion;
+import com.linmalu.minigames.data.Cooldown;
+import com.linmalu.minigames.data.GameData;
+import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.PlayerData;
 
 public class Main_Event implements Listener
 {
@@ -67,7 +67,7 @@ public class Main_Event implements Listener
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
 		if(data.isGame1() && pd == null && player.getWorld().getName().equals(Main.world))
 		{
-			player.sendMessage(ChatColor.RED + "¹Ì´Ï°ÔÀÓ¸Ê¿¡ µé¾î°¥ ±ÇÇÑÀÌ ¾ø½À´Ï´Ù.");
+			player.sendMessage(ChatColor.RED + "ë¯¸ë‹ˆê²Œì„ë§µì— ë“¤ì–´ê°ˆ ê¶Œí•œì´ ì—†ìŠµë‹ˆë‹¤.");
 			player.teleport(event.getFrom().getSpawnLocation());
 		}
 	}
@@ -87,7 +87,7 @@ public class Main_Event implements Listener
 		Player player = event.getPlayer();
 		if(player.isOp())
 		{
-			new LinmaluCheckVersion(Main.getMain(), player, Main.getMain().getTitle() + ChatColor.GREEN + "ÃÖ½Å¹öÀüÀÌ Á¸ÀçÇÕ´Ï´Ù.");
+			LinmaluVersion.check(Main.getMain(), player, Main.getMain().getTitle() + ChatColor.GREEN + "ìµœì‹ ë²„ì „ì´ ì¡´ì¬í•©ë‹ˆë‹¤.");
 		}
 		if(data.isGame1() && data.getPlayerData(player.getUniqueId()) != null)
 		{
@@ -122,7 +122,7 @@ public class Main_Event implements Listener
 		Player player = event.getEntity();
 		if(data.isGame2() && player.getWorld().getName().equals(Main.world))
 		{
-			new LinmaluAutoRespawn(player);
+			LinmaluAutoRespawn.respawn(player);
 		}
 	}
 	@EventHandler
@@ -211,7 +211,7 @@ public class Main_Event implements Listener
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
 		if(data.isGame1() && player.getWorld().getName().equals(Main.world) && pd != null)
 		{
-			if(data.getMinigame() == MiniGames.°æ¸¶)
+			if(data.getMinigame() == MiniGames.ê²½ë§ˆ)
 			{
 				return;
 			}

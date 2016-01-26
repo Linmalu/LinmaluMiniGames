@@ -1,4 +1,4 @@
-package com.linmalu.MiniGames.Data;
+package com.linmalu.minigames.data;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -15,14 +15,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.linmalu.LinmaluLibrary.API.LinmaluBossbar;
-import com.linmalu.LinmaluLibrary.API.LinmaluRanking;
-import com.linmalu.MiniGames.Main;
-import com.linmalu.MiniGames.Game08.MG08_Change;
-import com.linmalu.MiniGames.Game09.MG09_Block;
-import com.linmalu.MiniGames.Game10.MG10_Remove;
-import com.linmalu.MiniGames.Game10.MG10_Spawn;
-import com.linmalu.MiniGames.Game12.MG12_Horse;
+import com.linmalu.library.api.LinmaluBossbar;
+import com.linmalu.library.api.LinmaluRanking;
+import com.linmalu.minigames.Main;
+import com.linmalu.minigames.game008.MiniGameBombChange8;
+import com.linmalu.minigames.game009.MiniGameChangeBlock9;
+import com.linmalu.minigames.game010.MiniGameRemoveCart10;
+import com.linmalu.minigames.game010.MiniGameSpawnCart10;
+import com.linmalu.minigames.game012.MiniGameHorse;
 
 public class GameTimer implements Runnable
 {
@@ -48,7 +48,7 @@ public class GameTimer implements Runnable
 			float health;
 			if(cooldown > 0)
 			{
-				msg = String.format(Main.getMain().getTitle() + ChatColor.GOLD + "%02d" + ChatColor.YELLOW + "ÃÊ" , cooldown / 20);
+				msg = String.format(Main.getMain().getTitle() + ChatColor.GOLD + "%02d" + ChatColor.YELLOW + "ì´ˆ" , cooldown / 20);
 				health = cooldown * 100F / md.getCooldown();
 			}
 			else if(timerStart && cooldown == 0)
@@ -89,7 +89,7 @@ public class GameTimer implements Runnable
 			}
 			for(Player player : data.getPlayers())
 			{
-				LinmaluBossbar.setMessage(player, msg, health);
+				LinmaluBossbar.sendMessage(player, msg, health);
 //				PlayerData pd = data.getPlayerData(player.getUniqueId());
 //				if(timer && md.isTopScore())
 //				{
@@ -115,9 +115,9 @@ public class GameTimer implements Runnable
 	{
 		timerStart = false;
 		time = md.getTime();
-		if(data.getMinigame() == MiniGames.¾çÅĞÃ£±â)
+		if(data.getMinigame() == MiniGames.ì–‘í„¸ì°¾ê¸°)
 		{
-			new MG09_Block();
+			new MiniGameChangeBlock9();
 			data.setTargetNumber(new Random().nextInt(16));
 			for(Player player : data.getPlayers())
 			{
@@ -130,31 +130,31 @@ public class GameTimer implements Runnable
 				}
 			}
 		}
-		else if(data.getMinigame() == MiniGames.ÆøÅºÇÇÇÏ±â)
+		else if(data.getMinigame() == MiniGames.í­íƒ„í”¼í•˜ê¸°)
 		{
-			new MG08_Change();
+			new MiniGameBombChange8();
 		}
-		else if(data.getMinigame() == MiniGames.Ä«Æ®Å¸±â)
+		else if(data.getMinigame() == MiniGames.ì¹´íŠ¸íƒ€ê¸°)
 		{
-			new MG10_Spawn();
+			new MiniGameSpawnCart10();
 		}
-		else if(data.getMinigame() == MiniGames.°æ¸¶)
+		else if(data.getMinigame() == MiniGames.ê²½ë§ˆ)
 		{
-			new MG12_Horse(null);
+			new MiniGameHorse(null);
 		}
 	}
 	private void TimerRun()
 	{
 		if(time % 20 == 0)
 		{
-			if(data.getMinigame() == MiniGames.¶¥ÆÄ±â)
+			if(data.getMinigame() == MiniGames.ë•…íŒŒê¸°)
 			{
 				for(Player player : data.getPlayers())
 				{
 					player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, true, false), true);
 				}
 			}
-			else if(data.getMinigame() == MiniGames.¶¥µû¸Ô±â)
+			else if(data.getMinigame() == MiniGames.ë•…ë”°ë¨¹ê¸°)
 			{
 				if(time / 20 > 60)
 				{
@@ -164,7 +164,7 @@ public class GameTimer implements Runnable
 					}
 				}
 			}
-			else if(data.getMinigame() == MiniGames.ÃÑ½Î¿ò)
+			else if(data.getMinigame() == MiniGames.ì´ì‹¸ì›€)
 			{
 				for(Player player : data.getPlayers())
 				{
@@ -173,7 +173,7 @@ public class GameTimer implements Runnable
 				}
 			}
 		}
-		if(data.getMinigame() == MiniGames.ÆøÅºÇÇÇÏ±â)
+		if(data.getMinigame() == MiniGames.í­íƒ„í”¼í•˜ê¸°)
 		{
 			if(!data.getPlayerData(data.getTargetPlayer()).isLive())
 			{
@@ -184,7 +184,7 @@ public class GameTimer implements Runnable
 	@SuppressWarnings("deprecation")
 	private void TimerEnd()
 	{
-		if(data.getMinigame() == MiniGames.ÆøÅºÇÇÇÏ±â)
+		if(data.getMinigame() == MiniGames.í­íƒ„í”¼í•˜ê¸°)
 		{
 			Player player = Bukkit.getPlayer(data.getTargetPlayer());
 			if(player != null)
@@ -194,7 +194,7 @@ public class GameTimer implements Runnable
 				data.diePlayer(player.getUniqueId());
 			}
 		}
-		else if(data.getMinigame() == MiniGames.¾çÅĞÃ£±â)
+		else if(data.getMinigame() == MiniGames.ì–‘í„¸ì°¾ê¸°)
 		{
 			for(int x = md.getX1(); x <= md.getX2(); x++)
 			{
@@ -213,9 +213,9 @@ public class GameTimer implements Runnable
 				md.setTime(md.getTime() - 5);
 			}
 		}
-		else if(data.getMinigame() == MiniGames.Ä«Æ®Å¸±â)
+		else if(data.getMinigame() == MiniGames.ì¹´íŠ¸íƒ€ê¸°)
 		{
-			new MG10_Remove();
+			new MiniGameRemoveCart10();
 		}
 		else
 		{
@@ -247,7 +247,7 @@ public class GameTimer implements Runnable
 				if(uuid == null)
 				{
 					score = top + 1;
-					data.getScore(ChatColor.GREEN + "¸ñÇ¥Á¡¼ö").setScore(score);
+					data.getScore(ChatColor.GREEN + "ëª©í‘œì ìˆ˜").setScore(score);
 				}
 				else
 				{

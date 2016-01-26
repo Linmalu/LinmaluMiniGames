@@ -1,4 +1,4 @@
-package com.linmalu.MiniGames.Data;
+package com.linmalu.minigames.data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.linmalu.MiniGames.Main;
+import com.linmalu.minigames.Main;
 
 public class Cooldown implements Runnable
 {
