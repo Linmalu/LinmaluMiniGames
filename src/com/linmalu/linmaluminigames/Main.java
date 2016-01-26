@@ -1,0 +1,46 @@
+package com.linmalu.linmaluminigames;
+
+import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import com.linmalu.linmaluminigames.data.DeleteWorld;
+import com.linmalu.linmaluminigames.data.GameData;
+import com.linmalu.linmaluminigames.data.MiniGames;
+
+public final class Main extends JavaPlugin
+{
+	public static final String world = "LMG";
+	public static final String resourcePackMiniGames = "https://www.dropbox.com/s/7v4z2zo3dp5w3o3/MiniGames.zip?dl=1";
+//	public static final String resourcePackMiniGames = "http://minecraft.linmalu.com/MiniGames/MiniGames.zip";
+	public static final String resourcePackDefault = "https://www.dropbox.com/s/kp5sgglxtcz1avx/Default.zip?dl=1";
+//	public static final String resourcePackDefault = "http://www.linmalu.com/plugin/MiniGames/Default.zip";
+	private static Main main;
+	private GameData gamedata;
+
+	public void onEnable()
+	{
+		main = this;
+		gamedata = new GameData();
+		getCommand(getDescription().getName()).setExecutor(new Main_Command());
+		getServer().getPluginManager().registerEvents(new Main_Event(), this);
+		MiniGames.initialize();
+		new DeleteWorld();
+		getLogger().info("제작 : 린마루");
+	}
+	public void onDisable()
+	{
+		getLogger().info("제작 : 린마루");
+	}
+	public static Main getMain()
+	{
+		return main;
+	}
+	public GameData getGameData()
+	{
+		return gamedata;
+	}
+	public String getTitle()
+	{
+		return ChatColor.AQUA + "[" + getDescription().getDescription() + "] ";
+	}
+}
