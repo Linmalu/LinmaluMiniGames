@@ -4,14 +4,14 @@ import org.bukkit.event.Listener;
 
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.GameData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 
 public abstract class MiniGameEvent implements Listener
 {
-	protected final MiniGames minigame;
+	protected final MiniGame minigame;
 	protected final GameData data;
 
-	public MiniGameEvent(MiniGames minigame)
+	public MiniGameEvent(MiniGame minigame)
 	{
 		this.minigame = minigame;
 		this.data = Main.getMain().getGameData();

@@ -1,18 +1,21 @@
 package com.linmalu.minigames.game009;
 
+import java.io.IOException;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MapData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
 public class MiniGameUtil9 extends MiniGameUtil
 {
-	public MiniGameUtil9(MiniGames minigame)
+	public MiniGameUtil9(MiniGame minigame)
 	{
 		super(minigame, new String[]{
 				" = = = = = [ 양 털 찾 기 게 임 ] = = = = =",
@@ -39,11 +42,11 @@ public class MiniGameUtil9 extends MiniGameUtil
 	@Override
 	public MapData getMapData(World world)
 	{
-		size = 15;
+		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
 		x1 = z1 = -size;
 		x2 = z2 = size;
 		mapHeight = 10;
-		time = 5 * 20;
+		int time = 5 * 20;
 		cooldown = 2 * 20;
 		topScore = false;
 		score = 0;
@@ -57,5 +60,18 @@ public class MiniGameUtil9 extends MiniGameUtil
 	@Override
 	public void addRandomItem(Player player)
 	{
+	}
+	@Override
+	public void reloadConfig() throws IOException
+	{
+		LinmaluYamlConfiguration config = LinmaluYamlConfiguration.loadConfiguration(file);
+		if(!file.exists())
+		{
+			config.set(MAP_DEFAULT, 5);
+			config.set(MAP_PLAYER, 1);
+		}
+		mapDefault = config.getInt(MAP_DEFAULT);
+		mapPlayer = config.getInt(MAP_PLAYER);
+		config.save(file);
 	}
 }

@@ -1,5 +1,6 @@
 package com.linmalu.minigames.game002;
 
+import java.io.IOException;
 import java.util.Random;
 
 import org.bukkit.Material;
@@ -7,14 +8,15 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MapData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
 public class MiniGameUtil2 extends MiniGameUtil
 {
-	public MiniGameUtil2(MiniGames minigame)
+	public MiniGameUtil2(MiniGame minigame)
 	{
 		super(minigame, new String[]{
 				" = = = = = [ 등 반 게 임 ] = = = = =",
@@ -56,11 +58,10 @@ public class MiniGameUtil2 extends MiniGameUtil
 	@Override
 	public MapData getMapData(World world)
 	{
-		size = 15;
+		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
 		x1 = z1 = -size;
 		x2 = z2 = size;
-		mapHeight = 30;
-		time = 0;
+		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
 		cooldown = 0;
 		topScore = true;
 		score = mapHeight - 10;
@@ -92,5 +93,20 @@ public class MiniGameUtil2 extends MiniGameUtil
 			GameItem.addItemStack(player, GameItem.눈덩이);
 			break;
 		}
+	}
+	@Override
+	public void reloadConfig() throws IOException
+	{
+		LinmaluYamlConfiguration config = LinmaluYamlConfiguration.loadConfiguration(file);
+		if(!file.exists())
+		{
+			config.set(MAP_DEFAULT, 5);
+			config.set(MAP_PLAYER, 1);
+			config.set(MAP_HEIGHT, 20);
+		}
+		mapDefault = config.getInt(MAP_DEFAULT);
+		mapPlayer = config.getInt(MAP_PLAYER);
+		mapHeight = config.getInt(MAP_HEIGHT) + 10;
+		config.save(file);
 	}
 }

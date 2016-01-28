@@ -1,12 +1,10 @@
 package com.linmalu.minigames.game;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
 import java.util.Collection;
 import java.util.Random;
 
@@ -26,31 +24,45 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.Cooldown;
 import com.linmalu.minigames.data.GameData;
 import com.linmalu.minigames.data.MapData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game000.MiniGameFallingBlock0;
 import com.linmalu.minigames.game007.MiniGameShoot7;
 
 public abstract class MiniGameUtil
 {
-	private final String[] msgs;
-	private final File file;
-	protected final MiniGames minigame;
-	protected boolean topScore, see;
-	protected int x1, x2, z1, z2, mapHeight, time, cooldown, score, size;
-	protected final GameData data;
+	protected final String MAP_DEFAULT = "기본맵 크기";
+	protected final String MAP_PLAYER = "인원수 추가 게임맵 크기";
+	protected final String MAP_HEIGHT = "게임맵 높이";
+	protected final String TIME_DEFAULT = "기본 제한 시간(초)";
+	protected final String TIME_PLAYER = "인원수 추가 제한 시간(초)";
 
-	public MiniGameUtil(MiniGames minigame, String[] msgs)
+	protected final GameData data;
+	protected final MiniGame minigame;
+	private final String[] msgs;
+	protected final File file;
+	protected boolean topScore, see;
+	protected int mapDefault, mapPlayer, x1, x2, z1, z2, mapHeight, timeDefault, timePlayer, cooldown, score;
+
+	public MiniGameUtil(MiniGame minigame, String[] msgs)
 	{
+		data = Main.getMain().getGameData();
 		this.minigame = minigame;
 		this.msgs = msgs;
-		file = new File(Main.getMain().getDataFolder(), minigame.toString());
-		data = Main.getMain().getGameData();
-		load();
+		file = new File(Main.getMain().getDataFolder(), minigame.toString() + ".yml");
+		mapDefault = mapPlayer = x1 = x2 = z1 = z2 = mapHeight = timeDefault = timePlayer = cooldown = score = 0;
+		topScore = see = false;
+		try
+		{
+			reloadConfig();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	public void sendMessage(Collection<Player> players)
 	{
@@ -62,53 +74,47 @@ public abstract class MiniGameUtil
 			}
 		}		
 	}
-
-	protected LinmaluYamlConfiguration load()
-	{
-		return LinmaluYamlConfiguration.loadConfiguration(file);
-	}
-	protected void save(LinmaluYamlConfiguration config)
-	{
-		try
-		{
-			config.save(file);
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
 	public void CreateWrold()
 	{
+		BufferedInputStream in = null;
+		BufferedOutputStream out = null;
 		try
 		{
-			File file = new File("./" + Main.world + "/region/");
+			File file = new File("./" + Main.WORLD + "/region/");
 			file.mkdirs();
 			int number = -1;
-			if(data.getMinigame() == MiniGames.총싸움)
+			if(data.getMinigame() == MiniGame.총싸움)
 			{
 				number = 0;
 			}
-			else if(data.getMinigame() == MiniGames.경마)
+			else if(data.getMinigame() == MiniGame.경마)
 			{
 				number = 1;
 			}
 			if(number != -1)
 			{
-				ReadableByteChannel in = Channels.newChannel(getClass().getResourceAsStream("/com/linmalu/minigames/world/world" + number + ".zip"));
-				WritableByteChannel out = Channels.newChannel(new FileOutputStream("./" + Main.world + "/region/r.0.0.mca"));
-				ByteBuffer buffer = ByteBuffer.allocate(1024);
-				while(in.read(buffer) != -1)
+				in = new BufferedInputStream(getClass().getResourceAsStream("/com/linmalu/minigames/world/world" + number + ".zip"));
+				out = new BufferedOutputStream(new FileOutputStream("./" + Main.WORLD + "/region/r.0.0.mca"));
+				byte[] bytes = new byte[1024];
+				while(in.read(bytes) != -1)
 				{
-					buffer.flip();
-					out.write(buffer);
-					buffer.clear();
+					out.write(bytes);
 				}
+				//				ReadableByteChannel in = Channels.newChannel(getClass().getResourceAsStream("/com/linmalu/minigames/world/world" + number + ".zip"));
+				//				WritableByteChannel out = Channels.newChannel(new FileOutputStream("./" + Main.WORLD + "/region/r.0.0.mca"));
+				//				ByteBuffer buffer = ByteBuffer.allocate(1024);
+				//				while(in.read(buffer) != -1)
+				//				{
+				//					buffer.flip();
+				//					out.write(buffer);
+				//					buffer.clear();
+				//				}
 				in.close();
+				out.flush();
 				out.close();
 				switch(number)
 				{
-				case 1:
+				case 0:
 					x1 = 19;
 					x2 = 208;
 					z1 = 16;
@@ -116,7 +122,7 @@ public abstract class MiniGameUtil
 					Bukkit.broadcastMessage(ChatColor.GREEN + "맵제작자 : " + ChatColor.YELLOW + "HGMstudio");
 					Bukkit.broadcastMessage(ChatColor.GREEN + "맵출처 : " + ChatColor.YELLOW + "http://hgmstudio.tistory.com/category");
 					break;
-				case 2:
+				case 1:
 					x1 = 1;
 					x2 = 13;
 					z1 = 1;
@@ -127,11 +133,25 @@ public abstract class MiniGameUtil
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "맵을 생성할 수 없습니다.");
 			data.GameStop();
 			return;
 		}
-		World world = WorldCreator.name(Main.world).type(WorldType.FLAT).environment(World.Environment.NORMAL).generator(new ChunkGenerator()
+		finally
+		{
+			try
+			{
+				in.close();
+			}
+			catch(Exception e){}
+			try
+			{
+				out.close();
+			}
+			catch(Exception e){}
+		}
+		World world = WorldCreator.name(Main.WORLD).type(WorldType.FLAT).environment(World.Environment.NORMAL).generator(new ChunkGenerator()
 		{
 			public byte[] generate(World world, Random random, int x, int z)
 			{
@@ -157,7 +177,8 @@ public abstract class MiniGameUtil
 	public abstract MapData getMapData(World world);
 	public abstract void initializeMiniGame();
 	public abstract void addRandomItem(Player player);
-	
+	public abstract void reloadConfig() throws IOException;
+
 	@SuppressWarnings("deprecation")
 	public void useItem(Player player, boolean remove, int cooldown)
 	{

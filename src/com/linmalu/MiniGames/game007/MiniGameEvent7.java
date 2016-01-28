@@ -14,20 +14,20 @@ import org.bukkit.inventory.ItemStack;
 
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.Cooldown;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
 
 public class MiniGameEvent7 extends MiniGameEvent
 {
-	public MiniGameEvent7(MiniGames minigame)
+	public MiniGameEvent7(MiniGame minigame)
 	{
 		super(minigame);
 	}
 	@EventHandler
 	public void Event(BlockBreakEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getPlayer().getWorld().getName().equals(Main.world))
+		if(data.isGame2() && data.getMinigame() == minigame && event.getPlayer().getWorld().getName().equals(Main.WORLD))
 		{
 			Material type = event.getBlock().getType();
 			if(type == Material.GLASS || type == Material.THIN_GLASS || type == Material.STAINED_GLASS || type == Material.STAINED_GLASS_PANE)
@@ -39,7 +39,7 @@ public class MiniGameEvent7 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.world))
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD))
 		{
 			event.setCancelled(true);
 		}
@@ -47,7 +47,7 @@ public class MiniGameEvent7 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageByEntityEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.world) && event.getEntity() instanceof Player && event.getDamager() instanceof Snowball)
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD) && event.getEntity() instanceof Player && event.getDamager() instanceof Snowball)
 		{
 			Player player2 = (Player) event.getEntity();
 			Snowball snowball = (Snowball)event.getDamager();
@@ -76,7 +76,7 @@ public class MiniGameEvent7 extends MiniGameEvent
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
 		ItemStack item = event.getItem();
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.world) && pd != null && pd.isLive() && pd.isSkill() && pd.isCooldown() && item != null && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive() && pd.isSkill() && pd.isCooldown() && item != null && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
 			minigame.getUtil().useItem(player, false, 1);
 //			if(data.useItem(player, false))

@@ -14,13 +14,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.BlockIterator;
 
 import com.linmalu.minigames.Main;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
 
 public class MiniGameEvent4 extends MiniGameEvent
 {
-	public MiniGameEvent4(MiniGames minigame)
+	public MiniGameEvent4(MiniGame minigame)
 	{
 		super(minigame);
 	}
@@ -29,7 +29,7 @@ public class MiniGameEvent4 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.world) && pd != null && pd.isLive())
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive())
 		{
 			event.setCancelled(false);
 			minigame.getUtil().addRandomItem(player);
@@ -40,7 +40,7 @@ public class MiniGameEvent4 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.world) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
 //			data.useItem(player, true);
 			minigame.getUtil().useItem(player, true, 0);
@@ -50,7 +50,7 @@ public class MiniGameEvent4 extends MiniGameEvent
 	public void Event(ProjectileHitEvent event)
 	{
 		Projectile entity = event.getEntity();
-		if(data.isGame2() && data.getMinigame() == minigame && entity.getWorld().getName().equals(Main.world) && entity.getType() == EntityType.SNOWBALL)
+		if(data.isGame2() && data.getMinigame() == minigame && entity.getWorld().getName().equals(Main.WORLD) && entity.getType() == EntityType.SNOWBALL)
 		{
 			BlockIterator bi = new BlockIterator(entity.getWorld(), entity.getLocation().toVector(), entity.getVelocity().normalize(), 0, 2);
 			while(bi.hasNext())

@@ -9,7 +9,7 @@ import com.linmalu.minigames.Main;
 import com.linmalu.minigames.game.MiniGameEvent;
 import com.linmalu.minigames.game.MiniGameUtil;
 
-public enum MiniGames
+public enum MiniGame
 {
 	달리기, 모루피하기, 등반, 눈치, 땅파기, 꼬리피하기, 땅따먹기, 총싸움, 폭탄피하기, 양털찾기, 카트타기, 신호등블록, 경마;
 
@@ -50,7 +50,7 @@ public enum MiniGames
 		}
 		return null;
 	}
-	private MiniGames getMiniGames()
+	private MiniGame getMiniGames()
 	{
 		return values()[ordinal()];
 	}
@@ -67,7 +67,7 @@ public enum MiniGames
 		{
 			initialize = true;
 		}
-		for(MiniGames mg : values())
+		for(MiniGame mg : values())
 		{
 			mg.InitializationField();
 		}

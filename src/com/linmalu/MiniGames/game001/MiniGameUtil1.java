@@ -1,18 +1,21 @@
 package com.linmalu.minigames.game001;
 
+import java.io.IOException;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MapData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
 public class MiniGameUtil1 extends MiniGameUtil
 {
-	public MiniGameUtil1(MiniGames minigame)
+	public MiniGameUtil1(MiniGame minigame)
 	{
 		super(minigame, new String[]{
 				" = = = = = [ 모 루 피 하 기 게 임 ] = = = = =",
@@ -45,11 +48,11 @@ public class MiniGameUtil1 extends MiniGameUtil
 	@Override
 	public MapData getMapData(World world)
 	{
-		size = 20;
+		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
 		x1 = z1 = -size;
 		x2 = z2 = size;
 		mapHeight = 30;
-		time = 0;
+		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
 		cooldown = 0;
 		topScore = false;
 		score = 0;
@@ -68,5 +71,20 @@ public class MiniGameUtil1 extends MiniGameUtil
 	@Override
 	public void addRandomItem(Player player)
 	{
+	}
+	@Override
+	public void reloadConfig() throws IOException
+	{
+		final String defaultSize = "기본 맵크기";
+		final String playerSize = "인원수 비율 맵크기";
+		LinmaluYamlConfiguration config = LinmaluYamlConfiguration.loadConfiguration(file);
+		if(!file.exists())
+		{
+			config.set(defaultSize, 20);
+			config.set(playerSize, 0);
+		}
+		this.mapDefault = config.getInt(defaultSize);
+		this.mapPlayer = config.getInt(playerSize);
+		config.save(file);		
 	}
 }

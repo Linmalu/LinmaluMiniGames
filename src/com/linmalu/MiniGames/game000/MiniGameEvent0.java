@@ -10,13 +10,13 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffectType;
 
 import com.linmalu.minigames.Main;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
 
 public class MiniGameEvent0 extends MiniGameEvent
 {
-	public MiniGameEvent0(MiniGames minigame)
+	public MiniGameEvent0(MiniGame minigame)
 	{
 		super(minigame);
 	}
@@ -26,7 +26,7 @@ public class MiniGameEvent0 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.world) && pd != null && pd.isLive())
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive())
 		{
 			int xFrom = event.getFrom().getBlockX();
 			int xTo = event.getTo().getBlockX();
@@ -50,7 +50,7 @@ public class MiniGameEvent0 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.world) && pd != null && pd.isLive() && pd.isSkill() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive() && pd.isSkill() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
 //			if(data.useItem(player, false))
 //			{

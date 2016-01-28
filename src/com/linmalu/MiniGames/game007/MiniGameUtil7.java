@@ -1,15 +1,19 @@
 package com.linmalu.minigames.game007;
 
+import java.io.IOException;
+
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import com.linmalu.library.api.LinmaluYamlConfiguration;
+import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MapData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
 public class MiniGameUtil7 extends MiniGameUtil
 {
-	public MiniGameUtil7(MiniGames minigame)
+	public MiniGameUtil7(MiniGame minigame)
 	{
 		super(minigame, new String[]{
 				" = = = = = [ 총 싸 움 게 임 ] = = = = =",
@@ -28,7 +32,7 @@ public class MiniGameUtil7 extends MiniGameUtil
 	public MapData getMapData(World world)
 	{
 		mapHeight = 0;
-		time = 5 * 60 * 20;
+		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
 		cooldown = 0;
 		topScore = true;
 		score = 0;
@@ -46,5 +50,18 @@ public class MiniGameUtil7 extends MiniGameUtil
 	@Override
 	public void addRandomItem(Player player)
 	{
+	}
+	@Override
+	public void reloadConfig() throws IOException
+	{
+		LinmaluYamlConfiguration config = LinmaluYamlConfiguration.loadConfiguration(file);
+		if(!file.exists())
+		{
+			config.set(TIME_DEFAULT, 180);
+			config.set(TIME_PLAYER, 10);
+		}
+		timeDefault = config.getInt(TIME_DEFAULT);
+		timePlayer = config.getInt(TIME_PLAYER);
+		config.save(file);
 	}
 }

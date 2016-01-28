@@ -1,5 +1,6 @@
 package com.linmalu.minigames.game004;
 
+import java.io.IOException;
 import java.util.Random;
 
 import org.bukkit.Material;
@@ -7,14 +8,15 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MapData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
 public class MiniGameUtil4 extends MiniGameUtil
 {
-	public MiniGameUtil4(MiniGames minigame)
+	public MiniGameUtil4(MiniGame minigame)
 	{
 		super(minigame, new String[]{
 				" = = = = = [ 땅 파 기 게 임 ] = = = = =",
@@ -36,7 +38,7 @@ public class MiniGameUtil4 extends MiniGameUtil
 				for(int z = md.getZ1(); z <= md.getZ2(); z++)
 				{
 					Block block = md.getWorld().getBlockAt(x, y, z);
-					if(y == 10 || y == 13 || y == 16)
+					if((y - 10) % 3 == 0)
 					{
 						block.setType(Material.SNOW_BLOCK);
 						block.setData((byte)0);
@@ -48,11 +50,10 @@ public class MiniGameUtil4 extends MiniGameUtil
 	@Override
 	public MapData getMapData(World world)
 	{
-		size = 10 + (Main.getMain().getGameData().getPlayerAllCount() * 2);
+		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
 		x1 = z1 = -size;
 		x2 = z2 = size;
-		mapHeight = 20;
-		time = 0;
+		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
 		cooldown = 0;
 		topScore = false;
 		score = 0;
@@ -94,5 +95,20 @@ public class MiniGameUtil4 extends MiniGameUtil
 			GameItem.addItemStack(player, GameItem.눈덩이);
 			break;
 		}
+	}
+	@Override
+	public void reloadConfig() throws IOException
+	{
+		LinmaluYamlConfiguration config = LinmaluYamlConfiguration.loadConfiguration(file);
+		if(!file.exists())
+		{
+			config.set(MAP_DEFAULT, 10);
+			config.set(MAP_PLAYER, 2);
+			config.set(MAP_HEIGHT, 6);
+		}
+		mapDefault = config.getInt(MAP_DEFAULT);
+		mapPlayer = config.getInt(MAP_PLAYER);
+		mapHeight = config.getInt(MAP_HEIGHT) * 3;
+		config.save(file);
 	}
 }

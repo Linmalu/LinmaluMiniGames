@@ -1,18 +1,21 @@
 package com.linmalu.minigames.game003;
 
+import java.io.IOException;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MapData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
 public class MiniGameUtil3 extends MiniGameUtil
 {
-	public MiniGameUtil3(MiniGames minigame)
+	public MiniGameUtil3(MiniGame minigame)
 	{
 		super(minigame, new String[]{
 				" = = = = = [ 눈 치 게 임 ] = = = = =",
@@ -47,11 +50,11 @@ public class MiniGameUtil3 extends MiniGameUtil
 	@Override
 	public MapData getMapData(World world)
 	{
-		size = 5 + Main.getMain().getGameData().getPlayerAllCount();
+		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
 		x1 = z1 = -size;
 		x2 = z2 = size;
 		mapHeight = 15;
-		time = 3 * 60 * 20;;
+		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
 		cooldown = 0;
 		topScore = true;
 		score = 0;
@@ -69,5 +72,22 @@ public class MiniGameUtil3 extends MiniGameUtil
 	@Override
 	public void addRandomItem(Player player)
 	{
+	}
+	@Override
+	public void reloadConfig() throws IOException
+	{
+		LinmaluYamlConfiguration config = LinmaluYamlConfiguration.loadConfiguration(file);
+		if(!file.exists())
+		{
+			config.set(MAP_DEFAULT, 5);
+			config.set(MAP_PLAYER, 1);
+			config.set(TIME_DEFAULT, 180);
+			config.set(TIME_PLAYER, 10);
+		}
+		mapDefault = config.getInt(MAP_DEFAULT);
+		mapPlayer = config.getInt(MAP_PLAYER);
+		timeDefault = config.getInt(TIME_DEFAULT);
+		timePlayer = config.getInt(TIME_PLAYER);
+		config.save(file);
 	}
 }

@@ -8,20 +8,20 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.Cooldown;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
 
 public class MiniGameEvent3 extends MiniGameEvent
 {
-	public MiniGameEvent3(MiniGames minigame)
+	public MiniGameEvent3(MiniGame minigame)
 	{
 		super(minigame);
 	}
 	@EventHandler
 	public void Event(EntityDamageByEntityEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.world) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
 		{
 			Player player1 = (Player)event.getDamager();
 			Player player2 = (Player) event.getEntity();
@@ -38,6 +38,7 @@ public class MiniGameEvent3 extends MiniGameEvent
 				{
 					new Cooldown(10, player2, true);
 					pd1.addScore();
+					data.teleportPlayer(player1);
 				}
 				else if(item1 == item2)
 				{
@@ -46,6 +47,7 @@ public class MiniGameEvent3 extends MiniGameEvent
 				{
 					new Cooldown(10, player1, true);
 					pd2.addScore();
+					data.teleportPlayer(player2);
 				}
 			}
 		}
@@ -55,7 +57,7 @@ public class MiniGameEvent3 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.world) && pd != null && pd.isCooldown())
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isCooldown())
 		{
 			if(pd.isSkill())
 			{

@@ -28,7 +28,7 @@ public class GameData
 	private boolean game1 = false;
 	private boolean game2 = false;
 	private boolean resourcePack = true;
-	private MiniGames minigame;
+	private MiniGame minigame;
 	private Scoreboard scoreboard;
 	private MapData mapData;
 	private HashMap<UUID, PlayerData> restorePlayers = new HashMap<>();
@@ -37,7 +37,7 @@ public class GameData
 	private UUID targetPlayer;
 	private int targetNumber;
 
-	public void GameStart(MiniGames minigame, World world)
+	public void GameStart(MiniGame minigame, World world)
 	{
 		game1 = true;
 		game2 = false;
@@ -51,8 +51,8 @@ public class GameData
 		{
 			if(player.getWorld() == world)
 			{
-				LinmaluTellraw.sendCmd(player, "/minigames 취소", ChatColor.GOLD + "미니게임에 참가를 원하지 않을 경우 클릭하세요.");
-				LinmaluTellraw.sendCmd(player, "/minigames 관전", ChatColor.GOLD + "미니게임을 구경만 원할 경우 클릭하세요.");
+				LinmaluTellraw.sendCmd(player, "/linmaluminigames 취소", ChatColor.GOLD + "미니게임에 참가를 원하지 않을 경우 클릭하세요.");
+				LinmaluTellraw.sendCmd(player, "/linmaluminigames 관전", ChatColor.GOLD + "미니게임을 구경만 원할 경우 클릭하세요.");
 				players.put(player.getUniqueId(), new PlayerData(player));
 				LinmaluTitle.sendMessage(player, ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + minigame.toString() + "게임", 20, 200, 20);
 				LinmaluActionbar.sendMessage(player, ChatColor.YELLOW + "게임맵으로 이동까지 " + ChatColor.GOLD + "10" + ChatColor.YELLOW + "초전");
@@ -75,7 +75,7 @@ public class GameData
 		}
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			if(player.getWorld().getName().equals(Main.world))
+			if(player.getWorld().getName().equals(Main.WORLD))
 			{
 				player.kickPlayer("맵삭제를 위해 강퇴됩니다.");
 				restorePlayers.put(player.getUniqueId(), players.get(player.getUniqueId()));
@@ -94,7 +94,7 @@ public class GameData
 	}
 	public void cancelPlayer(Player player)
 	{
-		if(game1 && !game2 && !player.getWorld().getName().equals(Main.world) && players.containsKey(player.getUniqueId()))
+		if(game1 && !game2 && !player.getWorld().getName().equals(Main.WORLD) && players.containsKey(player.getUniqueId()))
 		{
 			players.remove(player.getUniqueId());
 			LinmaluTitle.sendMessage(player, ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + "게임참가를 취소했습니다.", 0, 40, 20);
@@ -181,7 +181,7 @@ public class GameData
 						Bukkit.broadcastMessage(ChatColor.YELLOW + playerName + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
 						Bukkit.broadcastMessage(ChatColor.YELLOW + playerName + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
 						Bukkit.broadcastMessage(ChatColor.YELLOW + playerName + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
-						LinmaluTitle.sendMessage(ChatColor.YELLOW + "우승자 : " + ChatColor.GOLD + playerName, ChatColor.GOLD + minigame.toString() + "게임", 20, 100, 20);
+						LinmaluTitle.sendMessage(ChatColor.YELLOW + "우승자 : " + ChatColor.GOLD + playerName, ChatColor.GREEN + minigame.toString() + "게임", 20, 100, 20);
 						break;
 					}
 				}
@@ -244,11 +244,11 @@ public class GameData
 			{
 				die.addEntry(player.getName());
 			}
-			setScoreboard(player);
 			teleportPlayer(player);
+			setScoreboard(player);
 			if(!isResourcePack())
 			{
-				player.setResourcePack(Main.resourcePackMiniGames);
+				player.setResourcePack(Main.RESOURCEPACK_MINIGAMES);
 			}
 		}
 	}
@@ -354,7 +354,7 @@ public class GameData
 		for(UUID uuid : players.keySet())
 		{
 			Player player = Bukkit.getPlayer(uuid);
-			if(player == null || player.isDead() || !player.getWorld().getName().equals(Main.world) || getPlayerData(uuid).isObserver())
+			if(player == null || player.isDead() || !player.getWorld().getName().equals(Main.WORLD) || getPlayerData(uuid).isObserver())
 			{
 				diePlayer(uuid);
 			}
@@ -377,7 +377,7 @@ public class GameData
 	{
 		this.resourcePack = resourcePack;
 	}
-	public MiniGames getMinigame()
+	public MiniGame getMinigame()
 	{
 		return minigame;
 	}

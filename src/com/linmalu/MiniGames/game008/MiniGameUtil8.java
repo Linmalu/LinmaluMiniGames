@@ -1,18 +1,21 @@
 package com.linmalu.minigames.game008;
 
+import java.io.IOException;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MapData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
 public class MiniGameUtil8 extends MiniGameUtil
 {
-	public MiniGameUtil8(MiniGames minigame)
+	public MiniGameUtil8(MiniGame minigame)
 	{
 		super(minigame, new String[]{
 				" = = = = = [ 폭 탄 피 하 기 게 임 ] = = = = =",
@@ -45,11 +48,11 @@ public class MiniGameUtil8 extends MiniGameUtil
 	@Override
 	public MapData getMapData(World world)
 	{
-		size = 20;
+		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
 		x1 = z1 = -size;
 		x2 = z2 = size;
 		mapHeight = 20;
-		time = 10 * 20;
+		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
 		cooldown = 3 * 20;
 		topScore = false;
 		score = 0;
@@ -66,5 +69,18 @@ public class MiniGameUtil8 extends MiniGameUtil
 	{
 		GameItem.setItemStack(player, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄);
 		player.getInventory().setHelmet(GameItem.폭탄.getItemStack());
+	}
+	@Override
+	public void reloadConfig() throws IOException
+	{
+		LinmaluYamlConfiguration config = LinmaluYamlConfiguration.loadConfiguration(file);
+		if(!file.exists())
+		{
+			config.set(MAP_DEFAULT, 5);
+			config.set(MAP_PLAYER, 1);
+		}
+		mapDefault = config.getInt(MAP_DEFAULT);
+		mapPlayer = config.getInt(MAP_PLAYER);
+		config.save(file);
 	}
 }

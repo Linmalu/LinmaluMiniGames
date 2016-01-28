@@ -1,5 +1,6 @@
 package com.linmalu.minigames;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,7 +16,7 @@ import org.bukkit.entity.Player;
 import com.linmalu.library.api.LinmaluTellraw;
 import com.linmalu.library.api.LinmaluVersion;
 import com.linmalu.minigames.data.GameData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 
 public class Main_Command implements CommandExecutor
 {
@@ -28,7 +29,7 @@ public class Main_Command implements CommandExecutor
 				if(args.length == 1 && sender.isOp())
 				{
 					ArrayList<String> list = new ArrayList<>();
-					for(MiniGames game : MiniGames.values())
+					for(MiniGame game : MiniGame.values())
 					{
 						list.add(game.toString());
 					}
@@ -37,6 +38,8 @@ public class Main_Command implements CommandExecutor
 					list.add("stop");
 					list.add("리소스팩적용");
 					list.add("리소스팩취소");
+					list.add("리로드");
+					list.add("reload");
 					return list;
 				}
 				return null;
@@ -71,7 +74,7 @@ public class Main_Command implements CommandExecutor
 					}
 					else if(args[0].equals("랜덤"))
 					{
-						setGame(player, data, MiniGames.values()[new Random().nextInt(MiniGames.values().length)]);
+						setGame(player, data, MiniGame.values()[new Random().nextInt(MiniGame.values().length)]);
 						return true;
 					}
 					else if(args[0].equals("리소스팩적용"))
@@ -85,9 +88,9 @@ public class Main_Command implements CommandExecutor
 							data.setResourcePack(true);
 							for(Player p : Bukkit.getOnlinePlayers())
 							{
-								p.setResourcePack(Main.resourcePackMiniGames);
+								p.setResourcePack(Main.RESOURCEPACK_MINIGAMES);
 							}
-							sender.sendMessage(Main.getMain().getTitle() + ChatColor.GREEN + "지금부터 미니게임천국 리소스팩이 적용됩니다.");
+							Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.GREEN + "미니게임천국 리소스팩이 적용됩니다.");
 						}
 						return true;
 					}
@@ -102,15 +105,38 @@ public class Main_Command implements CommandExecutor
 							data.setResourcePack(false);
 							for(Player p : Bukkit.getOnlinePlayers())
 							{
-								p.setResourcePack(Main.resourcePackDefault);
+								p.setResourcePack(Main.RESOURCEPACK_DEFAULT);
 							}
-							sender.sendMessage(Main.getMain().getTitle() + ChatColor.GREEN + "지금부터 미니게임천국 리소스팩이 취소됩니다.");
+							Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.GREEN + "미니게임천국 리소스팩이 취소됩니다.");
+						}
+						return true;
+					}
+					else if(args[0].equals("리로드") || args[0].equalsIgnoreCase("reload"))
+					{
+						if(data.isGame1())
+						{
+							sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "게임 중에는 사용할 수 없습니다.");
+						}
+						else
+						{
+							for(MiniGame minigame : MiniGame.values())
+							{
+								try
+								{
+									minigame.getUtil().reloadConfig();
+								}
+								catch(IOException e)
+								{
+									e.printStackTrace();
+								}
+							}
+							sender.sendMessage(Main.getMain().getTitle() + ChatColor.GREEN + "리로드가 완료되었습니다.");
 						}
 						return true;
 					}
 					else
 					{
-						for(MiniGames game : MiniGames.values())
+						for(MiniGame game : MiniGame.values())
 						{
 							if(args[0].equals(game.toString()))
 							{
@@ -134,7 +160,7 @@ public class Main_Command implements CommandExecutor
 			if(player.isOp())
 			{
 				StringBuffer sb = new StringBuffer();
-				for(MiniGames mg : MiniGames.values())
+				for(MiniGame mg : MiniGame.values())
 				{
 					sb.append("$CC:" + ChatColor.YELLOW + mg.toString() + "|/mg " + mg.toString() + "$");
 					sb.append(", ");
@@ -161,7 +187,7 @@ public class Main_Command implements CommandExecutor
 		}
 		return true;
 	}
-	private void setGame(Player player, GameData data, MiniGames minigame)
+	private void setGame(Player player, GameData data, MiniGame minigame)
 	{
 		if(data.isGame1())
 		{
@@ -173,7 +199,7 @@ public class Main_Command implements CommandExecutor
 			{
 				player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최소인원 2명이 되지 않습니다.");
 			}
-			else if(minigame == MiniGames.땅따먹기 && Bukkit.getOnlinePlayers().size() > 48)
+			else if(minigame == MiniGame.땅따먹기 && Bukkit.getOnlinePlayers().size() > 48)
 			{
 				player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최대인원 16명이 넘습니다.");
 			}

@@ -115,7 +115,7 @@ public class GameTimer implements Runnable
 	{
 		timerStart = false;
 		time = md.getTime();
-		if(data.getMinigame() == MiniGames.양털찾기)
+		if(data.getMinigame() == MiniGame.양털찾기)
 		{
 			new MiniGameChangeBlock9();
 			data.setTargetNumber(new Random().nextInt(16));
@@ -130,15 +130,15 @@ public class GameTimer implements Runnable
 				}
 			}
 		}
-		else if(data.getMinigame() == MiniGames.폭탄피하기)
+		else if(data.getMinigame() == MiniGame.폭탄피하기)
 		{
 			new MiniGameBombChange8();
 		}
-		else if(data.getMinigame() == MiniGames.카트타기)
+		else if(data.getMinigame() == MiniGame.카트타기)
 		{
 			new MiniGameSpawnCart10();
 		}
-		else if(data.getMinigame() == MiniGames.경마)
+		else if(data.getMinigame() == MiniGame.경마)
 		{
 			new MiniGameHorse(null);
 		}
@@ -147,14 +147,14 @@ public class GameTimer implements Runnable
 	{
 		if(time % 20 == 0)
 		{
-			if(data.getMinigame() == MiniGames.땅파기)
+			if(data.getMinigame() == MiniGame.땅파기)
 			{
 				for(Player player : data.getPlayers())
 				{
 					player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, true, false), true);
 				}
 			}
-			else if(data.getMinigame() == MiniGames.땅따먹기)
+			else if(data.getMinigame() == MiniGame.땅따먹기)
 			{
 				if(time / 20 > 60)
 				{
@@ -164,7 +164,7 @@ public class GameTimer implements Runnable
 					}
 				}
 			}
-			else if(data.getMinigame() == MiniGames.총싸움)
+			else if(data.getMinigame() == MiniGame.총싸움)
 			{
 				for(Player player : data.getPlayers())
 				{
@@ -173,7 +173,7 @@ public class GameTimer implements Runnable
 				}
 			}
 		}
-		if(data.getMinigame() == MiniGames.폭탄피하기)
+		if(data.getMinigame() == MiniGame.폭탄피하기)
 		{
 			if(!data.getPlayerData(data.getTargetPlayer()).isLive())
 			{
@@ -184,7 +184,7 @@ public class GameTimer implements Runnable
 	@SuppressWarnings("deprecation")
 	private void TimerEnd()
 	{
-		if(data.getMinigame() == MiniGames.폭탄피하기)
+		if(data.getMinigame() == MiniGame.폭탄피하기)
 		{
 			Player player = Bukkit.getPlayer(data.getTargetPlayer());
 			if(player != null)
@@ -194,7 +194,7 @@ public class GameTimer implements Runnable
 				data.diePlayer(player.getUniqueId());
 			}
 		}
-		else if(data.getMinigame() == MiniGames.양털찾기)
+		else if(data.getMinigame() == MiniGame.양털찾기)
 		{
 			for(int x = md.getX1(); x <= md.getX2(); x++)
 			{
@@ -213,7 +213,7 @@ public class GameTimer implements Runnable
 				md.setTime(md.getTime() - 5);
 			}
 		}
-		else if(data.getMinigame() == MiniGames.카트타기)
+		else if(data.getMinigame() == MiniGame.카트타기)
 		{
 			new MiniGameRemoveCart10();
 		}
@@ -227,7 +227,7 @@ public class GameTimer implements Runnable
 				{
 					map.put(player.getUniqueId().toString(), data.getPlayerData(player.getUniqueId()).getScore());
 				}
-				LinkedHashMap<String, Integer> rank = LinmaluRanking.getRanking(map);
+				LinkedHashMap<String, Integer> rank = LinmaluRanking.getRanking(map, false);
 				int top = -1;
 				UUID uuid = null;
 				for(String s : rank.keySet())

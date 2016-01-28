@@ -9,20 +9,20 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.Cooldown;
 import com.linmalu.minigames.data.MapData;
-import com.linmalu.minigames.data.MiniGames;
+import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
 
 public class MiniGameEvent6 extends MiniGameEvent
 {
-	public MiniGameEvent6(MiniGames minigame)
+	public MiniGameEvent6(MiniGame minigame)
 	{
 		super(minigame);
 	}
 	@EventHandler
 	public void Event(EntityDamageByEntityEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.world) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
 		{
 			Player player1 = (Player)event.getDamager();
 			Player player2 = (Player) event.getEntity();
@@ -41,7 +41,7 @@ public class MiniGameEvent6 extends MiniGameEvent
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
 		MapData md = data.getMapData();
-		if(data.isGame2() && data.getMinigame() ==  minigame && player.getWorld().getName().equals(Main.world) && pd != null && pd.isLive() && pd.isCooldown())
+		if(data.isGame2() && data.getMinigame() ==  minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive() && pd.isCooldown())
 		{
 			int xFrom = event.getFrom().getBlockX();
 			int xTo = event.getTo().getBlockX();

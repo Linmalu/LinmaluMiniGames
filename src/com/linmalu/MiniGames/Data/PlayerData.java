@@ -119,7 +119,7 @@ public class PlayerData
 			player.teleport(loc);
 			if(!Main.getMain().getGameData().isResourcePack())
 			{
-				player.setResourcePack(Main.resourcePackDefault);
+				player.setResourcePack(Main.RESOURCEPACK_DEFAULT);
 			}
 
 		}
