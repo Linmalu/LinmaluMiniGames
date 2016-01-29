@@ -22,12 +22,12 @@ public class MiniGameEvent1 extends MiniGameEvent
 	public void Event(BlockCanBuildEvent event)
 	{
 		Block block = event.getBlock();
-		if(data.isGame2() && data.getMinigame() == minigame && block.getWorld().getName().equals(Main.WORLD))
+		if(data.isGame2() && data.getMinigame() == minigame && block.getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			for(Player player : data.getPlayers())
 			{
 				PlayerData pd = data.getPlayerData(player.getUniqueId());
-				if(pd.isLive() && block.getLocation().distance(player.getLocation()) <= 1)
+				if(pd != null && pd.isLive() && block.getLocation().distance(player.getLocation()) <= 1)
 				{
 					data.diePlayer(player.getUniqueId());
 				}
@@ -37,7 +37,7 @@ public class MiniGameEvent1 extends MiniGameEvent
 	@EventHandler
 	public void Event(ItemSpawnEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setCancelled(true);
 		}
@@ -45,7 +45,7 @@ public class MiniGameEvent1 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setCancelled(true);
 		}

@@ -123,7 +123,7 @@ public class Main_Command implements CommandExecutor
 							{
 								try
 								{
-									minigame.getUtil().reloadConfig();
+									minigame.getHandle().reloadConfig();
 								}
 								catch(IOException e)
 								{

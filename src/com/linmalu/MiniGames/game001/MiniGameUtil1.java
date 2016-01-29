@@ -1,14 +1,18 @@
 package com.linmalu.minigames.game001;
 
 import java.io.IOException;
+import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
+import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
@@ -29,13 +33,17 @@ public class MiniGameUtil1 extends MiniGameUtil
 	public void createGameMap()
 	{
 		MapData md = Main.getMain().getGameData().getMapData();
+		int mapX1 = md.getX1() - 1;
+		int mapX2 = md.getX2() + 1;
+		int mapZ1 = md.getZ1() - 1;
+		int mapZ2 = md.getZ2() + 1;
 		for(int y = 10; y < md.getMapHeight(); y++)
 		{
-			for(int x = md.getX1(); x <= md.getX2(); x++)
+			for(int x = mapX1; x <= mapX2; x++)
 			{
-				for(int z = md.getZ1(); z <= md.getZ2(); z++)
+				for(int z = mapZ1; z <= mapZ2; z++)
 				{
-					if(y == 10 || (x == md.getX1() || x == md.getX2() || z == md.getZ1() || z == md.getZ2()))
+					if(y == 10 || (x == mapX1 || x == mapX2 || z == mapZ1 || z == mapZ2))
 					{
 						Block block = md.getWorld().getBlockAt(x, y, z);
 						block.setType(Material.IRON_BLOCK);
@@ -62,7 +70,6 @@ public class MiniGameUtil1 extends MiniGameUtil
 	@Override
 	public void initializeMiniGame()
 	{
-		new MiniGameFallingBlock1();
 		for(Player player : data.getLivePlayers())
 		{
 			GameItem.setItemStack(player, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루);
@@ -86,5 +93,48 @@ public class MiniGameUtil1 extends MiniGameUtil
 		this.mapDefault = config.getInt(defaultSize);
 		this.mapPlayer = config.getInt(playerSize);
 		config.save(file);		
+	}
+	@Override
+	public void startTimer()
+	{
+	}
+	@Override
+	@SuppressWarnings("deprecation")
+	public void runTimer(GameTimer timer)
+	{
+		MapData md = data.getMapData();
+		int time = timer.getTime();
+		for(int i = 0; i < time / 20 / 10 + 1; i++)
+		{
+			Random ran = new Random();
+			FallingBlock fb = md.getWorld().spawnFallingBlock(data.getMapData().getRandomBlockLocation(), Material.ANVIL, (byte) 0);
+			float x1, z1;
+			x1 = ran.nextFloat();
+			if(ran.nextInt(2) == 0)
+			{
+				x1 *= -1;
+			}
+			z1 = ran.nextFloat();
+			if(ran.nextInt(2) == 0)
+			{
+				z1 *= -1;
+			}
+			if(time / 20 > 30 && ran.nextInt(2) == 0)
+			{
+				fb.setVelocity(new Vector(x1, 0, z1));
+			}
+		}
+		if(time / 20 == 60)
+		{
+			md.getWorld().setTime(13000L);
+		}
+		else if(time / 20 == 90)
+		{
+			md.getWorld().setTime(18000L);
+		}
+	}
+	@Override
+	public void endTimer()
+	{
 	}
 }

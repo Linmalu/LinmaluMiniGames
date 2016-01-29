@@ -1,14 +1,17 @@
 package com.linmalu.minigames.game009;
 
 import java.io.IOException;
+import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
+import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
@@ -73,5 +76,46 @@ public class MiniGameUtil9 extends MiniGameUtil
 		mapDefault = config.getInt(MAP_DEFAULT);
 		mapPlayer = config.getInt(MAP_PLAYER);
 		config.save(file);
+	}
+	@Override
+	public void startTimer()
+	{
+		new MiniGameChangeBlock9();
+		data.setTargetNumber(new Random().nextInt(16));
+		for(Player player : data.getPlayers())
+		{
+			player.getInventory().clear();
+			ItemStack item = new ItemStack(Material.WOOL);
+			item.setDurability((short)data.getTargetNumber());
+			for(int i = 0; i < 9; i++)
+			{
+				player.getInventory().setItem(i, item);
+			}
+		}
+	}
+	@Override
+	public void runTimer(GameTimer timer)
+	{
+	}
+	@Override
+	@SuppressWarnings("deprecation")
+	public void endTimer()
+	{
+		MapData md = data.getMapData();
+		for(int x = md.getX1(); x <= md.getX2(); x++)
+		{
+			for(int z = md.getZ1(); z <= md.getZ2(); z++)
+			{
+				Block block = md.getWorld().getBlockAt(x, md.getMapHeight(), z);
+				if(block.getData() != data.getTargetNumber())
+				{
+					block.setType(Material.AIR);
+				}
+			}
+		}
+		if(md.getTime() > 30)
+		{
+			md.setTime(md.getTime() - 5);
+		}
 	}
 }

@@ -41,7 +41,7 @@ public class MiniGameBombChange8
 			player.getInventory().setHelmet(null);
 			if(player.getUniqueId().equals(uuid))
 			{
-				data.getMinigame().getUtil().addRandomItem(player);
+				data.getMinigame().getHandle().addRandomItem(player);
 			}
 		}
 	}

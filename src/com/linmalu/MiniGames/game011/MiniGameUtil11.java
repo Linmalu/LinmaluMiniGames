@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
+import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
@@ -57,7 +58,6 @@ public class MiniGameUtil11 extends MiniGameUtil
 	@Override
 	public void initializeMiniGame()
 	{
-		new MiniGameRandomBlock11();
 	}
 	@Override
 	public void addRandomItem(Player player)
@@ -75,5 +75,23 @@ public class MiniGameUtil11 extends MiniGameUtil
 		mapDefault = config.getInt(MAP_DEFAULT);
 		mapPlayer = config.getInt(MAP_PLAYER);
 		config.save(file);
+	}
+	@Override
+	public void startTimer()
+	{
+	}
+	@Override
+	@SuppressWarnings("deprecation")
+	public void runTimer(GameTimer timer)
+	{
+		Block block = data.getMapData().getRandomBlockLocation().getBlock();
+		if(block.getType() == Material.WOOL && block.getData() == 5)
+		{
+			new MiniGameChangeBlock11(block);
+		}
+	}
+	@Override
+	public void endTimer()
+	{
 	}
 }

@@ -20,7 +20,7 @@ public class MiniGameEvent8 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageByEntityEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
 		{
 			Player player1 = (Player)event.getDamager();
 			Player player2 = (Player) event.getEntity();
@@ -39,7 +39,7 @@ public class MiniGameEvent8 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageByBlockEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD) && event.getEntity() instanceof Player && event.getCause() == DamageCause.BLOCK_EXPLOSION)
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME) && event.getEntity() instanceof Player && event.getCause() == DamageCause.BLOCK_EXPLOSION)
 		{
 			event.setCancelled(true);
 		}

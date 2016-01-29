@@ -13,15 +13,15 @@ public enum MiniGame
 {
 	달리기, 모루피하기, 등반, 눈치, 땅파기, 꼬리피하기, 땅따먹기, 총싸움, 폭탄피하기, 양털찾기, 카트타기, 신호등블록, 경마;
 
-	private MiniGameUtil util;
+	private MiniGameUtil handle;
 
-	public MiniGameUtil getUtil()
+	public MiniGameUtil getHandle()
 	{
-		return util;
+		return handle;
 	}
 	private void InitializationField()
 	{
-		util = getLinmaluClsss(MiniGameUtil.class, getMiniGames());
+		handle = getLinmaluClsss(MiniGameUtil.class, getMiniGames());
 		Bukkit.getPluginManager().registerEvents(getLinmaluClsss(MiniGameEvent.class, getMiniGames()), Main.getMain());
 	}
 	private <T> T getLinmaluClsss(Class<T> cast, Object ... args)
@@ -52,7 +52,8 @@ public enum MiniGame
 	}
 	private MiniGame getMiniGames()
 	{
-		return values()[ordinal()];
+		return valueOf(toString());
+//		return values()[ordinal()];
 	}
 
 	private static boolean initialize = false;

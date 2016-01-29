@@ -3,6 +3,7 @@ package com.linmalu.minigames.game002;
 import java.io.IOException;
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
+import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
@@ -31,13 +33,17 @@ public class MiniGameUtil2 extends MiniGameUtil
 	public void createGameMap()
 	{
 		MapData md = Main.getMain().getGameData().getMapData();
+		int mapX1 = md.getX1() - 1;
+		int mapX2 = md.getX2() + 1;
+		int mapZ1 = md.getZ1() - 1;
+		int mapZ2 = md.getZ2() + 1;
 		for(int y = 10; y <= md.getMapHeight(); y++)
 		{
-			for(int x = md.getX1(); x <= md.getX2(); x++)
+			for(int x = mapX1; x <= mapX2; x++)
 			{
-				for(int z = md.getZ1(); z <= md.getZ2(); z++)
+				for(int z = mapZ1; z <= mapZ2; z++)
 				{
-					if(y == 10 || (x == md.getX1() || x == md.getX2() || z == md.getZ1() || z == md.getZ2()))
+					if(y == 10 || (x == mapX1 || x == mapX2 || z == mapZ1 || z == mapZ2))
 					{
 						Block block = md.getWorld().getBlockAt(x, y, z);
 						if(y == md.getMapHeight())
@@ -71,7 +77,10 @@ public class MiniGameUtil2 extends MiniGameUtil
 	@Override
 	public void initializeMiniGame()
 	{
-		new MiniGameFallingBlock2();
+		for(Player player : data.getLivePlayers())
+		{
+			GameItem.setItemStack(player, GameItem.양털가위);
+		}
 	}
 	@Override
 	public void addRandomItem(Player player)
@@ -108,5 +117,35 @@ public class MiniGameUtil2 extends MiniGameUtil
 		mapPlayer = config.getInt(MAP_PLAYER);
 		mapHeight = config.getInt(MAP_HEIGHT) + 10;
 		config.save(file);
+	}
+	@Override
+	public void startTimer()
+	{
+	}
+	@Override
+	@SuppressWarnings("deprecation")
+	public void runTimer(GameTimer timer)
+	{
+		MapData md = data.getMapData();
+		Random ran = new Random();
+		for(int i = 0; i < timer.getTime() / 20 / 30 + 2; i++)
+		{
+			Location loc = data.getMapData().getRandomBlockLocation();
+			if(loc.getBlock().isEmpty())
+			{
+				if(ran.nextInt(5) == 0)
+				{
+					md.getWorld().spawnFallingBlock(loc, Material.WOOL, (byte)ran.nextInt(16));
+				}
+				else
+				{
+					md.getWorld().spawnFallingBlock(loc, Material.STAINED_CLAY, (byte)ran.nextInt(16));
+				}
+			}
+		}
+	}
+	@Override
+	public void endTimer()
+	{
 	}
 }

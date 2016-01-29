@@ -22,7 +22,7 @@ public class MiniGameEvent6 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageByEntityEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
 		{
 			Player player1 = (Player)event.getDamager();
 			Player player2 = (Player) event.getEntity();
@@ -41,7 +41,7 @@ public class MiniGameEvent6 extends MiniGameEvent
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
 		MapData md = data.getMapData();
-		if(data.isGame2() && data.getMinigame() ==  minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive() && pd.isCooldown())
+		if(data.isGame2() && data.getMinigame() ==  minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive() && pd.isCooldown())
 		{
 			int xFrom = event.getFrom().getBlockX();
 			int xTo = event.getTo().getBlockX();

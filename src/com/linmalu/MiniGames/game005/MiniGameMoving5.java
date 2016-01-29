@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 
-import com.linmalu.library.api.LinmaluEntity;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.GameData;
 import com.linmalu.minigames.data.PlayerData;
@@ -59,6 +58,10 @@ public class MiniGameMoving5 implements Runnable
 			{
 				for(Sheep sheep : sheeps)
 				{
+					if(sheep.isDead())
+					{
+						continue;
+					}
 					if(one)
 					{
 						one = false;
@@ -81,7 +84,6 @@ public class MiniGameMoving5 implements Runnable
 					sheep.setCustomName("jeb_");
 					sheeps.add(sheep);
 					data.addEntity(sheep);
-					LinmaluEntity.reloadEntity(sheep);
 				}
 				if(count % 10 == 0)
 				{

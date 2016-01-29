@@ -8,6 +8,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.linmalu.minigames.Main;
+import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
@@ -54,6 +55,19 @@ public class MiniGameUtil12 extends MiniGameUtil
 	}
 	@Override
 	public void reloadConfig() throws IOException
+	{
+	}
+	@Override
+	public void startTimer()
+	{
+		new MiniGameHorse(null);
+	}
+	@Override
+	public void runTimer(GameTimer timer)
+	{
+	}
+	@Override
+	public void endTimer()
 	{
 	}
 }

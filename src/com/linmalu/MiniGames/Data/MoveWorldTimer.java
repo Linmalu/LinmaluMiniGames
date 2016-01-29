@@ -16,7 +16,7 @@ public class MoveWorldTimer implements Runnable
 
 	public MoveWorldTimer()
 	{
-		data.getMinigame().getUtil().sendMessage(data.getPlayers());
+		data.getMinigame().getHandle().sendMessage(data.getPlayers());
 		data.setGamePlayer();
 		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 1L);
 	}

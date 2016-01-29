@@ -4,9 +4,12 @@ import java.io.IOException;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
+import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
@@ -63,5 +66,25 @@ public class MiniGameUtil7 extends MiniGameUtil
 		timeDefault = config.getInt(TIME_DEFAULT);
 		timePlayer = config.getInt(TIME_PLAYER);
 		config.save(file);
+	}
+	@Override
+	public void startTimer()
+	{
+	}
+	@Override
+	public void runTimer(GameTimer timer)
+	{
+		if(timer.getTime() % 20 == 0)
+		{
+			for(Player player : data.getPlayers())
+			{
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 0, true, false), true);
+				player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 40, 1, true, false), true);
+			}
+		}
+	}
+	@Override
+	public void endTimer()
+	{
 	}
 }

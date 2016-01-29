@@ -1,5 +1,8 @@
 package com.linmalu.minigames.data;
 
+import java.util.Random;
+
+import org.bukkit.Location;
 import org.bukkit.World;
 
 public class MapData
@@ -69,5 +72,24 @@ public class MapData
 	public boolean isSee()
 	{
 		return see;
+	}
+	public Location getRandomBlockLocation()
+	{
+		Random ran = new Random();
+		return new Location(world, ran.nextInt(x2 - x1 + 1) + x1, mapHeight, ran.nextInt(z2 - z1 + 1) + z1);
+	}
+	public Location getRandomEntityLocation()
+	{
+		Random ran = new Random();
+		return new Location(world, ran.nextInt(x2 - x1 - 1) + x1 + 1, mapHeight, ran.nextInt(z2 - z1 - 3) + z1 + 2);
+	}
+	public Location getRandomEntityLocation(Location loc)
+	{
+		Random ran = new Random();
+		return new Location(world, ran.nextInt(x2 - x1 - 1) + x1 + 1, mapHeight, ran.nextInt(z2 - z1 - 3) + z1 + 2, loc.getYaw(), loc.getPitch());
+	}
+	public static void main(String[] args)
+	{
+		System.out.println(new Random().nextInt(-1));
 	}
 }

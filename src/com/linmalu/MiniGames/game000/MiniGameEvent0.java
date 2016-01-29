@@ -26,7 +26,7 @@ public class MiniGameEvent0 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive())
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive())
 		{
 			int xFrom = event.getFrom().getBlockX();
 			int xTo = event.getTo().getBlockX();
@@ -50,13 +50,13 @@ public class MiniGameEvent0 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive() && pd.isSkill() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive() && pd.isSkill() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
 //			if(data.useItem(player, false))
 //			{
 //				new Cooldown(20, player, false);
 //			}
-			minigame.getUtil().useItem(player, false, 20);
+			minigame.getHandle().useItem(player, false, 20);
 		}
 	}
 }

@@ -1,14 +1,19 @@
 package com.linmalu.minigames.game010;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
+import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
@@ -84,5 +89,44 @@ public class MiniGameUtil10 extends MiniGameUtil
 		timeDefault = config.getInt(TIME_DEFAULT);
 		timePlayer = config.getInt(TIME_PLAYER);
 		config.save(file);
+	}
+	@Override
+	public void startTimer()
+	{
+		MapData md = data.getMapData();
+		for(int i = 0; i < data.getPlayerLiveCount() - 1; i++)
+		{
+			data.addEntity(md.getWorld().spawnEntity(md.getRandomEntityLocation(), EntityType.MINECART));
+		}
+	}
+	@Override
+	public void runTimer(GameTimer timer)
+	{
+	}
+	@Override
+	public void endTimer()
+	{
+		ArrayList<UUID> players = new ArrayList<>();
+		for(Entity e : data.getEntitys())
+		{
+			if(!e.isEmpty())
+			{
+				Entity p = e.getPassenger();
+				if(p.getType() == EntityType.PLAYER)
+				{
+					players.add(p.getUniqueId());
+					e.eject();
+				}
+			}
+			e.remove();
+		}
+		data.getEntitys().clear();
+		for(Player player : data.getLivePlayers())
+		{
+			if(!players.contains(player.getUniqueId()))
+			{
+				data.diePlayer(player.getUniqueId());
+			}
+		}
 	}
 }

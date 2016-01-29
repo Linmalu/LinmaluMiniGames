@@ -39,7 +39,7 @@ public class Main_Event implements Listener
 	@EventHandler
 	public void Event(WeatherChangeEvent event)
 	{
-		if(data.isGame1() && event.getWorld().getName().equals(Main.WORLD))
+		if(data.isGame1() && event.getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setCancelled(true);
 		}
@@ -47,7 +47,7 @@ public class Main_Event implements Listener
 	@EventHandler
 	public void Event(FoodLevelChangeEvent event)
 	{
-		if(data.isGame1() && event.getEntity().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame1() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setCancelled(true);
 		}
@@ -55,7 +55,7 @@ public class Main_Event implements Listener
 	@EventHandler
 	public void Event(EntityExplodeEvent event)
 	{
-		if(data.isGame1() && event.getEntity().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame1() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.blockList().clear();
 		}
@@ -65,7 +65,7 @@ public class Main_Event implements Listener
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame1() && pd == null && player.getWorld().getName().equals(Main.WORLD))
+		if(data.isGame1() && pd == null && player.getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			player.sendMessage(ChatColor.RED + "미니게임맵에 들어갈 권한이 없습니다.");
 			player.teleport(event.getFrom().getSpawnLocation());
@@ -113,7 +113,7 @@ public class Main_Event implements Listener
 	public void Event(PlayerQuitEvent event)
 	{
 		Player player = event.getPlayer();
-		if(data.isGame2() && player.getWorld().getName().equals(Main.WORLD))
+		if(data.isGame2() && player.getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			data.diePlayer(player.getUniqueId());
 		}
@@ -122,7 +122,7 @@ public class Main_Event implements Listener
 	public void Event(PlayerDeathEvent event)
 	{
 		Player player = event.getEntity();
-		if(data.isGame2() && player.getWorld().getName().equals(Main.WORLD))
+		if(data.isGame2() && player.getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			LinmaluAutoRespawn.respawn(player);
 		}
@@ -130,7 +130,7 @@ public class Main_Event implements Listener
 	@EventHandler
 	public void Event(PlayerPickupItemEvent event)
 	{
-		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.getItem().remove();
 			event.setCancelled(true);
@@ -139,7 +139,7 @@ public class Main_Event implements Listener
 	@EventHandler
 	public void Event(PlayerDropItemEvent event)
 	{
-		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setCancelled(true);
 		}
@@ -147,7 +147,7 @@ public class Main_Event implements Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void Event(BlockCanBuildEvent event)
 	{
-		if(data.isGame1() && event.getBlock().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame1() && event.getBlock().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setBuildable(false);
 		}
@@ -155,7 +155,7 @@ public class Main_Event implements Listener
 	@EventHandler
 	public void Event(BlockPlaceEvent event)
 	{
-		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setCancelled(true);
 		}
@@ -163,7 +163,7 @@ public class Main_Event implements Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void Event(BlockBreakEvent event)
 	{
-		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setCancelled(true);
 		}
@@ -171,7 +171,7 @@ public class Main_Event implements Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void Event(PlayerInteractEvent event)
 	{
-		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD) && event.getAction() == Action.PHYSICAL)
+		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD_NAME) && event.getAction() == Action.PHYSICAL)
 		{
 			if(event.getClickedBlock().getType() == Material.SOIL)
 			{
@@ -182,7 +182,7 @@ public class Main_Event implements Listener
 	@EventHandler
 	public void Event(EntityDamageEvent event)
 	{
-		if(event.getEntity().getWorld().getName().equals(Main.WORLD))
+		if(event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setDamage(0);
 		}
@@ -190,11 +190,11 @@ public class Main_Event implements Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void Event(EntityDamageByEntityEvent event)
 	{
-		if(data.isGame1() && !data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame1() && !data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setCancelled(true);
 		}
-		else if(data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
+		else if(data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
 		{
 			Player player = (Player) event.getEntity();
 			Player aplayer = (Player)event.getDamager();
@@ -211,7 +211,7 @@ public class Main_Event implements Listener
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame1() && player.getWorld().getName().equals(Main.WORLD) && pd != null)
+		if(data.isGame1() && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null)
 		{
 			if(data.getMinigame() == MiniGame.경마)
 			{

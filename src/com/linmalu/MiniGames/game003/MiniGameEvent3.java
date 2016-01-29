@@ -21,7 +21,7 @@ public class MiniGameEvent3 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageByEntityEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
 		{
 			Player player1 = (Player)event.getDamager();
 			Player player2 = (Player) event.getEntity();
@@ -37,8 +37,8 @@ public class MiniGameEvent3 extends MiniGameEvent
 				if((item1 == m1 && item2 == m2) || (item1 == m2 && item2 == m3) || (item1 == m3 && item2 == m1) || (item2 != m1 && item2 != m2 && item2 != m3))
 				{
 					new Cooldown(10, player2, true);
+					data.teleportPlayer(player2);
 					pd1.addScore();
-					data.teleportPlayer(player1);
 				}
 				else if(item1 == item2)
 				{
@@ -46,8 +46,8 @@ public class MiniGameEvent3 extends MiniGameEvent
 				else
 				{
 					new Cooldown(10, player1, true);
+					data.teleportPlayer(player1);
 					pd2.addScore();
-					data.teleportPlayer(player2);
 				}
 			}
 		}
@@ -57,7 +57,7 @@ public class MiniGameEvent3 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isCooldown())
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isCooldown())
 		{
 			if(pd.isSkill())
 			{

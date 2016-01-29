@@ -27,6 +27,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.Cooldown;
 import com.linmalu.minigames.data.GameData;
+import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game000.MiniGameFallingBlock0;
@@ -34,13 +35,22 @@ import com.linmalu.minigames.game007.MiniGameShoot7;
 
 public abstract class MiniGameUtil
 {
+	public abstract void createGameMap();
+	public abstract MapData getMapData(World world);
+	public abstract void initializeMiniGame();
+	public abstract void addRandomItem(Player player);
+	public abstract void reloadConfig() throws IOException;
+	public abstract void startTimer();
+	public abstract void runTimer(GameTimer timer);
+	public abstract void endTimer();
+	
 	protected final String MAP_DEFAULT = "기본맵 크기";
 	protected final String MAP_PLAYER = "인원수 추가 게임맵 크기";
 	protected final String MAP_HEIGHT = "게임맵 높이";
 	protected final String TIME_DEFAULT = "기본 제한 시간(초)";
 	protected final String TIME_PLAYER = "인원수 추가 제한 시간(초)";
 
-	protected final GameData data;
+	protected final GameData data = Main.getMain().getGameData();
 	protected final MiniGame minigame;
 	private final String[] msgs;
 	protected final File file;
@@ -49,7 +59,6 @@ public abstract class MiniGameUtil
 
 	public MiniGameUtil(MiniGame minigame, String[] msgs)
 	{
-		data = Main.getMain().getGameData();
 		this.minigame = minigame;
 		this.msgs = msgs;
 		file = new File(Main.getMain().getDataFolder(), minigame.toString() + ".yml");
@@ -80,7 +89,7 @@ public abstract class MiniGameUtil
 		BufferedOutputStream out = null;
 		try
 		{
-			File file = new File("./" + Main.WORLD + "/region/");
+			File file = new File("./" + Main.WORLD_NAME + "/region/");
 			file.mkdirs();
 			int number = -1;
 			if(data.getMinigame() == MiniGame.총싸움)
@@ -94,21 +103,12 @@ public abstract class MiniGameUtil
 			if(number != -1)
 			{
 				in = new BufferedInputStream(getClass().getResourceAsStream("/com/linmalu/minigames/world/world" + number + ".zip"));
-				out = new BufferedOutputStream(new FileOutputStream("./" + Main.WORLD + "/region/r.0.0.mca"));
+				out = new BufferedOutputStream(new FileOutputStream("./" + Main.WORLD_NAME + "/region/r.0.0.mca"));
 				byte[] bytes = new byte[1024];
 				while(in.read(bytes) != -1)
 				{
 					out.write(bytes);
 				}
-				//				ReadableByteChannel in = Channels.newChannel(getClass().getResourceAsStream("/com/linmalu/minigames/world/world" + number + ".zip"));
-				//				WritableByteChannel out = Channels.newChannel(new FileOutputStream("./" + Main.WORLD + "/region/r.0.0.mca"));
-				//				ByteBuffer buffer = ByteBuffer.allocate(1024);
-				//				while(in.read(buffer) != -1)
-				//				{
-				//					buffer.flip();
-				//					out.write(buffer);
-				//					buffer.clear();
-				//				}
 				in.close();
 				out.flush();
 				out.close();
@@ -151,7 +151,7 @@ public abstract class MiniGameUtil
 			}
 			catch(Exception e){}
 		}
-		World world = WorldCreator.name(Main.WORLD).type(WorldType.FLAT).environment(World.Environment.NORMAL).generator(new ChunkGenerator()
+		World world = WorldCreator.name(Main.WORLD_NAME).type(WorldType.FLAT).environment(World.Environment.NORMAL).generator(new ChunkGenerator()
 		{
 			public byte[] generate(World world, Random random, int x, int z)
 			{
@@ -173,12 +173,6 @@ public abstract class MiniGameUtil
 		data.setMapData(getMapData(world));
 		createGameMap();
 	}
-	public abstract void createGameMap();
-	public abstract MapData getMapData(World world);
-	public abstract void initializeMiniGame();
-	public abstract void addRandomItem(Player player);
-	public abstract void reloadConfig() throws IOException;
-
 	@SuppressWarnings("deprecation")
 	public void useItem(Player player, boolean remove, int cooldown)
 	{
@@ -187,6 +181,7 @@ public abstract class MiniGameUtil
 		if(item != null && item.getType() != Material.AIR && item.hasItemMeta())
 		{
 			GameItem gameItem = GameItem.getGameItem(item);
+			boolean message = true;
 			switch(gameItem)
 			{
 			case 공기:
@@ -241,6 +236,7 @@ public abstract class MiniGameUtil
 				break;
 			case 총:
 				new MiniGameShoot7(player);
+				message = false;
 				break;
 			default:
 				return;
@@ -260,7 +256,10 @@ public abstract class MiniGameUtil
 			{
 				new Cooldown(cooldown, player, false);
 			}
-			player.sendMessage(gameItem.getItemStack().getItemMeta().getDisplayName() + ChatColor.YELLOW + " 아이템을 사용했습니다.");
+			if(message)
+			{
+				player.sendMessage(gameItem.getItemStack().getItemMeta().getDisplayName() + ChatColor.YELLOW + " 아이템을 사용했습니다.");
+			}
 		}
 	}
 	protected enum GameItem
@@ -271,7 +270,8 @@ public abstract class MiniGameUtil
 		투명(Material.DIAMOND),
 		중력(Material.EMERALD),
 		모루(Material.ANVIL),
-		//		im.setDisplayName(ChatColor.GREEN + "맞으면 아픈 모루");
+		양털가위(Material.SHEARS),
+		//im.setDisplayName(ChatColor.GREEN + "맞으면 아픈 모루");
 		눈덩이(Material.SNOW_BALL),
 		이동(Material.NETHER_STAR),
 		주먹(Material.GOLD_SPADE),

@@ -7,9 +7,12 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
+import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
@@ -110,5 +113,24 @@ public class MiniGameUtil4 extends MiniGameUtil
 		mapPlayer = config.getInt(MAP_PLAYER);
 		mapHeight = config.getInt(MAP_HEIGHT) * 3;
 		config.save(file);
+	}
+	@Override
+	public void startTimer()
+	{
+	}
+	@Override
+	public void runTimer(GameTimer timer)
+	{
+		if(timer.getTime() % 20 == 0)
+		{
+			for(Player player : data.getPlayers())
+			{
+				player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, true, false), true);
+			}
+		}
+	}
+	@Override
+	public void endTimer()
+	{
 	}
 }

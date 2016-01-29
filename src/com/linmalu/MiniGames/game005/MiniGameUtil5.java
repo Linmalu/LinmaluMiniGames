@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
+import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
@@ -83,5 +84,17 @@ public class MiniGameUtil5 extends MiniGameUtil
 		mapDefault = config.getInt(MAP_DEFAULT);
 		mapPlayer = config.getInt(MAP_PLAYER);
 		config.save(file);
+	}
+	@Override
+	public void startTimer()
+	{
+	}
+	@Override
+	public void runTimer(GameTimer timer)
+	{
+	}
+	@Override
+	public void endTimer()
+	{
 	}
 }

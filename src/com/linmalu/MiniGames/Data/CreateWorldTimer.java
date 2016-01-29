@@ -16,7 +16,7 @@ public class CreateWorldTimer implements Runnable
 
 	public CreateWorldTimer()
 	{
-		data.getMinigame().getUtil().CreateWrold();
+		data.getMinigame().getHandle().CreateWrold();
 		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 20L);
 	}
 	public void run()

@@ -12,7 +12,7 @@ public class DeleteWorld implements Runnable
 	}
 	public void run()
 	{
-		Delete(new File("./" + Main.WORLD));
+		Delete(new File("./" + Main.WORLD_NAME));
 	}
 	private void Delete(File file)
 	{

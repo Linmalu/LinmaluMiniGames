@@ -2,7 +2,6 @@ package com.linmalu.minigames.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -13,6 +12,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
@@ -43,7 +43,7 @@ public class GameData
 		game2 = false;
 		this.minigame = minigame;
 		scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-		Bukkit.broadcastMessage(ChatColor.GREEN + " = = = = = [ M i n i G a m e s ] = = = = =");
+		Bukkit.broadcastMessage(ChatColor.GREEN + " = = = = = [ Linmalu MiniGames ] = = = = =");
 		Bukkit.broadcastMessage(ChatColor.GREEN + "미니게임버전 : " + ChatColor.YELLOW + Main.getMain().getDescription().getVersion());
 		Bukkit.broadcastMessage(ChatColor.YELLOW + "제작자 : " + ChatColor.AQUA + "린마루(Linmalu)" + ChatColor.WHITE + " - http://blog.linmalu.com");
 		Bukkit.broadcastMessage(ChatColor.YELLOW + "서버리소스팩이 켜져있다면 미니게임용 리소스팩이 적용됩니다.");
@@ -75,7 +75,7 @@ public class GameData
 		}
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			if(player.getWorld().getName().equals(Main.WORLD))
+			if(player.getWorld().getName().equals(Main.WORLD_NAME))
 			{
 				player.kickPlayer("맵삭제를 위해 강퇴됩니다.");
 				restorePlayers.put(player.getUniqueId(), players.get(player.getUniqueId()));
@@ -94,7 +94,7 @@ public class GameData
 	}
 	public void cancelPlayer(Player player)
 	{
-		if(game1 && !game2 && !player.getWorld().getName().equals(Main.WORLD) && players.containsKey(player.getUniqueId()))
+		if(game1 && !game2 && !player.getWorld().getName().equals(Main.WORLD_NAME) && players.containsKey(player.getUniqueId()))
 		{
 			players.remove(player.getUniqueId());
 			LinmaluTitle.sendMessage(player, ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + "게임참가를 취소했습니다.", 0, 40, 20);
@@ -112,26 +112,23 @@ public class GameData
 	}
 	public Location teleportPlayer(Player player)
 	{
-		int x, y, z;
-		Random ran = new Random();
-		x = ran.nextInt(mapData.getX2() - mapData.getX1() -3) + mapData.getX1() + 2;
-		z = ran.nextInt(mapData.getZ2() - mapData.getZ1() -3) + mapData.getZ1() + 2;
-		for(y = mapData.getWorld().getMaxHeight(); y > 0; y--)
+		Location loc = mapData.getRandomEntityLocation(player.getLocation());
+		for(int y = mapData.getWorld().getMaxHeight(); y >= 0; y--)
 		{
-			if(!mapData.getWorld().getBlockAt(x, y, z).isEmpty())
+			if(!mapData.getWorld().getBlockAt(loc.getBlockX(), y, loc.getBlockZ()).isEmpty())
 			{
+				if(y == 0)
+				{
+					y = 50;
+				}
+				else
+				{
+					y += 1;
+				}
+				loc.setY(y);
 				break;
 			}
 		}
-		if(y == 0)
-		{
-			y = 50;
-		}
-		else
-		{
-			y += 1;
-		}
-		Location loc = new Location(mapData.getWorld(), x, y, z, player.getLocation().getYaw(), player.getLocation().getPitch());
 		player.leaveVehicle();
 		player.setFallDistance(0);
 		player.teleport(loc);
@@ -157,7 +154,7 @@ public class GameData
 			team.addEntry(pd.getName());
 			if(!mapData.isTopScore())
 			{
-				getScore(ChatColor.GREEN + "남은인원수").setScore(playerCount);
+				getScore(ChatColor.YELLOW + "남은인원수").setScore(playerCount);
 			}
 			scoreboard.resetScores(ChatColor.GOLD + pd.getName());
 			Player player = Bukkit.getPlayer(uuid);
@@ -207,6 +204,10 @@ public class GameData
 		}
 		live.setPrefix(ChatColor.WHITE.toString());
 		live.setCanSeeFriendlyInvisibles(mapData.isSee());
+		if(!mapData.isSee())
+		{
+			live.setNameTagVisibility(NameTagVisibility.NEVER);
+		}
 		Team die = scoreboard.getTeam("탈락자");
 		if(die == null)
 		{
@@ -222,11 +223,11 @@ public class GameData
 		setObjectiveDisplayName("");
 		if(mapData.isTopScore())
 		{
-			ob.getScore(ChatColor.GREEN + "목표점수").setScore(mapData.getScore());
+			ob.getScore(ChatColor.YELLOW + "목표점수").setScore(mapData.getScore());
 		}
 		else
 		{
-			ob.getScore(ChatColor.GREEN + "남은인원수").setScore(getPlayerLiveCount());
+			ob.getScore(ChatColor.YELLOW + "남은인원수").setScore(getPlayerLiveCount());
 		}
 		for(PlayerData pd : players.values())
 		{
@@ -252,96 +253,6 @@ public class GameData
 			}
 		}
 	}
-//	@SuppressWarnings("deprecation")
-//	public boolean useItem(Player player, boolean remove)
-//	{
-//		ItemStack item = player.getItemInHand();
-//		if(item != null && item.getType() != Material.AIR && item.hasItemMeta())
-//		{
-//			ItemMeta im = item.getItemMeta();
-//			if(im.hasDisplayName())
-//			{
-//				String name = im.getDisplayName();
-//				if(item.getType() == Material.IRON_INGOT && name.equals(ChatColor.GREEN + "속도"))
-//				{
-//					player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 2, true, false), true);
-//				}
-//				else if(item.getType() == Material.GOLD_INGOT && name.equals(ChatColor.GREEN + "점프"))
-//				{
-//					player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 100, 2, true, false), true);
-//				}
-//				else if(item.getType() == Material.DIAMOND && name.equals(ChatColor.GREEN + "투명"))
-//				{
-//					player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100, 0, true, false), true);
-//				}
-//				else if(item.getType() == Material.EMERALD && name.equals(ChatColor.GREEN + "중력"))
-//				{
-//					Location loc = player.getLocation();
-//					int size = 8;
-//					for(int x = loc.getBlockX() - size; x <= loc.getBlockX() + size; x++)
-//					{
-//						for(int z = loc.getBlockZ() - size; z <= loc.getBlockZ() + size; z++)
-//						{
-//							Block block = player.getWorld().getBlockAt(x, getMapData().getMapHeight(), z);
-//							if(block.getType() == Material.STAINED_GLASS && block.getData() == 0 && loc.distance(block.getLocation()) <= size)
-//							{
-//								new MiniGameFallingBlock0(block);
-//							}
-//						}
-//					}
-//				}
-//				else if(item.getType() == Material.STRING && name.equals(ChatColor.GREEN + "느림"))
-//				{
-//					for(Player p : getPlayers())
-//					{
-//						if(getPlayerData(p.getUniqueId()).isLive() && !player.getUniqueId().equals(p.getUniqueId()))
-//						{
-//							p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1, true, false), true);
-//							p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 100, 1, true, false), true);
-//							p.sendMessage(name + ChatColor.YELLOW + " 아이템 효과에 걸렸습니다.");
-//						}
-//					}
-//				}
-//				else if(item.getType() == Material.INK_SACK && name.equals(ChatColor.GREEN + "어둠"))
-//				{
-//					for(Player p : getPlayers())
-//					{
-//						if(getPlayerData(p.getUniqueId()).isLive() && !player.getUniqueId().equals(p.getUniqueId()))
-//						{
-//							p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 0, true, false), true);
-//							p.sendMessage(name + ChatColor.YELLOW + " 아이템 효과에 걸렸습니다.");
-//						}
-//					}
-//				}
-//				else if(item.getType() == Material.NETHER_STAR && name.equals(ChatColor.GREEN + "이동"))
-//				{
-//					teleportPlayer(player);
-//				}
-//				else if(item.getType() == Material.GOLD_HOE && name.equals(ChatColor.GREEN + "총"))
-//				{
-//					new MiniGameShoot7(player);
-//					return true;
-//				}
-//				else
-//				{
-//					return false;
-//				}
-//				if(remove)
-//				{
-//					if(item.getAmount() > 1)
-//					{
-//						item.setAmount(item.getAmount() -1);
-//					}
-//					else
-//					{
-//						player.getInventory().remove(item);
-//					}
-//				}
-//				player.sendMessage(name + ChatColor.YELLOW + " 아이템을 사용했습니다.");
-//			}
-//		}
-//		return true;
-//	}
 	public void setGameItem()
 	{
 		game2 = true;
@@ -354,12 +265,12 @@ public class GameData
 		for(UUID uuid : players.keySet())
 		{
 			Player player = Bukkit.getPlayer(uuid);
-			if(player == null || player.isDead() || !player.getWorld().getName().equals(Main.WORLD) || getPlayerData(uuid).isObserver())
+			if(player == null || player.isDead() || !player.getWorld().getName().equals(Main.WORLD_NAME) || getPlayerData(uuid).isObserver())
 			{
 				diePlayer(uuid);
 			}
 		}
-		minigame.getUtil().initializeMiniGame();
+		minigame.getHandle().initializeMiniGame();
 	}
 	public boolean isGame1()
 	{
@@ -392,7 +303,7 @@ public class GameData
 		{
 			ob = scoreboard.registerNewObjective("미니게임", "");
 		}
-		ob.setDisplayName(ChatColor.YELLOW + minigame.toString() + name);
+		ob.setDisplayName(ChatColor.GREEN + minigame.toString() + name);
 
 	}
 	public Score getScore(String name)

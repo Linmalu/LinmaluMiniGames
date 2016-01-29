@@ -24,7 +24,7 @@ public class MiniGameEvent2 extends MiniGameEvent
 	@EventHandler
 	public void Event(BlockCanBuildEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getBlock().getWorld().getName().equals(Main.WORLD) && (event.getMaterial() == Material.STAINED_CLAY || event.getMaterial() == Material.WOOL))
+		if(data.isGame2() && data.getMinigame() == minigame && event.getBlock().getWorld().getName().equals(Main.WORLD_NAME) && (event.getMaterial() == Material.STAINED_CLAY || event.getMaterial() == Material.WOOL))
 		{
 			event.setBuildable(true);
 		}
@@ -35,11 +35,11 @@ public class MiniGameEvent2 extends MiniGameEvent
 		Block block = event.getBlock();
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive() && (block.getType() == Material.WOOL || block.getType() == Material.STAINED_CLAY))
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive() && (block.getType() == Material.WOOL || block.getType() == Material.STAINED_CLAY))
 		{
 			new MiniGameBreakBlock2(block);
 			event.setCancelled(false);
-			minigame.getUtil().addRandomItem(player);
+			minigame.getHandle().addRandomItem(player);
 		}
 	}
 	@EventHandler
@@ -47,7 +47,7 @@ public class MiniGameEvent2 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive())
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive())
 		{
 			pd.setScore(event.getTo().getBlockY() - 11);
 		}
@@ -57,10 +57,10 @@ public class MiniGameEvent2 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
 //			data.useItem(player, true);
-			minigame.getUtil().useItem(player, true, 0);
+			minigame.getHandle().useItem(player, true, 0);
 		}
 	}
 }

@@ -20,7 +20,7 @@ public class MiniGameEvent10 extends MiniGameEvent
 	@EventHandler
 	public void Test(VehicleEnterEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getVehicle().getWorld().getName().equals(Main.WORLD) && event.getVehicle().getType() == EntityType.MINECART)
+		if(data.isGame2() && data.getMinigame() == minigame && event.getVehicle().getWorld().getName().equals(Main.WORLD_NAME) && event.getVehicle().getType() == EntityType.MINECART)
 		{
 			PlayerData pd = data.getPlayerData(event.getEntered().getUniqueId());
 			if(pd != null && !pd.isLive())
@@ -32,7 +32,7 @@ public class MiniGameEvent10 extends MiniGameEvent
 	@EventHandler
 	public void Test(VehicleDestroyEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getVehicle().getWorld().getName().equals(Main.WORLD) && event.getVehicle().getType() == EntityType.MINECART)
+		if(data.isGame2() && data.getMinigame() == minigame && event.getVehicle().getWorld().getName().equals(Main.WORLD_NAME) && event.getVehicle().getType() == EntityType.MINECART)
 		{
 			event.setCancelled(true);
 		}
@@ -40,7 +40,7 @@ public class MiniGameEvent10 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD))
+		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.setCancelled(true);
 		}

@@ -29,10 +29,10 @@ public class MiniGameEvent4 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive())
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive())
 		{
 			event.setCancelled(false);
-			minigame.getUtil().addRandomItem(player);
+			minigame.getHandle().addRandomItem(player);
 		}
 	}
 	@EventHandler
@@ -40,17 +40,17 @@ public class MiniGameEvent4 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
 //			data.useItem(player, true);
-			minigame.getUtil().useItem(player, true, 0);
+			minigame.getHandle().useItem(player, true, 0);
 		}
 	}
 	@EventHandler
 	public void Event(ProjectileHitEvent event)
 	{
 		Projectile entity = event.getEntity();
-		if(data.isGame2() && data.getMinigame() == minigame && entity.getWorld().getName().equals(Main.WORLD) && entity.getType() == EntityType.SNOWBALL)
+		if(data.isGame2() && data.getMinigame() == minigame && entity.getWorld().getName().equals(Main.WORLD_NAME) && entity.getType() == EntityType.SNOWBALL)
 		{
 			BlockIterator bi = new BlockIterator(entity.getWorld(), entity.getLocation().toVector(), entity.getVelocity().normalize(), 0, 2);
 			while(bi.hasNext())
