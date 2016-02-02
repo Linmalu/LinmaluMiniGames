@@ -271,7 +271,6 @@ public abstract class MiniGameUtil
 		중력(Material.EMERALD),
 		모루(Material.ANVIL),
 		양털가위(Material.SHEARS),
-		//im.setDisplayName(ChatColor.GREEN + "맞으면 아픈 모루");
 		눈덩이(Material.SNOW_BALL),
 		이동(Material.NETHER_STAR),
 		주먹(Material.GOLD_SPADE),

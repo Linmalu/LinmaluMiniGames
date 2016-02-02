@@ -4,10 +4,17 @@
  - HomePage : http://blog.linmalu.com/
  - Language : JAVA
  - Spigot : spigot-api-1.8.8-R0.1-SNAPSHOT-shaded
- - Version : 1.35
+ - Version : 1.37
 
-###Update
-- ChangeName : MiniGames -> LinmaluMiniGames
+###업데이트
+- 미니게임마다 config파일로 여러가지 설정 가능
+- 땅따먹기 제한인원 48명으로 변경
+- 땅따먹기 시간제로 변경
+- 눈치게임 시간제로 변경
+- 등반 특정블럭을 빨리 부실수있는 손가위 추가
+- 리로드 / reload 명령어 추가
+- 인코딩 방식 UTF-8로 변환
+- LinmaluLibrary v1.07버전이 필요합니다.
 
 ###소개
 - 미니게임천국 플러그인은 여러 미니게임들을 즐길 수 있는 플러그인입니다.
