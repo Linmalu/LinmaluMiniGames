@@ -1,5 +1,6 @@
 package com.linmalu.minigames.game003;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,20 +37,26 @@ public class MiniGameEvent3 extends MiniGameEvent
 				Material m3 = Material.GOLD_AXE;
 				if((item1 == m1 && item2 == m2) || (item1 == m2 && item2 == m3) || (item1 == m3 && item2 == m1) || (item2 != m1 && item2 != m2 && item2 != m3))
 				{
-					new Cooldown(10, player2, true);
-					data.teleportPlayer(player2);
-					pd1.addScore();
+					addScore(pd1, player2);
 				}
 				else if(item1 == item2)
 				{
 				}
 				else
 				{
-					new Cooldown(10, player1, true);
-					data.teleportPlayer(player1);
-					pd2.addScore();
+					addScore(pd2, player1);
 				}
 			}
+		}
+	}
+	private void addScore(PlayerData pd, Player player)
+	{
+		pd.addScore();
+		new Cooldown(10, player, true);
+		data.teleportPlayer(player);
+		for(Player p : data.getPlayers())
+		{
+			p.sendMessage(ChatColor.GOLD + pd.getName() + ChatColor.YELLOW + "님이 " + ChatColor.GOLD + player.getName() + ChatColor.YELLOW + "님을 이겼습니다.");
 		}
 	}
 	@EventHandler

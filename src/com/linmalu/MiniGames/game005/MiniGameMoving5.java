@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 
+import com.linmalu.library.api.LinmaluMath;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.GameData;
 import com.linmalu.minigames.data.PlayerData;
@@ -70,8 +71,7 @@ public class MiniGameMoving5 implements Runnable
 							speed = 0.5F;
 						}
 					}
-					loc = loc.subtract(sheep.getLocation());
-					float yaw = (float)((Math.toDegrees(Math.atan2(loc.getZ(), loc.getX())) + 270) % 360);
+					float yaw = (float)LinmaluMath.yawAngle(loc, sheep.getLocation());
 					loc = sheep.getLocation();
 					loc.setYaw(yaw);
 					loc.setPitch(0);

@@ -26,21 +26,6 @@ public class MiniGameUtil0 extends MiniGameUtil
 				"떨어지면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."
 		});
 	}
-	@SuppressWarnings("deprecation")
-	@Override
-	public void createGameMap()
-	{
-		MapData md = Main.getMain().getGameData().getMapData();
-		for(int x = md.getX1(); x <= md.getX2(); x++)
-		{
-			for(int z = md.getZ1(); z <= md.getZ2(); z++)
-			{
-				Block block = md.getWorld().getBlockAt(x, md.getMapHeight(), z);
-				block.setType(Material.STAINED_GLASS);
-				block.setData((byte)0);
-			}
-		}
-	}
 	@Override
 	public MapData getMapData(World world)
 	{
@@ -55,13 +40,19 @@ public class MiniGameUtil0 extends MiniGameUtil
 		see = false;
 		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
 	}
+	@SuppressWarnings("deprecation")
 	@Override
-	public void initializeMiniGame()
+	public void createGameMap()
 	{
-		for(Player player : data.getLivePlayers())
+		MapData md = Main.getMain().getGameData().getMapData();
+		for(int x = md.getX1(); x <= md.getX2(); x++)
 		{
-			new MiniGameNoMoving0(player);
-			GameItem.setItemStack(player, GameItem.속도, GameItem.점프, GameItem.투명, GameItem.중력);
+			for(int z = md.getZ1(); z <= md.getZ2(); z++)
+			{
+				Block block = md.getWorld().getBlockAt(x, md.getMapHeight(), z);
+				block.setType(Material.STAINED_GLASS);
+				block.setData((byte)0);
+			}
 		}
 	}
 	@Override
@@ -84,6 +75,11 @@ public class MiniGameUtil0 extends MiniGameUtil
 	@Override
 	public void startTimer()
 	{
+		for(Player player : data.getLivePlayers())
+		{
+			new MiniGameNoMoving0(player);
+			GameItem.setItemStack(player, GameItem.속도, GameItem.점프, GameItem.투명, GameItem.중력);
+		}
 	}
 	@Override
 	public void runTimer(GameTimer timer)

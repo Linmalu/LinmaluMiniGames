@@ -13,19 +13,16 @@ public class MiniGameHorse
 {
 	private GameData data = Main.getMain().getGameData();
 
+	public MiniGameHorse()
+	{
+		for(Player p : data.getPlayers())
+		{
+			createHorse(p);
+		}
+	}
 	public MiniGameHorse(Player player)
 	{
-		if(player == null)
-		{
-			for(Player p : data.getPlayers())
-			{
-				createHorse(p);
-			}
-		}
-		else
-		{
-			createHorse(player);
-		}
+		createHorse(player);
 	}
 	private void createHorse(Player player)
 	{

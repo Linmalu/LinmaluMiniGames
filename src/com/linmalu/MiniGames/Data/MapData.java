@@ -81,12 +81,12 @@ public class MapData
 	public Location getRandomEntityLocation()
 	{
 		Random ran = new Random();
-		return new Location(world, ran.nextInt(x2 - x1 - 1) + x1 + 1, mapHeight, ran.nextInt(z2 - z1 - 3) + z1 + 2);
+		return new Location(world, ran.nextInt(x2 - x1 - 1) + x1 + 1.5, mapHeight, ran.nextInt(z2 - z1 - 1) + z1 + 1.5);
 	}
 	public Location getRandomEntityLocation(Location loc)
 	{
 		Random ran = new Random();
-		return new Location(world, ran.nextInt(x2 - x1 - 1) + x1 + 1, mapHeight, ran.nextInt(z2 - z1 - 3) + z1 + 2, loc.getYaw(), loc.getPitch());
+		return new Location(world, ran.nextInt(x2 - x1 - 1) + x1 + 1.5, mapHeight, ran.nextInt(z2 - z1 - 1) + z1 + 1.5, loc.getYaw(), loc.getPitch());
 	}
 	public static void main(String[] args)
 	{

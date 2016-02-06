@@ -35,7 +35,7 @@ public class PlayerData
 	private boolean cooldown;
 	private boolean observer;
 
-	public PlayerData(Player player)
+	public PlayerData(Player player, int number)
 	{
 		uuid = player.getUniqueId();
 		name = player.getName();
@@ -54,7 +54,7 @@ public class PlayerData
 		items = player.getInventory().getContents();
 		skill = true;
 		score = 0;
-		number = 0;
+		this.number = number;
 		cooldown = true;
 		observer = false;
 	}
@@ -166,10 +166,6 @@ public class PlayerData
 	public int getNumber()
 	{
 		return number;
-	}
-	public void setNumber(int number)
-	{
-		this.number = number;
 	}
 	public boolean isCooldown()
 	{

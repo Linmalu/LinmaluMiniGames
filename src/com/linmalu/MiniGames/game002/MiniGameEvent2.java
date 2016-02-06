@@ -59,7 +59,6 @@ public class MiniGameEvent2 extends MiniGameEvent
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
 		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
-//			data.useItem(player, true);
 			minigame.getHandle().useItem(player, true, 0);
 		}
 	}

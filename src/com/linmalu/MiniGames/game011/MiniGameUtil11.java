@@ -26,21 +26,6 @@ public class MiniGameUtil11 extends MiniGameUtil
 				"떨어지면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."
 		});
 	}
-	@SuppressWarnings("deprecation")
-	@Override
-	public void createGameMap()
-	{
-		MapData md = Main.getMain().getGameData().getMapData();
-		for(int x = md.getX1(); x <= md.getX2(); x++)
-		{
-			for(int z = md.getZ1(); z <= md.getZ2(); z++)
-			{
-				Block block = md.getWorld().getBlockAt(x, md.getMapHeight(), z);
-				block.setType(Material.WOOL);
-				block.setData((byte)5);
-			}
-		}
-	}
 	@Override
 	public MapData getMapData(World world)
 	{
@@ -55,9 +40,20 @@ public class MiniGameUtil11 extends MiniGameUtil
 		see = false;
 		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
 	}
+	@SuppressWarnings("deprecation")
 	@Override
-	public void initializeMiniGame()
+	public void createGameMap()
 	{
+		MapData md = Main.getMain().getGameData().getMapData();
+		for(int x = md.getX1(); x <= md.getX2(); x++)
+		{
+			for(int z = md.getZ1(); z <= md.getZ2(); z++)
+			{
+				Block block = md.getWorld().getBlockAt(x, md.getMapHeight(), z);
+				block.setType(Material.WOOL);
+				block.setData((byte)5);
+			}
+		}
 	}
 	@Override
 	public void addRandomItem(Player player)

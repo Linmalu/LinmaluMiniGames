@@ -29,6 +29,19 @@ public class MiniGameUtil4 extends MiniGameUtil
 				"떨어지면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."
 		});
 	}
+	@Override
+	public MapData getMapData(World world)
+	{
+		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
+		x1 = z1 = -size;
+		x2 = z2 = size;
+		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
+		cooldown = 0;
+		topScore = false;
+		score = 0;
+		see = false;
+		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
+	}
 	@SuppressWarnings("deprecation")
 	@Override
 	public void createGameMap()
@@ -48,27 +61,6 @@ public class MiniGameUtil4 extends MiniGameUtil
 					}
 				}
 			}
-		}
-	}
-	@Override
-	public MapData getMapData(World world)
-	{
-		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-		x1 = z1 = -size;
-		x2 = z2 = size;
-		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
-		cooldown = 0;
-		topScore = false;
-		score = 0;
-		see = false;
-		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
-	}
-	@Override
-	public void initializeMiniGame()
-	{
-		for(Player player : data.getLivePlayers())
-		{
-			GameItem.setItemStack(player, GameItem.삽);
 		}
 	}
 	@Override
@@ -117,6 +109,10 @@ public class MiniGameUtil4 extends MiniGameUtil
 	@Override
 	public void startTimer()
 	{
+		for(Player player : data.getLivePlayers())
+		{
+			GameItem.setItemStack(player, GameItem.삽);
+		}
 	}
 	@Override
 	public void runTimer(GameTimer timer)

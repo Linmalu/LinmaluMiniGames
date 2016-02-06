@@ -28,26 +28,6 @@ public class MiniGameUtil8 extends MiniGameUtil
 				"1명이 남을 때까지 게임이 진행됩니다."
 		});
 	}
-	@SuppressWarnings("deprecation")
-	@Override
-	public void createGameMap() {
-		MapData md = Main.getMain().getGameData().getMapData();
-		for(int y = 10; y < md.getMapHeight(); y++)
-		{
-			for(int x = md.getX1(); x <= md.getX2(); x++)
-			{
-				for(int z = md.getZ1(); z <= md.getZ2(); z++)
-				{
-					if(y == 10 || (x == md.getX1() || x == md.getX2() || z == md.getZ1() || z == md.getZ2()))
-					{
-						Block block = md.getWorld().getBlockAt(x, y, z);
-						block.setType(Material.REDSTONE_BLOCK);
-						block.setData((byte)0);
-					}
-				}
-			}
-		}
-	}
 	@Override
 	public MapData getMapData(World world)
 	{
@@ -62,10 +42,25 @@ public class MiniGameUtil8 extends MiniGameUtil
 		see = false;
 		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
 	}
+	@SuppressWarnings("deprecation")
 	@Override
-	public void initializeMiniGame()
-	{
-		new MiniGameBombChange8();
+	public void createGameMap() {
+		MapData md = Main.getMain().getGameData().getMapData();
+		for(int y = 10; y <= md.getMapHeight(); y++)
+		{
+			for(int x = md.getX1(); x <= md.getX2(); x++)
+			{
+				for(int z = md.getZ1(); z <= md.getZ2(); z++)
+				{
+					if(y == 10 || (x == md.getX1() || x == md.getX2() || z == md.getZ1() || z == md.getZ2()))
+					{
+						Block block = md.getWorld().getBlockAt(x, y, z);
+						block.setType(Material.REDSTONE_BLOCK);
+						block.setData((byte)0);
+					}
+				}
+			}
+		}
 	}
 	@Override
 	public void addRandomItem(Player player)

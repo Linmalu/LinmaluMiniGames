@@ -25,8 +25,22 @@ public class MiniGameUtil3 extends MiniGameUtil
 				"가위바위보 변경은 3초에 한 번씩 변경할 수 있습니다.",
 				"공격을 하면 가위바위보를 하게 되어 승패가 결정됩니다.",
 				"눈치게임에 졌을 경우 10초 동안 게임에 참여할 수 없습니다.",
-				"목표 점수에 먼저 도달하는 플레이어가 승리합니다."
+				"제한시간 안에 점수가 높은 플레이어가 승리합니다."
 		});
+	}
+	@Override
+	public MapData getMapData(World world)
+	{
+		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
+		x1 = z1 = -size;
+		x2 = z2 = size;
+		mapHeight = 15;
+		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
+		cooldown = 0;
+		topScore = true;
+		score = 0;
+		see = true;
+		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
 	}
 	@SuppressWarnings("deprecation")
 	@Override
@@ -46,28 +60,6 @@ public class MiniGameUtil3 extends MiniGameUtil
 					}
 				}
 			}
-		}
-	}
-	@Override
-	public MapData getMapData(World world)
-	{
-		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-		x1 = z1 = -size;
-		x2 = z2 = size;
-		mapHeight = 15;
-		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
-		cooldown = 0;
-		topScore = true;
-		score = 0;
-		see = true;
-		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
-	}
-	@Override
-	public void initializeMiniGame()
-	{
-		for(Player player : data.getLivePlayers())
-		{
-			GameItem.setItemStack(player, GameItem.주먹, GameItem.가위, GameItem.보, GameItem.주먹, GameItem.가위, GameItem.보, GameItem.주먹, GameItem.가위, GameItem.보);
 		}
 	}
 	@Override
@@ -94,6 +86,10 @@ public class MiniGameUtil3 extends MiniGameUtil
 	@Override
 	public void startTimer()
 	{
+		for(Player player : data.getLivePlayers())
+		{
+			GameItem.setItemStack(player, GameItem.주먹, GameItem.가위, GameItem.보, GameItem.주먹, GameItem.가위, GameItem.보, GameItem.주먹, GameItem.가위, GameItem.보);
+		}
 	}
 	@Override
 	public void runTimer(GameTimer timer)

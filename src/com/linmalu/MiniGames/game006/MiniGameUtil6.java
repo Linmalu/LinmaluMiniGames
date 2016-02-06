@@ -26,11 +26,24 @@ public class MiniGameUtil6 extends MiniGameUtil
 		super(minigame, new String[]{
 				" = = = = = [ 땅 따 먹 기 게 임 ] = = = = =",
 				"땅따먹기 게임은 자신의 아래에 있는 블록이 자신의 블록으로 바뀌는 게임입니다.",
-				"최대 인원은 16명입니다.",
-				"1분이 지날 때마다 이동속도가 증가합니다.",
+				"최대 인원은 48명입니다.",
 				"서로 공격할 수 있으며 맞을 경우 10초 동안 게임에 참여할 수 없습니다.",
-				"목표 점수에 먼저 도달하는 플레이어가 승리합니다."
+				"제한시간 안에 점수가 높은 플레이어가 승리합니다."
 		});
+	}
+	@Override
+	public MapData getMapData(World world)
+	{
+		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
+		x1 = z1 = -size;
+		x2 = z2 = size;
+		mapHeight = 10;
+		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
+		cooldown = 0;
+		topScore = true;
+		score = 0;
+		see = true;
+		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
 	}
 	@SuppressWarnings("deprecation")
 	@Override
@@ -50,51 +63,6 @@ public class MiniGameUtil6 extends MiniGameUtil
 					}
 				}
 			}
-		}
-	}
-	@Override
-	public MapData getMapData(World world)
-	{
-		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-		x1 = z1 = -size;
-		x2 = z2 = size;
-		mapHeight = 10;
-		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
-		cooldown = 0;
-		topScore = true;
-		score = 0;
-		see = true;
-		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
-	}
-	@Override
-	public void initializeMiniGame()
-	{
-		int number = 0;
-		for(Player player : data.getLivePlayers())
-		{
-			data.getPlayerData(player.getUniqueId()).setNumber(number);
-			ItemStack item;
-			if(number < 16)
-			{
-				item = new ItemStack(Material.WOOL);
-			}
-			else if(number < 32)
-			{
-				item = new ItemStack(Material.STAINED_GLASS);
-			}
-			else
-			{
-				item = new ItemStack(Material.STAINED_CLAY); 
-			}
-			ItemMeta im = item.getItemMeta();
-			im.setDisplayName(ChatColor.GREEN + "땅");
-			item.setItemMeta(im);
-			item.setDurability((short)(number % 16));
-			for(int i = 0; i < 9; i++)
-			{
-				player.getInventory().setItem(i, item);
-			}
-			number++;
 		}
 	}
 	@Override
@@ -121,6 +89,31 @@ public class MiniGameUtil6 extends MiniGameUtil
 	@Override
 	public void startTimer()
 	{
+		for(Player player : data.getLivePlayers())
+		{
+			int number = data.getPlayerData(player.getUniqueId()).getNumber();
+			ItemStack item;
+			if(number < 16)
+			{
+				item = new ItemStack(Material.WOOL);
+			}
+			else if(number < 32)
+			{
+				item = new ItemStack(Material.STAINED_GLASS);
+			}
+			else
+			{
+				item = new ItemStack(Material.STAINED_CLAY); 
+			}
+			ItemMeta im = item.getItemMeta();
+			im.setDisplayName(ChatColor.GREEN + "땅");
+			item.setItemMeta(im);
+			item.setDurability((short)(number % 16));
+			for(int i = 0; i < 9; i++)
+			{
+				player.getInventory().setItem(i, item);
+			}
+		}
 	}
 	@Override
 	public void runTimer(GameTimer timer)

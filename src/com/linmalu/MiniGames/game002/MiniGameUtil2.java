@@ -28,6 +28,19 @@ public class MiniGameUtil2 extends MiniGameUtil
 				"목표 위치까지 먼저 올라가는 플레이어가 승리하게 됩니다."
 		});
 	}
+	@Override
+	public MapData getMapData(World world)
+	{
+		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
+		x1 = z1 = -size;
+		x2 = z2 = size;
+		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
+		cooldown = 0;
+		topScore = true;
+		score = mapHeight - 10;
+		see = false;
+		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
+	}
 	@SuppressWarnings("deprecation")
 	@Override
 	public void createGameMap()
@@ -59,27 +72,6 @@ public class MiniGameUtil2 extends MiniGameUtil
 					}
 				}
 			}
-		}
-	}
-	@Override
-	public MapData getMapData(World world)
-	{
-		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-		x1 = z1 = -size;
-		x2 = z2 = size;
-		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
-		cooldown = 0;
-		topScore = true;
-		score = mapHeight - 10;
-		see = false;
-		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
-	}
-	@Override
-	public void initializeMiniGame()
-	{
-		for(Player player : data.getLivePlayers())
-		{
-			GameItem.setItemStack(player, GameItem.양털가위);
 		}
 	}
 	@Override
@@ -121,6 +113,10 @@ public class MiniGameUtil2 extends MiniGameUtil
 	@Override
 	public void startTimer()
 	{
+		for(Player player : data.getLivePlayers())
+		{
+			GameItem.setItemStack(player, GameItem.양털가위);
+		}
 	}
 	@Override
 	@SuppressWarnings("deprecation")

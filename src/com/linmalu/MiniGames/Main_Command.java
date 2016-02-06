@@ -169,6 +169,7 @@ public class Main_Command implements CommandExecutor
 				LinmaluTellraw.sendCmdChat(sender, "/" + label + " ", ChatColor.GOLD + "/" + label + " <미니게임>" + ChatColor.GRAY + " : 지정된 게임 시작");
 				LinmaluTellraw.sendCmdChat(sender, "/" + label + " 랜덤", ChatColor.GOLD + "/" + label + " 랜덤" + ChatColor.GRAY + " : 랜덤 게임 시작");
 				LinmaluTellraw.sendCmdChat(sender, "/" + label + " 종료", ChatColor.GOLD + "/" + label + " 종료 // stop" + ChatColor.GRAY + " : 미니게임 끝내기");
+				LinmaluTellraw.sendCmdChat(sender, "/" + label + " 리로드", ChatColor.GOLD + "/" + label + " 리로드 // reload" + ChatColor.GRAY + " : 설정 파일 다시 불러오기");
 				LinmaluTellraw.sendCmdChat(sender, "/" + label + " 리소스팩적용", ChatColor.GOLD + "/" + label + " 리소스팩적용" + ChatColor.GRAY + " : 미니게임천국 리소스팩 적용");
 				LinmaluTellraw.sendCmdChat(sender, "/" + label + " 리소스팩취소", ChatColor.GOLD + "/" + label + " 리소스팩취소" + ChatColor.GRAY + " : 미니게임천국 리소스팩 취소");
 				new LinmaluTellraw(ChatColor.GREEN + "미니게임종류 : " + sb.toString()).changeCmdChat().sendMessage(sender);

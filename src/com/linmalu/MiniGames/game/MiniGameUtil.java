@@ -35,15 +35,15 @@ import com.linmalu.minigames.game007.MiniGameShoot7;
 
 public abstract class MiniGameUtil
 {
-	public abstract void createGameMap();
 	public abstract MapData getMapData(World world);
-	public abstract void initializeMiniGame();
+	public abstract void createGameMap();
+//	public abstract void initializeMiniGame();
 	public abstract void addRandomItem(Player player);
 	public abstract void reloadConfig() throws IOException;
 	public abstract void startTimer();
 	public abstract void runTimer(GameTimer timer);
 	public abstract void endTimer();
-	
+
 	protected final String MAP_DEFAULT = "기본맵 크기";
 	protected final String MAP_PLAYER = "인원수 추가 게임맵 크기";
 	protected final String MAP_HEIGHT = "게임맵 높이";
@@ -52,7 +52,7 @@ public abstract class MiniGameUtil
 
 	protected final GameData data = Main.getMain().getGameData();
 	protected final MiniGame minigame;
-	private final String[] msgs;
+	protected final String[] msgs;
 	protected final File file;
 	protected boolean topScore, see;
 	protected int mapDefault, mapPlayer, x1, x2, z1, z2, mapHeight, timeDefault, timePlayer, cooldown, score;
@@ -173,6 +173,10 @@ public abstract class MiniGameUtil
 		data.setMapData(getMapData(world));
 		createGameMap();
 	}
+	public void moveWorld(Player player)
+	{
+		data.teleportPlayer(player);
+	}
 	@SuppressWarnings("deprecation")
 	public void useItem(Player player, boolean remove, int cooldown)
 	{
@@ -280,7 +284,9 @@ public abstract class MiniGameUtil
 		어둠(Material.INK_SACK),
 		삽(Material.DIAMOND_SPADE),
 		총(Material.GOLD_HOE),
-		폭탄(Material.TNT);
+		폭탄(Material.TNT),
+		도끼(Material.DIAMOND_AXE),
+		곡괭이(Material.DIAMOND_PICKAXE);
 
 		private ItemStack item;
 

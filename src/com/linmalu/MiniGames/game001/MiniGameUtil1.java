@@ -28,31 +28,6 @@ public class MiniGameUtil1 extends MiniGameUtil
 				"모루 맞으면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."
 		});
 	}
-	@SuppressWarnings("deprecation")
-	@Override
-	public void createGameMap()
-	{
-		MapData md = Main.getMain().getGameData().getMapData();
-		int mapX1 = md.getX1() - 1;
-		int mapX2 = md.getX2() + 1;
-		int mapZ1 = md.getZ1() - 1;
-		int mapZ2 = md.getZ2() + 1;
-		for(int y = 10; y < md.getMapHeight(); y++)
-		{
-			for(int x = mapX1; x <= mapX2; x++)
-			{
-				for(int z = mapZ1; z <= mapZ2; z++)
-				{
-					if(y == 10 || (x == mapX1 || x == mapX2 || z == mapZ1 || z == mapZ2))
-					{
-						Block block = md.getWorld().getBlockAt(x, y, z);
-						block.setType(Material.IRON_BLOCK);
-						block.setData((byte)0);
-					}
-				}
-			}
-		}
-	}
 	@Override
 	public MapData getMapData(World world)
 	{
@@ -67,12 +42,29 @@ public class MiniGameUtil1 extends MiniGameUtil
 		see = false;
 		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
 	}
+	@SuppressWarnings("deprecation")
 	@Override
-	public void initializeMiniGame()
+	public void createGameMap()
 	{
-		for(Player player : data.getLivePlayers())
+		MapData md = Main.getMain().getGameData().getMapData();
+		int mapX1 = md.getX1() - 1;
+		int mapX2 = md.getX2() + 1;
+		int mapZ1 = md.getZ1() - 1;
+		int mapZ2 = md.getZ2() + 1;
+		for(int y = 10; y <= md.getMapHeight(); y++)
 		{
-			GameItem.setItemStack(player, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루);
+			for(int x = mapX1; x <= mapX2; x++)
+			{
+				for(int z = mapZ1; z <= mapZ2; z++)
+				{
+					if(y == 10 || (x == mapX1 || x == mapX2 || z == mapZ1 || z == mapZ2))
+					{
+						Block block = md.getWorld().getBlockAt(x, y, z);
+						block.setType(Material.IRON_BLOCK);
+						block.setData((byte)0);
+					}
+				}
+			}
 		}
 	}
 	@Override
@@ -97,6 +89,10 @@ public class MiniGameUtil1 extends MiniGameUtil
 	@Override
 	public void startTimer()
 	{
+		for(Player player : data.getLivePlayers())
+		{
+			GameItem.setItemStack(player, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루);
+		}
 	}
 	@Override
 	@SuppressWarnings("deprecation")

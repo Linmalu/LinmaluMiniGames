@@ -47,13 +47,14 @@ public class GameData
 		Bukkit.broadcastMessage(ChatColor.GREEN + "미니게임버전 : " + ChatColor.YELLOW + Main.getMain().getDescription().getVersion());
 		Bukkit.broadcastMessage(ChatColor.YELLOW + "제작자 : " + ChatColor.AQUA + "린마루(Linmalu)" + ChatColor.WHITE + " - http://blog.linmalu.com");
 		Bukkit.broadcastMessage(ChatColor.YELLOW + "서버리소스팩이 켜져있다면 미니게임용 리소스팩이 적용됩니다.");
+		int number = 0;
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
 			if(player.getWorld() == world)
 			{
 				LinmaluTellraw.sendCmd(player, "/linmaluminigames 취소", ChatColor.GOLD + "미니게임에 참가를 원하지 않을 경우 클릭하세요.");
 				LinmaluTellraw.sendCmd(player, "/linmaluminigames 관전", ChatColor.GOLD + "미니게임을 구경만 원할 경우 클릭하세요.");
-				players.put(player.getUniqueId(), new PlayerData(player));
+				players.put(player.getUniqueId(), new PlayerData(player, number++));
 				LinmaluTitle.sendMessage(player, ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + minigame.toString() + "게임", 20, 200, 20);
 				LinmaluActionbar.sendMessage(player, ChatColor.YELLOW + "게임맵으로 이동까지 " + ChatColor.GOLD + "10" + ChatColor.YELLOW + "초전");
 			}
@@ -245,7 +246,7 @@ public class GameData
 			{
 				die.addEntry(player.getName());
 			}
-			teleportPlayer(player);
+			minigame.getHandle().moveWorld(player);
 			setScoreboard(player);
 			if(!isResourcePack())
 			{
@@ -270,7 +271,6 @@ public class GameData
 				diePlayer(uuid);
 			}
 		}
-		minigame.getHandle().initializeMiniGame();
 	}
 	public boolean isGame1()
 	{
