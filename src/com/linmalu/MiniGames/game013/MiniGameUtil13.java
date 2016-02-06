@@ -28,9 +28,7 @@ public class MiniGameUtil13 extends MiniGameUtil
 		super(minigame, new String[]{
 				" = = = = = [ 블 록 부 수 기 게 임 ] = = = = =",
 				"블록부수기 게임은 불록을 빨리 부수는 게임입니다.",
-				"점프로 가속 스킬을 쓸 수 있습니다.",
-				"떨어지면 시작 지점에서 다시 시작합니다.",
-				"목적지에 먼저 도착하는 플레이어가 승리합니다."
+				"블록을 먼저 부수는 플레이어가 승리합니다."
 		});
 	}
 	@Override
