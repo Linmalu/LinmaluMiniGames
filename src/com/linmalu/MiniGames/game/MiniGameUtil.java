@@ -37,7 +37,6 @@ public abstract class MiniGameUtil
 {
 	public abstract MapData getMapData(World world);
 	public abstract void createGameMap();
-//	public abstract void initializeMiniGame();
 	public abstract void addRandomItem(Player player);
 	public abstract void reloadConfig() throws IOException;
 	public abstract void startTimer();
@@ -191,13 +190,13 @@ public abstract class MiniGameUtil
 			case 공기:
 				break;
 			case 속도:
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 2, true, false), true);
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 2, false, false), true);
 				break;
 			case 점프:
-				player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 100, 3, true, false), true);
+				player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 100, 3, false, false), true);
 				break;
 			case 투명:
-				player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100, 0, true, false), true);
+				player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100, 0, false, false), true);
 				break;
 			case 중력:
 				Location loc = player.getLocation();
@@ -222,8 +221,8 @@ public abstract class MiniGameUtil
 				{
 					if(!player.getUniqueId().equals(p.getUniqueId()))
 					{
-						p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1, true, false), true);
-						p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 100, 1, true, false), true);
+						p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1, false, false), true);
+						p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 100, 1, false, false), true);
 						p.sendMessage(gameItem.getItemStack().getItemMeta().getDisplayName() + ChatColor.YELLOW + " 아이템 효과에 걸렸습니다.");
 					}
 				}
@@ -233,7 +232,7 @@ public abstract class MiniGameUtil
 				{
 					if(!player.getUniqueId().equals(p.getUniqueId()))
 					{
-						p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 0, true, false), true);
+						p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 0, false, false), true);
 						p.sendMessage(gameItem.getItemStack().getItemMeta().getDisplayName() + ChatColor.YELLOW + " 아이템 효과에 걸렸습니다.");
 					}
 				}

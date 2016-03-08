@@ -87,7 +87,7 @@ public class Main_Event implements Listener
 		Player player = event.getPlayer();
 		if(player.isOp())
 		{
-			LinmaluVersion.check(Main.getMain(), player, Main.getMain().getTitle() + ChatColor.GREEN + "최신버전이 존재합니다.");
+			LinmaluVersion.check(Main.getMain(), player);
 		}
 		if(data.isGame1() && data.getPlayerData(player.getUniqueId()) != null)
 		{

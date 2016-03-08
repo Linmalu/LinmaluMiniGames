@@ -18,13 +18,11 @@ public class MiniGameMoving5 implements Runnable
 	private Player player;
 	private int count;
 	private ArrayList<Sheep> sheeps = new ArrayList<>();
-	private Location location;
 
 	public MiniGameMoving5(Player player)
 	{
 		this.player = player;
 		count = 0;
-		location = player.getLocation();
 		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 1L);
 	}
 	public void run()
@@ -35,8 +33,7 @@ public class MiniGameMoving5 implements Runnable
 			count++;
 			Location loc = player.getLocation();
 			loc.setPitch(10);
-			player.setVelocity(loc.getDirection().multiply(0.3));
-			float speed = 0.3F;
+			player.setVelocity(loc.getDirection().multiply(0.4F));
 			boolean one = true;
 			for(Sheep sheep : sheeps)
 			{
@@ -54,41 +51,26 @@ public class MiniGameMoving5 implements Runnable
 					}
 				}
 			}
-			one = true;
-			if(count % 2 == 0)
+			for(Sheep sheep : sheeps)
 			{
-				for(Sheep sheep : sheeps)
+				if(sheep.isDead())
 				{
-					if(sheep.isDead())
-					{
-						continue;
-					}
-					if(one)
-					{
-						one = false;
-						if(player.getLocation().distance(sheep.getLocation()) > 1)
-						{
-							speed = 0.5F;
-						}
-					}
-					float yaw = (float)LinmaluMath.yawAngle(loc, sheep.getLocation());
-					loc = sheep.getLocation();
-					loc.setYaw(yaw);
-					loc.setPitch(0);
-					sheep.teleport(loc);
-					sheep.setVelocity(loc.getDirection().multiply(speed));
+					continue;
 				}
-				if(count % 20 == 0)
-				{
-					Sheep sheep = player.getWorld().spawn(location, Sheep.class);
-					sheep.setCustomName("jeb_");
-					sheeps.add(sheep);
-					data.addEntity(sheep);
-				}
-				if(count % 10 == 0)
-				{
-					location = loc;
-				}
+				float speed = sheep.getLocation().distance(loc) < 1 ? 0.2F : 0.8F;
+				float angle = (float)LinmaluMath.yawAngle(loc, sheep.getLocation());
+				loc = sheep.getLocation();
+				loc.setYaw(angle);
+				loc.setPitch(10);
+				sheep.teleport(loc);
+				sheep.setVelocity(loc.getDirection().multiply(speed));
+			}
+			if(count % 40 == 0)
+			{
+				Sheep sheep = player.getWorld().spawn(loc, Sheep.class);
+				sheep.setCustomName("jeb_");
+				sheeps.add(sheep);
+				data.addEntity(sheep);
 			}
 		}
 		else

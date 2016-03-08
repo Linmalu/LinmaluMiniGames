@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.linmalu.library.api.LinmaluYamlConfiguration;
 import com.linmalu.minigames.Main;
@@ -19,10 +21,11 @@ import com.linmalu.minigames.game.MiniGameUtil;
 
 public class MiniGameUtil13 extends MiniGameUtil
 {
-	private final Material[] types = {Material.STONE, Material.GRASS, Material.DIRT, Material.COBBLESTONE, Material.WOOD, Material.SAND, Material.GRAVEL, 	Material.LOG, Material.SPONGE, Material.GLASS, Material.LAPIS_BLOCK, Material.SANDSTONE,
-			Material.WOOL, Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.BRICK, Material.BOOKSHELF,	Material.MOSSY_COBBLESTONE, Material.OBSIDIAN, Material.DIAMOND_BLOCK, Material.REDSTONE_BLOCK, Material.PACKED_ICE,
-			Material.SNOW_BLOCK, Material.CLAY, Material.PUMPKIN, Material.NETHERRACK, Material.SOUL_SAND, Material.GLOWSTONE, Material.LOG_2};
-	
+	//	private final Material[] types = {Material.STONE, Material.GRASS, Material.DIRT, Material.COBBLESTONE, Material.WOOD, Material.SAND, Material.GRAVEL, 	Material.LOG, Material.SPONGE, Material.GLASS, Material.LAPIS_BLOCK, Material.SANDSTONE,
+	//			Material.WOOL, Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.BRICK, Material.BOOKSHELF,	Material.MOSSY_COBBLESTONE, Material.OBSIDIAN, Material.DIAMOND_BLOCK, Material.REDSTONE_BLOCK, Material.PACKED_ICE,
+	//			Material.SNOW_BLOCK, Material.CLAY, Material.PUMPKIN, Material.NETHERRACK, Material.SOUL_SAND, Material.GLOWSTONE, Material.LOG_2};
+	private final BlockItem[] blockItems = {new BlockItem(Material.STONE, GameItem.곡괭이), new BlockItem(Material.DIRT, GameItem.삽), new BlockItem(Material.WOOD, GameItem.도끼)};
+
 	public MiniGameUtil13(MiniGame minigame)
 	{
 		super(minigame, new String[]{
@@ -49,7 +52,7 @@ public class MiniGameUtil13 extends MiniGameUtil
 		int size = (int) Math.ceil(Math.sqrt(data.getPlayerAllCount())) * 3;
 		for(int y = 10; y <= md.getMapHeight(); y++)
 		{
-			int ran = new Random().nextInt(types.length);
+			int ran = new Random().nextInt(blockItems.length);
 			for(int x = 0; x < size; x++)
 			{
 				for(int z = 0; z < size; z++)
@@ -59,7 +62,7 @@ public class MiniGameUtil13 extends MiniGameUtil
 					{
 						if(y != md.getMapHeight() -1 && y != md.getMapHeight() - 2)
 						{
-							block.setType(types[ran]);
+							block.setType(blockItems[ran].getMaterial());
 						}
 					}
 					else
@@ -109,9 +112,43 @@ public class MiniGameUtil13 extends MiniGameUtil
 	@Override
 	public void runTimer(GameTimer timer)
 	{
+		for(Player player : data.getLivePlayers())
+		{
+			Location loc = player.getLocation();
+			loc.setY(mapHeight - data.getPlayerData(player.getUniqueId()).getScore() - 3);
+			player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 40, 4, false, false), true);
+			for(BlockItem blockItem : blockItems)
+			{
+				if(loc.getBlock().getType() == blockItem.getMaterial() && GameItem.getGameItem(player.getItemInHand()) == blockItem.getGameItem())
+				{
+					player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
+					continue;
+				}
+			}
+		}
 	}
 	@Override
 	public void endTimer()
 	{
+	}
+
+	private class BlockItem
+	{
+		private Material material;
+		private GameItem gameItem;
+
+		private BlockItem(Material material, GameItem gameItem)
+		{
+			this.material = material;
+			this.gameItem = gameItem;
+		}
+		private Material getMaterial()
+		{
+			return material;
+		}
+		private GameItem getGameItem()
+		{
+			return gameItem;
+		}
 	}
 }

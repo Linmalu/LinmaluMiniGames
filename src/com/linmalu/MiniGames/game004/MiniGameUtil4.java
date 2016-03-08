@@ -121,7 +121,7 @@ public class MiniGameUtil4 extends MiniGameUtil
 		{
 			for(Player player : data.getPlayers())
 			{
-				player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, true, false), true);
+				player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0, false, false), true);
 			}
 		}
 	}

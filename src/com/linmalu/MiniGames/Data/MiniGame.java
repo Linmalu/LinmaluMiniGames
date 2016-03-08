@@ -3,8 +3,6 @@ package com.linmalu.minigames.data;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
-
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.game.MiniGameEvent;
 import com.linmalu.minigames.game.MiniGameUtil;
@@ -22,7 +20,7 @@ public enum MiniGame
 	private void InitializationField()
 	{
 		handle = getLinmaluClsss(MiniGameUtil.class, getMiniGames());
-		Bukkit.getPluginManager().registerEvents(getLinmaluClsss(MiniGameEvent.class, getMiniGames()), Main.getMain());
+		Main.getMain().registerEvents(getLinmaluClsss(MiniGameEvent.class, getMiniGames()));
 	}
 	private <T> T getLinmaluClsss(Class<T> cast, Object ... args)
 	{

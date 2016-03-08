@@ -5,6 +5,8 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.GameData;
@@ -39,9 +41,11 @@ public class MiniGameBombChange8
 		{
 			player.getInventory().clear();
 			player.getInventory().setHelmet(null);
+			player.removePotionEffect(PotionEffectType.SPEED);
 			if(player.getUniqueId().equals(uuid))
 			{
 				data.getMinigame().getHandle().addRandomItem(player);
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, data.getMapData().getTime(), 0, false, false), true);
 			}
 		}
 	}

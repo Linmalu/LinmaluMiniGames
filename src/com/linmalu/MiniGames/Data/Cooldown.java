@@ -26,7 +26,7 @@ public class Cooldown implements Runnable
 		pd = data.getPlayerData(player.getUniqueId());
 		if(invisivilty)
 		{
-			player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 40, 0, true, false), true);
+			player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 40, 0, false, false), true);
 			player.damage(0);
 			new PlayFirework(player.getLocation());
 			items = player.getInventory().getContents();
@@ -45,7 +45,7 @@ public class Cooldown implements Runnable
 		{
 			if(invisivilty && time % 20 == 0)
 			{
-				player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 40, 0, true, false), true);
+				player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 40, 0, false, false), true);
 			}
 			player.setLevel(time / 20);
 			player.setExp(time % 20 * 0.05F);

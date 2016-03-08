@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -22,6 +21,7 @@ import com.linmalu.library.api.LinmaluActionbar;
 import com.linmalu.library.api.LinmaluTellraw;
 import com.linmalu.library.api.LinmaluTitle;
 import com.linmalu.minigames.Main;
+import com.linmalu.minigames.api.event.LinmaluMiniGamesEndEvent;
 
 public class GameData
 {
@@ -37,7 +37,7 @@ public class GameData
 	private UUID targetPlayer;
 	private int targetNumber;
 
-	public void GameStart(MiniGame minigame, World world)
+	public void GameStart(MiniGame minigame)
 	{
 		game1 = true;
 		game2 = false;
@@ -50,14 +50,11 @@ public class GameData
 		int number = 0;
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			if(player.getWorld() == world)
-			{
-				LinmaluTellraw.sendCmd(player, "/linmaluminigames 취소", ChatColor.GOLD + "미니게임에 참가를 원하지 않을 경우 클릭하세요.");
-				LinmaluTellraw.sendCmd(player, "/linmaluminigames 관전", ChatColor.GOLD + "미니게임을 구경만 원할 경우 클릭하세요.");
-				players.put(player.getUniqueId(), new PlayerData(player, number++));
-				LinmaluTitle.sendMessage(player, ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + minigame.toString() + "게임", 20, 200, 20);
-				LinmaluActionbar.sendMessage(player, ChatColor.YELLOW + "게임맵으로 이동까지 " + ChatColor.GOLD + "10" + ChatColor.YELLOW + "초전");
-			}
+			LinmaluTellraw.sendCmd(player, "/linmaluminigames 취소", ChatColor.GOLD + "미니게임에 참가를 원하지 않을 경우 클릭하세요.");
+			LinmaluTellraw.sendCmd(player, "/linmaluminigames 관전", ChatColor.GOLD + "미니게임을 구경만 원할 경우 클릭하세요.");
+			players.put(player.getUniqueId(), new PlayerData(player, number++));
+			LinmaluTitle.sendMessage(player, ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + minigame.toString() + "게임", 20, 200, 20);
+			LinmaluActionbar.sendMessage(player, ChatColor.YELLOW + "게임맵으로 이동까지 " + ChatColor.GOLD + "10" + ChatColor.YELLOW + "초전");
 		}
 		new CreateWorldTimer();
 	}
@@ -171,15 +168,13 @@ public class GameData
 				{
 					if(getPlayerData(p.getUniqueId()).isLive())
 					{
-						String playerName = p.getName();
+						Bukkit.getPluginManager().callEvent(new LinmaluMiniGamesEndEvent(p, minigame));
 						Bukkit.broadcastMessage(ChatColor.GREEN + "= = = = = [ 미 니 게 임 천 국 ] = = = = =");
-						Bukkit.broadcastMessage(ChatColor.YELLOW + playerName + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
-						Bukkit.broadcastMessage(ChatColor.YELLOW + playerName + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
-						Bukkit.broadcastMessage(ChatColor.YELLOW + playerName + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
-						Bukkit.broadcastMessage(ChatColor.YELLOW + playerName + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
-						Bukkit.broadcastMessage(ChatColor.YELLOW + playerName + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
-						Bukkit.broadcastMessage(ChatColor.YELLOW + playerName + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
-						LinmaluTitle.sendMessage(ChatColor.YELLOW + "우승자 : " + ChatColor.GOLD + playerName, ChatColor.GREEN + minigame.toString() + "게임", 20, 100, 20);
+						for(int i = 0; i < 6; i++)
+						{
+							Bukkit.broadcastMessage(ChatColor.YELLOW + p.getName() + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
+						}
+						LinmaluTitle.sendMessage(ChatColor.YELLOW + "우승자 : " + ChatColor.GOLD + p.getName(), ChatColor.GREEN + minigame.toString() + "게임", 20, 100, 20);
 						break;
 					}
 				}

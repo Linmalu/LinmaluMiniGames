@@ -122,7 +122,7 @@ public class MiniGameUtil6 extends MiniGameUtil
 		{
 			for(Player player : data.getPlayers())
 			{
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 0, true, false), true);
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 0, false, false), true);
 			}
 		}
 	}
