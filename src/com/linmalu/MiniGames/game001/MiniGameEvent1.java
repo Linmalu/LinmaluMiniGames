@@ -7,7 +7,6 @@ import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 
-import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
@@ -22,12 +21,12 @@ public class MiniGameEvent1 extends MiniGameEvent
 	public void Event(BlockCanBuildEvent event)
 	{
 		Block block = event.getBlock();
-		if(data.isGame2() && data.getMinigame() == minigame && block.getWorld().getName().equals(Main.WORLD_NAME))
+		if(checkEvent(block.getWorld()))
 		{
 			for(Player player : data.getPlayers())
 			{
 				PlayerData pd = data.getPlayerData(player.getUniqueId());
-				if(pd != null && pd.isLive() && block.getLocation().distance(player.getLocation()) <= 1)
+				if(pd != null && pd.isLive() && block.getLocation().add(0.5, 0, 0.5).distance(player.getLocation()) <= 1)
 				{
 					data.diePlayer(player.getUniqueId());
 				}
@@ -37,7 +36,7 @@ public class MiniGameEvent1 extends MiniGameEvent
 	@EventHandler
 	public void Event(ItemSpawnEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
+		if(checkEvent(event.getEntity().getWorld()))
 		{
 			event.setCancelled(true);
 		}
@@ -45,7 +44,7 @@ public class MiniGameEvent1 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
+		if(checkEvent(event.getEntity().getWorld()))
 		{
 			event.setCancelled(true);
 		}

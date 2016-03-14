@@ -47,17 +47,13 @@ public class MiniGameUtil1 extends MiniGameUtil
 	public void createGameMap()
 	{
 		MapData md = Main.getMain().getGameData().getMapData();
-		int mapX1 = md.getX1() - 1;
-		int mapX2 = md.getX2() + 1;
-		int mapZ1 = md.getZ1() - 1;
-		int mapZ2 = md.getZ2() + 1;
 		for(int y = 10; y <= md.getMapHeight(); y++)
 		{
-			for(int x = mapX1; x <= mapX2; x++)
+			for(int x = md.getX1(); x <= md.getX2(); x++)
 			{
-				for(int z = mapZ1; z <= mapZ2; z++)
+				for(int z = md.getZ1(); z <= md.getZ2(); z++)
 				{
-					if(y == 10 || (x == mapX1 || x == mapX2 || z == mapZ1 || z == mapZ2))
+					if(y == 10 || (x == md.getX1() || x == md.getX2() || z == md.getZ1() || z == md.getZ2()))
 					{
 						Block block = md.getWorld().getBlockAt(x, y, z);
 						block.setType(Material.IRON_BLOCK);
@@ -103,7 +99,7 @@ public class MiniGameUtil1 extends MiniGameUtil
 		for(int i = 0; i < time / 20 / 10 + 1; i++)
 		{
 			Random ran = new Random();
-			FallingBlock fb = md.getWorld().spawnFallingBlock(data.getMapData().getRandomBlockLocation(), Material.ANVIL, (byte) 0);
+			FallingBlock fb = md.getWorld().spawnFallingBlock(data.getMapData().getRandomLocation(1), Material.ANVIL, (byte) 0);
 			float x1, z1;
 			x1 = ran.nextFloat();
 			if(ran.nextInt(2) == 0)

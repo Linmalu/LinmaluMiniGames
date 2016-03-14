@@ -10,7 +10,6 @@ import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
@@ -24,7 +23,7 @@ public class MiniGameEvent2 extends MiniGameEvent
 	@EventHandler
 	public void Event(BlockCanBuildEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getBlock().getWorld().getName().equals(Main.WORLD_NAME) && (event.getMaterial() == Material.STAINED_CLAY || event.getMaterial() == Material.WOOL))
+		if(checkEvent(event.getBlock().getWorld()) && (event.getMaterial() == Material.STAINED_CLAY || event.getMaterial() == Material.WOOL))
 		{
 			event.setBuildable(true);
 		}
@@ -35,7 +34,7 @@ public class MiniGameEvent2 extends MiniGameEvent
 		Block block = event.getBlock();
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive() && (block.getType() == Material.WOOL || block.getType() == Material.STAINED_CLAY))
+		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && (block.getType() == Material.WOOL || block.getType() == Material.STAINED_CLAY))
 		{
 			new MiniGameBreakBlock2(block);
 			event.setCancelled(false);
@@ -47,7 +46,7 @@ public class MiniGameEvent2 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive())
+		if(checkEvent(player.getWorld()) && pd != null && pd.isLive())
 		{
 			pd.setScore(event.getTo().getBlockY() - 11);
 		}
@@ -57,7 +56,7 @@ public class MiniGameEvent2 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
 			minigame.getHandle().useItem(player, true, 0);
 		}

@@ -105,7 +105,7 @@ public class MiniGameUtil8 extends MiniGameUtil
 		if(player != null)
 		{
 			Location loc = player.getLocation();
-			loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(), 4F, false, false);
+			loc.getWorld().createExplosion(loc, 4F, false);
 			data.diePlayer(player.getUniqueId());
 		}
 	}

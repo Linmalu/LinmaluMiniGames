@@ -13,7 +13,6 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.BlockIterator;
 
-import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
@@ -29,7 +28,7 @@ public class MiniGameEvent4 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive())
+		if(checkEvent(player.getWorld()) && pd != null && pd.isLive())
 		{
 			event.setCancelled(false);
 			minigame.getHandle().addRandomItem(player);
@@ -40,7 +39,7 @@ public class MiniGameEvent4 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
 			minigame.getHandle().useItem(player, true, 0);
 		}
@@ -49,7 +48,7 @@ public class MiniGameEvent4 extends MiniGameEvent
 	public void Event(ProjectileHitEvent event)
 	{
 		Projectile entity = event.getEntity();
-		if(data.isGame2() && data.getMinigame() == minigame && entity.getWorld().getName().equals(Main.WORLD_NAME) && entity.getType() == EntityType.SNOWBALL)
+		if(checkEvent(event.getEntity().getWorld()) && entity.getType() == EntityType.SNOWBALL)
 		{
 			BlockIterator bi = new BlockIterator(entity.getWorld(), entity.getLocation().toVector(), entity.getVelocity().normalize(), 0, 2);
 			while(bi.hasNext())

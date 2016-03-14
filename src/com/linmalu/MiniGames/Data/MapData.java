@@ -73,23 +73,17 @@ public class MapData
 	{
 		return see;
 	}
-	public Location getRandomBlockLocation()
+	public Location getRandomLocation(int size)
+	{
+		return getRandomLocation(size, 0, 0);
+	}
+	public Location getRandomLocation(int size, Location loc)
+	{
+		return getRandomLocation(size, loc.getYaw(), loc.getPitch());
+	}
+	public Location getRandomLocation(int size, float yaw, float pitch)
 	{
 		Random ran = new Random();
-		return new Location(world, ran.nextInt(x2 - x1 + 1) + x1, mapHeight, ran.nextInt(z2 - z1 + 1) + z1);
-	}
-	public Location getRandomEntityLocation()
-	{
-		Random ran = new Random();
-		return new Location(world, ran.nextInt(x2 - x1 - 1) + x1 + 1.5, mapHeight, ran.nextInt(z2 - z1 - 1) + z1 + 1.5);
-	}
-	public Location getRandomEntityLocation(Location loc)
-	{
-		Random ran = new Random();
-		return new Location(world, ran.nextInt(x2 - x1 - 1) + x1 + 1.5, mapHeight, ran.nextInt(z2 - z1 - 1) + z1 + 1.5, loc.getYaw(), loc.getPitch());
-	}
-	public static void main(String[] args)
-	{
-		System.out.println(new Random().nextInt(-1));
+		return new Location(world, ran.nextInt(x2 - x1 + 1 - size * 2) + x1 + 0.5 + size, mapHeight, ran.nextInt(z2 - z1 + 1 - size * 2) + z1 + 0.5 + size, yaw, pitch);
 	}
 }

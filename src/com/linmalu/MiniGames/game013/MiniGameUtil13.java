@@ -21,10 +21,11 @@ import com.linmalu.minigames.game.MiniGameUtil;
 
 public class MiniGameUtil13 extends MiniGameUtil
 {
-	//	private final Material[] types = {Material.STONE, Material.GRASS, Material.DIRT, Material.COBBLESTONE, Material.WOOD, Material.SAND, Material.GRAVEL, 	Material.LOG, Material.SPONGE, Material.GLASS, Material.LAPIS_BLOCK, Material.SANDSTONE,
-	//			Material.WOOL, Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.BRICK, Material.BOOKSHELF,	Material.MOSSY_COBBLESTONE, Material.OBSIDIAN, Material.DIAMOND_BLOCK, Material.REDSTONE_BLOCK, Material.PACKED_ICE,
-	//			Material.SNOW_BLOCK, Material.CLAY, Material.PUMPKIN, Material.NETHERRACK, Material.SOUL_SAND, Material.GLOWSTONE, Material.LOG_2};
-	private final BlockItem[] blockItems = {new BlockItem(Material.STONE, GameItem.곡괭이), new BlockItem(Material.DIRT, GameItem.삽), new BlockItem(Material.WOOD, GameItem.도끼)};
+	private final BlockItem[] blockItems = {
+			new BlockItem(Material.DIRT, GameItem.삽), new BlockItem(Material.SAND, GameItem.삽), new BlockItem(Material.GRAVEL, GameItem.삽),
+			new BlockItem(Material.WOOD, GameItem.도끼), new BlockItem(Material.LOG, GameItem.도끼), new BlockItem(Material.LOG_2, GameItem.도끼),
+			new BlockItem(Material.STONE, GameItem.곡괭이), new BlockItem(Material.BRICK, GameItem.곡괭이), new BlockItem(Material.MOSSY_COBBLESTONE, GameItem.곡괭이)
+	};
 
 	public MiniGameUtil13(MiniGame minigame)
 	{
@@ -77,7 +78,7 @@ public class MiniGameUtil13 extends MiniGameUtil
 	public void moveWorld(Player player)
 	{
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		int size = (int) Math.ceil(Math.sqrt(data.getPlayerAllCount()));
+		int size = (int)Math.ceil(Math.sqrt(data.getPlayerAllCount()));
 		int number = pd.getNumber();
 		Location loc = player.getLocation();
 		loc.setWorld(data.getMapData().getWorld());

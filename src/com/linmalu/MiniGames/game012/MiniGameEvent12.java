@@ -10,7 +10,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.util.Vector;
 
-import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
@@ -25,7 +24,7 @@ public class MiniGameEvent12 extends MiniGameEvent
 	public void Event(VehicleExitEvent event)
 	{
 		Location loc = event.getExited().getLocation();
-		if(data.isGame2() && data.getMinigame() == minigame && loc.getWorld().getName().equals(Main.WORLD_NAME) && loc.getY() > 0)
+		if(checkEvent(loc.getWorld()) && loc.getY() > 0)
 		{
 			event.setCancelled(true);
 		}
@@ -34,7 +33,7 @@ public class MiniGameEvent12 extends MiniGameEvent
 	public void Event(HorseJumpEvent event)
 	{
 		Horse horse = event.getEntity();
-		if(data.isGame2() && data.getMinigame() == minigame && horse.getWorld().getName().equals(Main.WORLD_NAME))
+		if(checkEvent(horse.getWorld()))
 		{
 			horse.setVelocity(horse.getVelocity().add(horse.getLocation().getDirection().normalize().setY(-1).multiply(event.getPower() != 1 ? event.getPower() * 2 : 8)));
 		}
@@ -42,7 +41,7 @@ public class MiniGameEvent12 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
+		if(checkEvent(event.getEntity().getWorld()))
 		{
 			event.setCancelled(true);
 		}
@@ -52,7 +51,7 @@ public class MiniGameEvent12 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive())
+		if(checkEvent(player.getWorld()) && pd != null && pd.isLive())
 		{
 			int yFrom = event.getFrom().getBlockY();
 			int yTo = event.getTo().getBlockY();

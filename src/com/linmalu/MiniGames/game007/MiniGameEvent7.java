@@ -12,7 +12,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.Cooldown;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
@@ -27,7 +26,7 @@ public class MiniGameEvent7 extends MiniGameEvent
 	@EventHandler
 	public void Event(BlockBreakEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getPlayer().getWorld().getName().equals(Main.WORLD_NAME))
+		if(checkEvent(event.getPlayer().getWorld()))
 		{
 			Material type = event.getBlock().getType();
 			if(type == Material.GLASS || type == Material.THIN_GLASS || type == Material.STAINED_GLASS || type == Material.STAINED_GLASS_PANE)
@@ -39,7 +38,7 @@ public class MiniGameEvent7 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
+		if(checkEvent(event.getEntity().getWorld()))
 		{
 			event.setCancelled(true);
 		}
@@ -47,9 +46,9 @@ public class MiniGameEvent7 extends MiniGameEvent
 	@EventHandler
 	public void Event(EntityDamageByEntityEvent event)
 	{
-		if(data.isGame2() && data.getMinigame() == minigame && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME) && event.getEntity() instanceof Player && event.getDamager() instanceof Snowball)
+		if(checkEvent(event.getEntity().getWorld()) && event.getEntity() instanceof Player && event.getDamager() instanceof Snowball)
 		{
-			Player player2 = (Player) event.getEntity();
+			Player player2 = (Player)event.getEntity();
 			Snowball snowball = (Snowball)event.getDamager();
 			PlayerData pd2 = data.getPlayerData(player2.getUniqueId());
 			if(snowball.getShooter() instanceof Player)
@@ -76,7 +75,7 @@ public class MiniGameEvent7 extends MiniGameEvent
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
 		ItemStack item = event.getItem();
-		if(data.isGame2() && data.getMinigame() == minigame && player.getWorld().getName().equals(Main.WORLD_NAME) && pd != null && pd.isLive() && pd.isSkill() && pd.isCooldown() && item != null && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && pd.isSkill() && pd.isCooldown() && item != null && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
 			minigame.getHandle().useItem(player, false, 1);
 		}

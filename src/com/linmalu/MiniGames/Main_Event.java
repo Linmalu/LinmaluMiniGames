@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockCanBuildEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -56,6 +57,14 @@ public class Main_Event implements Listener
 	public void Event(EntityExplodeEvent event)
 	{
 		if(data.isGame1() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
+		{
+			event.blockList().clear();
+		}
+	}
+	@EventHandler
+	public void Event(BlockExplodeEvent event)
+	{
+		if(data.isGame1() && event.getBlock().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.blockList().clear();
 		}

@@ -110,7 +110,7 @@ public class GameData
 	}
 	public Location teleportPlayer(Player player)
 	{
-		Location loc = mapData.getRandomEntityLocation(player.getLocation());
+		Location loc = mapData.getRandomLocation(1, player.getLocation());
 		for(int y = mapData.getWorld().getMaxHeight(); y >= 0; y--)
 		{
 			if(!mapData.getWorld().getBlockAt(loc.getBlockX(), y, loc.getBlockZ()).isEmpty())

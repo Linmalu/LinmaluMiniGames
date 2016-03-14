@@ -80,7 +80,7 @@ public class MiniGameUtil11 extends MiniGameUtil
 	@SuppressWarnings("deprecation")
 	public void runTimer(GameTimer timer)
 	{
-		Block block = data.getMapData().getRandomBlockLocation().getBlock();
+		Block block = data.getMapData().getRandomLocation(0).getBlock();
 		if(block.getType() == Material.WOOL && block.getData() == 5)
 		{
 			new MiniGameChangeBlock11(block);
