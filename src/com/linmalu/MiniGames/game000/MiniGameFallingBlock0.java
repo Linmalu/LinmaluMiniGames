@@ -9,8 +9,8 @@ import com.linmalu.minigames.Main;
 @SuppressWarnings("deprecation")
 public class MiniGameFallingBlock0 implements Runnable
 {
-	private int taskId;
-	private Block block;
+	private final int taskId;
+	private final Block block;
 	private byte data;
 
 	public MiniGameFallingBlock0(Block block)

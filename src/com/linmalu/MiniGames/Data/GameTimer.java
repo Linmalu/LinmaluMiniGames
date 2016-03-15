@@ -14,9 +14,9 @@ import com.linmalu.minigames.Main;
 
 public class GameTimer implements Runnable
 {
-	private int taskId;
-	private GameData data = Main.getMain().getGameData();
-	private MapData md = data.getMapData();
+	private final GameData data = Main.getMain().getGameData();
+	private final int taskId;
+	private final MapData md = data.getMapData();
 	private int time = md.getTime();
 	private int cooldown = 0;
 	private boolean timer = true;

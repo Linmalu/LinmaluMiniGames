@@ -14,10 +14,11 @@ import com.linmalu.minigames.data.PlayerData;
 
 public class MiniGameMoving5 implements Runnable
 {
-	private int taskId;
-	private Player player;
+	private final GameData data = Main.getMain().getGameData();
+	private final ArrayList<Sheep> sheeps = new ArrayList<>();
+	private final int taskId;
+	private final Player player;
 	private int count;
-	private ArrayList<Sheep> sheeps = new ArrayList<>();
 
 	public MiniGameMoving5(Player player)
 	{
@@ -27,7 +28,6 @@ public class MiniGameMoving5 implements Runnable
 	}
 	public void run()
 	{
-		GameData data = Main.getMain().getGameData();
 		if(data.isGame2() && data.getPlayerData(player.getUniqueId()).isLive())
 		{
 			count++;
@@ -79,6 +79,7 @@ public class MiniGameMoving5 implements Runnable
 			{
 				sheep.remove();
 			}
+			sheeps.clear();
 			Bukkit.getScheduler().cancelTask(taskId);
 		}
 	}

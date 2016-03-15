@@ -11,7 +11,7 @@ import com.linmalu.minigames.data.GameData;
 
 public class MiniGameHorse
 {
-	private GameData data = Main.getMain().getGameData();
+	private final GameData data = Main.getMain().getGameData();
 
 	public MiniGameHorse()
 	{

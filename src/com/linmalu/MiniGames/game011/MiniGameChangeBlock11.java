@@ -9,14 +9,14 @@ import com.linmalu.minigames.Main;
 @SuppressWarnings("deprecation")
 public class MiniGameChangeBlock11 implements Runnable
 {
-	private int taskId;
-	private Block block;
+	private final int taskId;
+	private final Block block;
 	private int count = 0;
 
 	public MiniGameChangeBlock11(Block block)
 	{
 		this.block = block;
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 20L);
+		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 20L);
 	}
 	public void run()
 	{

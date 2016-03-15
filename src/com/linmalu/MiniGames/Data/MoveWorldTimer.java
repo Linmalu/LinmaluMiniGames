@@ -10,8 +10,8 @@ import com.linmalu.minigames.Main;
 
 public class MoveWorldTimer implements Runnable
 {
-	private int taskId;
-	private GameData data = Main.getMain().getGameData();
+	private final GameData data = Main.getMain().getGameData();
+	private final int taskId;
 	private int time = 10 * 20;
 
 	public MoveWorldTimer()

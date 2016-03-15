@@ -35,7 +35,7 @@ import com.linmalu.minigames.data.PlayerData;
 
 public class Main_Event implements Listener
 {
-	private GameData data = Main.getMain().getGameData();
+	private final GameData data = Main.getMain().getGameData();
 
 	@EventHandler
 	public void Event(WeatherChangeEvent event)
@@ -203,15 +203,23 @@ public class Main_Event implements Listener
 		{
 			event.setCancelled(true);
 		}
-		else if(data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
+		else if(data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
 		{
-			Player player = (Player) event.getEntity();
-			Player aplayer = (Player)event.getDamager();
-			PlayerData pd = data.getPlayerData(player.getUniqueId());
-			PlayerData apd = data.getPlayerData(aplayer.getUniqueId());
-			if(pd != null && apd != null && (!pd.isLive() || !apd.isLive() || !pd.isCooldown() || !apd.isCooldown()))
+			if(event.getDamager() instanceof Player)
 			{
-				event.setCancelled(true);
+				PlayerData pd = data.getPlayerData(event.getDamager().getUniqueId());
+				if(!(pd != null && pd.isLive() && pd.isCooldown()))
+				{
+					event.setCancelled(true);
+				}
+			}
+			if(event.getEntity() instanceof Player)
+			{
+				PlayerData pd = data.getPlayerData(event.getEntity().getUniqueId());
+				if(!(pd != null && pd.isLive() && pd.isCooldown()))
+				{
+					event.setCancelled(true);
+				}
 			}
 		}
 	}

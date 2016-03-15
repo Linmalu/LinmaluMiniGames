@@ -10,8 +10,9 @@ import com.linmalu.minigames.data.GameData;
 
 public class MiniGameNoMoving0 implements Runnable
 {
-	private int taskId;
-	private Player player;
+	private final GameData data = Main.getMain().getGameData();
+	private final int taskId;
+	private final Player player;
 	private int x1, x2;
 	private int z1, z2;
 	private int count = 0;
@@ -26,7 +27,6 @@ public class MiniGameNoMoving0 implements Runnable
 	}
 	public void run()
 	{
-		GameData data = Main.getMain().getGameData();
 		if(data.isGame2() && data.getPlayerData(player.getUniqueId()).isLive())
 		{
 			x1 = x2;

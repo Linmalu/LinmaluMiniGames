@@ -12,7 +12,7 @@ import com.linmalu.minigames.Main;
 
 public class PlayFirework implements Runnable
 {
-	private Firework firework;
+	private final Firework firework;
 
 	public PlayFirework(Location location)
 	{

@@ -13,7 +13,7 @@ import com.linmalu.minigames.data.GameData;
 
 public class MiniGameBombChange8
 {
-	private GameData data = Main.getMain().getGameData();
+	private final GameData data = Main.getMain().getGameData();
 
 	public MiniGameBombChange8()
 	{

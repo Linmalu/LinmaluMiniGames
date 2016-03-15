@@ -1,8 +1,12 @@
 package com.linmalu.minigames.game014;
 
+import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.comphenix.packetwrapper.WrapperPlayServerNamedEntitySpawn;
@@ -30,21 +34,36 @@ public class MiniGameEvent14 extends MiniGameEvent
 		{
 			Player player1 = (Player)event.getDamager();
 			PlayerData pd1 = data.getPlayerData(player1.getUniqueId());
-			if(event.getEntity() instanceof Player)
+			if(pd1 != null && pd1.isLive() && pd1.isCooldown())
 			{
-				Player player2 = (Player) event.getEntity();
-				PlayerData pd2 = data.getPlayerData(player2.getUniqueId());
-				if(pd1 != null && pd2 != null && pd1.isLive() && pd2.isLive())
+				if(event.getEntity() instanceof Player)
 				{
-					pd1.addScore();
-					new Cooldown(0, player2, true);
-					data.teleportPlayer(player2);
+					Player player2 = (Player) event.getEntity();
+					PlayerData pd2 = data.getPlayerData(player2.getUniqueId());
+					if(pd2 != null && pd2.isLive())
+					{
+						pd1.addScore();
+						new Cooldown(0, player2, true);
+						data.teleportPlayer(player2);
+					}
+				}
+				else if(event.getEntity() instanceof Sheep)
+				{
+					player1.getWorld().playSound(event.getEntity().getLocation(), Sound.CAT_MEOW, 1, 1);
+					event.getEntity().setTicksLived(1);
+					new Cooldown(5, player1, true);
+					player1.getWorld().createExplosion(event.getEntity().getLocation(), 4F, false);
 				}
 			}
-			else if(pd1 != null && pd1.isLive())
-			{
-				player1.getWorld().createExplosion(event.getEntity().getLocation(), 4F, false);
-			}
+		}
+	}
+	@EventHandler
+	public void Event(EntityDamageByBlockEvent event)
+	{
+		Entity entity = event.getEntity();
+		if(checkEvent(entity.getWorld()) && entity.getType() == EntityType.SHEEP && entity.getTicksLived() > 100)
+		{
+			entity.setTicksLived(1);
 		}
 	}
 	@Override

@@ -10,8 +10,8 @@ import com.linmalu.minigames.Main;
 
 public class CreateWorldTimer implements Runnable
 {
-	private int taskId;
-	private GameData data = Main.getMain().getGameData();
+	private final GameData data = Main.getMain().getGameData();
+	private final int taskId;
 	private int count = 10;
 
 	public CreateWorldTimer()

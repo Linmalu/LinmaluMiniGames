@@ -10,13 +10,13 @@ import com.linmalu.minigames.Main;
 
 public class Cooldown implements Runnable
 {
-	private int taskId;
-	private GameData data = Main.getMain().getGameData();
+	private final GameData data = Main.getMain().getGameData();
+	private final int taskId;
 	private int time;
-	private Player player;
-	private boolean invisivilty;
-	private PlayerData pd;
-	private ItemStack[] items;
+	private final Player player;
+	private final boolean invisivilty;
+	private final PlayerData pd;
+	private final ItemStack[] items;
 
 	public Cooldown(int time, Player player, boolean invisivilty)
 	{
@@ -24,12 +24,12 @@ public class Cooldown implements Runnable
 		this.player = player;
 		this.invisivilty = invisivilty;
 		pd = data.getPlayerData(player.getUniqueId());
+		items = player.getInventory().getContents();
 		if(invisivilty)
 		{
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 40, 0, false, false), true);
 			player.damage(0);
 			new PlayFirework(player.getLocation());
-			items = player.getInventory().getContents();
 			player.getInventory().clear();
 			pd.setCooldown(false);
 		}

@@ -20,6 +20,8 @@ import com.linmalu.minigames.data.MiniGame;
 
 public class Main_Command implements CommandExecutor
 {
+	private final GameData data = Main.getMain().getGameData();
+
 	public Main_Command()
 	{
 		Main.getMain().getCommand(Main.getMain().getDescription().getName()).setTabCompleter(new TabCompleter()
@@ -49,7 +51,6 @@ public class Main_Command implements CommandExecutor
 	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
-		GameData data = Main.getMain().getGameData();
 		if(sender instanceof Player && args.length == 1)
 		{
 			Player player = (Player)sender;
@@ -86,7 +87,7 @@ public class Main_Command implements CommandExecutor
 				}
 				else if(args[0].equals("랜덤"))
 				{
-					setGame(sender, data, MiniGame.values()[new Random().nextInt(MiniGame.values().length)]);
+					setGame(sender, MiniGame.values()[new Random().nextInt(MiniGame.values().length)]);
 					return true;
 				}
 				else if(args[0].equals("리소스팩적용"))
@@ -152,7 +153,7 @@ public class Main_Command implements CommandExecutor
 					{
 						if(args[0].equals(game.toString()))
 						{
-							setGame(sender, data, game);
+							setGame(sender, game);
 							return true;
 						}
 					}
@@ -182,7 +183,7 @@ public class Main_Command implements CommandExecutor
 		}
 		return true;
 	}
-	private void setGame(CommandSender sender, GameData data, MiniGame minigame)
+	private void setGame(CommandSender sender, MiniGame minigame)
 	{
 		if(data.isGame1())
 		{

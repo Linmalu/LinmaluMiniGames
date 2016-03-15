@@ -11,10 +11,10 @@ import com.linmalu.minigames.data.GameData;
 
 public class MiniGameShoot7 implements Runnable
 {
-	private int taskId;
-	private GameData data = Main.getMain().getGameData();
-	private Snowball snowball;
-	private Vector shoot;
+	private final GameData data = Main.getMain().getGameData();
+	private final int taskId;
+	private final Snowball snowball;
+	private final Vector shoot;
 
 	public MiniGameShoot7(Player player)
 	{

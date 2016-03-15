@@ -10,7 +10,8 @@ import com.linmalu.minigames.data.GameData;
 
 public class MiniGameBreakBlock2 implements Runnable
 {
-	private int taskId;
+	private final GameData data = Main.getMain().getGameData();
+	private final int taskId;
 	private Block block;
 
 	public MiniGameBreakBlock2(Block block)
@@ -21,7 +22,6 @@ public class MiniGameBreakBlock2 implements Runnable
 	@SuppressWarnings("deprecation")
 	public void run()
 	{
-		GameData data = Main.getMain().getGameData();
 		if(data.isGame2() && block.getLocation().getBlockY() <= data.getMapData().getMapHeight())
 		{
 			block = block.getRelative(BlockFace.UP);
