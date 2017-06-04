@@ -2,6 +2,9 @@ package com.linmalu.minigames;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,7 +18,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -24,7 +29,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.weather.WeatherChangeEvent;
 
 import com.linmalu.library.api.LinmaluAutoRespawn;
 import com.linmalu.library.api.LinmaluVersion;
@@ -37,14 +41,6 @@ public class Main_Event implements Listener
 {
 	private final GameData data = Main.getMain().getGameData();
 
-	@EventHandler
-	public void Event(WeatherChangeEvent event)
-	{
-		if(data.isGame1() && event.getWorld().getName().equals(Main.WORLD_NAME))
-		{
-			event.setCancelled(true);
-		}
-	}
 	@EventHandler
 	public void Event(FoodLevelChangeEvent event)
 	{
@@ -110,7 +106,12 @@ public class Main_Event implements Listener
 		}
 		else if(!data.isGame1())
 		{
-			data.restorePlayer(player);
+			PlayerData pd = PlayerData.getPlayerData(player.getUniqueId());
+			if(pd != null)
+			{
+				pd.resetPlayer();
+			}
+			// data.restorePlayer(player);
 		}
 		if(data.isResourcePack())
 		{
@@ -134,6 +135,14 @@ public class Main_Event implements Listener
 		if(data.isGame2() && player.getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			LinmaluAutoRespawn.respawn(player);
+		}
+	}
+	@EventHandler
+	public void Event(ItemSpawnEvent event)
+	{
+		if(data.isGame1() && event.getLocation().getWorld().getName().equals(Main.WORLD_NAME))
+		{
+			event.setCancelled(true);
 		}
 	}
 	@EventHandler
@@ -219,6 +228,27 @@ public class Main_Event implements Listener
 				if(!(pd != null && pd.isLive() && pd.isCooldown()))
 				{
 					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	@EventHandler
+	public void Event(ProjectileHitEvent event)
+	{
+		if(data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
+		{
+			Block block = event.getHitBlock();
+			Entity entity = event.getHitEntity();
+			if(block != null)
+			{
+				block.breakNaturally();
+			}
+			else if(entity != null && entity.getType() == EntityType.PLAYER)
+			{
+				PlayerData pd = data.getPlayerData(entity.getUniqueId());
+				if(pd != null && pd.isLive())
+				{
+					((Player)entity).damage(1, (Entity)event.getEntity().getShooter());
 				}
 			}
 		}

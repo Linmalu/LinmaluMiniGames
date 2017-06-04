@@ -23,7 +23,7 @@ public class MiniGameMoving14 implements Runnable
 	{
 		for(int i = 0; i < data.getPlayerAllCount() * 10; i++)
 		{
-			Sheep sheep = data.getMapData().getWorld().spawn(data.getMapData().getRandomLocation(1), Sheep.class);
+			Sheep sheep = data.getMapData().getWorld().spawn(data.getMapData().getRandomLocation(), Sheep.class);
 			sheep.setTicksLived(100);
 			data.addEntity(sheep);
 			sheeps.put(sheep, null);
@@ -40,7 +40,7 @@ public class MiniGameMoving14 implements Runnable
 				}
 			}
 		}
-		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 1L);
+		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 2L);
 	}
 	@Override
 	public void run()
@@ -65,7 +65,7 @@ public class MiniGameMoving14 implements Runnable
 						}
 						else
 						{
-							loc = data.getMapData().getRandomLocation(0);
+							loc = data.getMapData().getRandomLocation();
 							sheeps.put(sheep, loc);
 						}
 					}

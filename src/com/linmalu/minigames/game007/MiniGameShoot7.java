@@ -21,11 +21,11 @@ public class MiniGameShoot7 implements Runnable
 		for(Player p : data.getPlayers())
 		{
 			p.playSound(player.getLocation(), "gun", 5, 1);
-			p.playSound(player.getLocation(), Sound.SHOOT_ARROW, 1, 0);
+			p.playSound(player.getLocation(), Sound.ENTITY_ARROW_SHOOT, 1, 0);
 		}
 		shoot = player.getLocation().getDirection().multiply(5);
 		snowball = player.launchProjectile(Snowball.class, shoot);
-		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 1L);
+		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 2L);
 	}
 	public void run()
 	{

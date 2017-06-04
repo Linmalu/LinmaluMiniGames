@@ -1,6 +1,5 @@
 package com.linmalu.minigames.game010;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
@@ -19,7 +18,7 @@ public class MiniGameEvent10 extends MiniGameEvent
 		super(minigame);
 	}
 	@EventHandler
-	public void Test(VehicleEnterEvent event)
+	public void Event(VehicleEnterEvent event)
 	{
 		if(checkEvent(event.getVehicle().getWorld()) && event.getVehicle().getType() == EntityType.MINECART)
 		{
@@ -31,16 +30,12 @@ public class MiniGameEvent10 extends MiniGameEvent
 		}
 	}
 	@EventHandler
-	public void Test(VehicleDestroyEvent event)
+	public void Event(VehicleDestroyEvent event)
 	{
 		Vehicle vehicle = event.getVehicle();
 		if(checkEvent(vehicle.getWorld()) && vehicle.getType() == EntityType.MINECART)
 		{
-			Entity entity = vehicle.getPassenger();
-			if(entity != null)
-			{
-				entity.leaveVehicle();
-			}
+			vehicle.getPassengers().forEach(entity -> entity.leaveVehicle());
 			event.setCancelled(true);
 		}
 	}

@@ -1,17 +1,13 @@
 package com.linmalu.minigames.game001;
 
-import java.io.IOException;
 import java.util.Random;
 
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
-import com.linmalu.library.api.LinmaluYamlConfiguration;
-import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
@@ -21,67 +17,35 @@ public class MiniGameUtil1 extends MiniGameUtil
 {
 	public MiniGameUtil1(MiniGame minigame)
 	{
-		super(minigame, new String[]{
-				" = = = = = [ 모 루 피 하 기 게 임 ] = = = = =",
-				"모루피하기 게임은 하늘에서 떨어지는 모루를 피하는 게임입니다.",
-				"시간이 지날수록 떨어지는 블록은 늘어납니다.",
-				"모루 맞으면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."
-		});
+		super(minigame, new String[]{" = = = = = [ 모 루 피 하 기 게 임 ] = = = = =", "모루피하기 게임은 하늘에서 떨어지는 모루를 피하는 게임입니다.", "시간이 지날수록 떨어지는 블록은 늘어납니다.", "모루 맞으면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."});
+		mapDefault = 10;
+		mapPlayer = 1;
+		mapHeight = 20;
 	}
 	@Override
-	public MapData getMapData(World world)
+	public MaterialData getChunkData(int y)
 	{
-		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-		x1 = z1 = -size;
-		x2 = z2 = size;
-		mapHeight = 30;
-		int time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer)) * 20;
-		cooldown = 0;
-		topScore = false;
-		score = 0;
-		see = false;
-		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
-	}
-	@SuppressWarnings("deprecation")
-	@Override
-	public void createGameMap()
-	{
-		MapData md = Main.getMain().getGameData().getMapData();
-		for(int y = 10; y <= md.getMapHeight(); y++)
+		if(y == MAP_DEFAULT_HEIGHT)
 		{
-			for(int x = md.getX1(); x <= md.getX2(); x++)
-			{
-				for(int z = md.getZ1(); z <= md.getZ2(); z++)
-				{
-					if(y == 10 || (x == md.getX1() || x == md.getX2() || z == md.getZ1() || z == md.getZ2()))
-					{
-						Block block = md.getWorld().getBlockAt(x, y, z);
-						block.setType(Material.IRON_BLOCK);
-						block.setData((byte)0);
-					}
-				}
-			}
+			return new MaterialData(Material.IRON_BLOCK);
 		}
+		return new MaterialData(Material.AIR);
+//		cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, Material.IRON_BLOCK);
+//		return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
 	{
 	}
-	@Override
-	public void reloadConfig() throws IOException
-	{
-		final String defaultSize = "기본 맵크기";
-		final String playerSize = "인원수 비율 맵크기";
-		LinmaluYamlConfiguration config = LinmaluYamlConfiguration.loadConfiguration(file);
-		if(!file.exists())
-		{
-			config.set(defaultSize, 20);
-			config.set(playerSize, 0);
-		}
-		this.mapDefault = config.getInt(defaultSize);
-		this.mapPlayer = config.getInt(playerSize);
-		config.save(file);		
-	}
+//	@Override
+//	public void reload()
+//	{
+//		mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE), 5);
+//		mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE), 1);
+//		x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
+//		mapHeight = 30;
+//		time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
+//	}
 	@Override
 	public void startTimer()
 	{
@@ -90,16 +54,16 @@ public class MiniGameUtil1 extends MiniGameUtil
 			GameItem.setItemStack(player, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루);
 		}
 	}
-	@Override
 	@SuppressWarnings("deprecation")
+	@Override
 	public void runTimer(GameTimer timer)
 	{
 		MapData md = data.getMapData();
 		int time = timer.getTime();
-		for(int i = 0; i < time / 20 / 10 + 1; i++)
+		for(int i = 0; i < time / 10 / 10 + 1; i++)
 		{
 			Random ran = new Random();
-			FallingBlock fb = md.getWorld().spawnFallingBlock(data.getMapData().getRandomLocation(1), Material.ANVIL, (byte) 0);
+			FallingBlock fb = md.getWorld().spawnFallingBlock(data.getMapData().getRandomLocation(), Material.ANVIL, (byte)0);
 			float x1, z1;
 			x1 = ran.nextFloat();
 			if(ran.nextInt(2) == 0)
@@ -111,16 +75,16 @@ public class MiniGameUtil1 extends MiniGameUtil
 			{
 				z1 *= -1;
 			}
-			if(time / 20 > 30 && ran.nextInt(2) == 0)
+			if(time / 10 > 30 && ran.nextInt(2) == 0)
 			{
 				fb.setVelocity(new Vector(x1, 0, z1));
 			}
 		}
-		if(time / 20 == 60)
+		if(time / 10 == 60)
 		{
 			md.getWorld().setTime(13000L);
 		}
-		else if(time / 20 == 90)
+		else if(time / 10 == 90)
 		{
 			md.getWorld().setTime(18000L);
 		}

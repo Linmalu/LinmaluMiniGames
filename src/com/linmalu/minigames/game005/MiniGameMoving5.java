@@ -24,7 +24,7 @@ public class MiniGameMoving5 implements Runnable
 	{
 		this.player = player;
 		count = 0;
-		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 1L);
+		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 2L);
 	}
 	public void run()
 	{
@@ -65,7 +65,7 @@ public class MiniGameMoving5 implements Runnable
 				sheep.teleport(loc);
 				sheep.setVelocity(loc.getDirection().multiply(speed));
 			}
-			if(count % 40 == 0)
+			if(count % 20 == 0)
 			{
 				Sheep sheep = player.getWorld().spawn(loc, Sheep.class);
 				sheep.setCustomName("jeb_");

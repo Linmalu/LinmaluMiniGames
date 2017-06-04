@@ -1,6 +1,5 @@
 package com.linmalu.minigames.game014;
 
-import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -15,6 +14,8 @@ import com.comphenix.packetwrapper.WrapperPlayServerSpawnEntityLiving;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
 import com.linmalu.minigames.data.Cooldown;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
@@ -49,9 +50,9 @@ public class MiniGameEvent14 extends MiniGameEvent
 				}
 				else if(event.getEntity() instanceof Sheep)
 				{
-					player1.getWorld().playSound(event.getEntity().getLocation(), Sound.CAT_MEOW, 1, 1);
+//					player1.getWorld().playSound(event.getEntity().getLocation(), Sound.CAT_MEOW, 1, 1);
 					event.getEntity().setTicksLived(1);
-					new Cooldown(5, player1, true);
+					new Cooldown(3, player1, true);
 					player1.getWorld().createExplosion(event.getEntity().getLocation(), 4F, false);
 				}
 			}
@@ -73,7 +74,7 @@ public class MiniGameEvent14 extends MiniGameEvent
 		{
 			if(event.getPacketType() == PacketType.Play.Server.NAMED_SOUND_EFFECT)
 			{
-				if(new WrapperPlayServerNamedSoundEffect(event.getPacket()).getSoundName().contains("sheep"))
+				if(new WrapperPlayServerNamedSoundEffect(event.getPacket()).getSoundEffect().toString().contains("SHEEP"))
 				{
 					event.setCancelled(true);
 				}
@@ -90,8 +91,16 @@ public class MiniGameEvent14 extends MiniGameEvent
 					packet.setZ(entity.getZ());
 					packet.setPitch(entity.getHeadPitch());
 					packet.setPlayerUUID(event.getPlayer().getUniqueId());
-					packet.setMetadata(WrappedDataWatcher.getEntityWatcher(event.getPlayer()));
+//					packet.setMetadata(WrappedDataWatcher.getEntityWatcher(event.getPlayer()));
+					WrappedDataWatcher data = WrappedDataWatcher.getEntityWatcher(event.getPlayer());
+					data.setObject(new WrappedDataWatcherObject(13, Registry.get(Byte.class)), (byte)0x00);
+					packet.setMetadata(data);
 					packet.sendPacket(event.getPlayer());
+					//TODO 스킨 모자안보이는것 테스트예정
+//					WrapperPlayServerEntityMetadata em = new WrapperPlayServerEntityMetadata();
+//					em.setEntityID(entity.getEntityID());
+//					em.setMetadata(WrappedDataWatcher.getEntityWatcher(event.getPlayer()).getWatchableObjects());
+//					em.sendPacket(event.getPlayer());
 					event.setCancelled(true);
 				}
 			}

@@ -11,16 +11,16 @@ public enum MiniGame
 {
 	달리기, 모루피하기, 등반, 눈치, 땅파기, 꼬리피하기, 땅따먹기, 총싸움, 폭탄피하기, 양털찾기, 카트타기, 신호등블록, 경마, 블록부수기, 진짜를찾아라;
 
-	private MiniGameUtil handle;
+	private MiniGameUtil instance;
 
-	public MiniGameUtil getHandle()
+	public MiniGameUtil getInstance()
 	{
-		return handle;
+		return instance;
 	}
 	private void InitializationField()
 	{
-		handle = getLinmaluClsss(MiniGameUtil.class, getMiniGames());
-		Main.getMain().registerEvents(getLinmaluClsss(MiniGameEvent.class, getMiniGames()));
+		instance = getLinmaluClsss(MiniGameUtil.class, getMiniGame());
+		Main.getMain().registerEvents(getLinmaluClsss(MiniGameEvent.class, getMiniGame()));
 	}
 	private <T> T getLinmaluClsss(Class<T> cast, Object ... args)
 	{
@@ -48,7 +48,7 @@ public enum MiniGame
 		}
 		return null;
 	}
-	private MiniGame getMiniGames()
+	private MiniGame getMiniGame()
 	{
 		return valueOf(toString());
 	}
@@ -57,17 +57,14 @@ public enum MiniGame
 
 	public static void initialize()
 	{
-		if(initialize)
-		{
-			return;
-		}
-		else
+		if(!initialize)
 		{
 			initialize = true;
-		}
-		for(MiniGame mg : values())
-		{
-			mg.InitializationField();
+			for(MiniGame mg : values())
+			{
+				mg.InitializationField();
+			}
+			MiniGameUtil.reloadConfig();
 		}
 	}
 }

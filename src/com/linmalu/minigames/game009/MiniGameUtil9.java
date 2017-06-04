@@ -1,16 +1,13 @@
 package com.linmalu.minigames.game009;
 
-import java.io.IOException;
 import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
-import com.linmalu.library.api.LinmaluYamlConfiguration;
-import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
@@ -20,63 +17,49 @@ public class MiniGameUtil9 extends MiniGameUtil
 {
 	public MiniGameUtil9(MiniGame minigame)
 	{
-		super(minigame, new String[]{
-				" = = = = = [ 양 털 찾 기 게 임 ] = = = = =",
-				"양털찾기 게임은 제한시간 안에 양털을 찾는 게임입니다.",
-				"제한시간이 되면 지정되지 않은 양털은 모두 사라집니다.",
-				"떨어지면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."
-		});
+		super(minigame, new String[]{" = = = = = [ 양 털 찾 기 게 임 ] = = = = =", "양털찾기 게임은 제한시간 안에 양털을 찾는 게임입니다.", "제한시간이 되면 지정되지 않은 양털은 모두 사라집니다.", "떨어지면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."});
+		mapDefault = 20;
+		mapPlayer = 0;
+		cooldown = 2;
+	}
+	@Override
+	public MaterialData getChunkData(int y)
+	{
+		if(y == MAP_DEFAULT_HEIGHT)
+		{
+			return new MaterialData(Material.WOOL);
+		}
+		return new MaterialData(Material.AIR);
+		// cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, Material.WOOL);
+		// return cd;
 	}
 	@Override
 	public MapData getMapData(World world)
 	{
-		int size = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-		x1 = z1 = -size;
-		x2 = z2 = size;
-		mapHeight = 10;
-		int time = 5 * 20;
-		cooldown = 2 * 20;
-		topScore = false;
-		score = 0;
-		see = false;
-		return new MapData(world, x1, x2, z1, z2, mapHeight, time, cooldown, topScore, score, see);
-	}
-	@SuppressWarnings("deprecation")
-	@Override
-	public void createGameMap()
-	{
-		MapData md = Main.getMain().getGameData().getMapData();
-		for(int x = md.getX1(); x <= md.getX2(); x++)
-		{
-			for(int z = md.getZ1(); z <= md.getZ2(); z++)
-			{
-				Block block = md.getWorld().getBlockAt(x, md.getMapHeight(), z);
-				block.setType(Material.WOOL);
-				block.setData((byte)0);
-			}
-		}
+		return new MapData(world, x1, z1, x2, z2, mapHeight >= 0 ? mapHeight : MAP_DEFAULT_HEIGHT, 5, cooldown, topScore, score, see);
 	}
 	@Override
 	public void addRandomItem(Player player)
 	{
 	}
-	@Override
-	public void reloadConfig() throws IOException
-	{
-		LinmaluYamlConfiguration config = LinmaluYamlConfiguration.loadConfiguration(file);
-		if(!file.exists())
-		{
-			config.set(MAP_DEFAULT, 5);
-			config.set(MAP_PLAYER, 1);
-		}
-		mapDefault = config.getInt(MAP_DEFAULT);
-		mapPlayer = config.getInt(MAP_PLAYER);
-		config.save(file);
-	}
+	// @Override
+	// public void reload() throws IOException
+	// {
+	// if(!config.contains(minigame.toString()))
+	// {
+	// config.set(getConfigPath(MAP_DEFAULT_SIZE), 5);
+	// config.set(getConfigPath(MAP_PLAYER_SIZE), 1);
+	// }
+	// mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE));
+	// mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE));
+	// x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
+	// time = 5;
+	// cooldown = 2;
+	// }
 	@Override
 	public void startTimer()
 	{
-		new MiniGameChangeBlock9();
+		new MiniGameChangeBlock9(true);
 		data.setTargetNumber(new Random().nextInt(16));
 		for(Player player : data.getLivePlayers())
 		{
@@ -94,22 +77,11 @@ public class MiniGameUtil9 extends MiniGameUtil
 	{
 	}
 	@Override
-	@SuppressWarnings("deprecation")
 	public void endTimer()
 	{
+		new MiniGameChangeBlock9(false);
 		MapData md = data.getMapData();
-		for(int x = md.getX1(); x <= md.getX2(); x++)
-		{
-			for(int z = md.getZ1(); z <= md.getZ2(); z++)
-			{
-				Block block = md.getWorld().getBlockAt(x, md.getMapHeight(), z);
-				if(block.getData() != data.getTargetNumber())
-				{
-					block.setType(Material.AIR);
-				}
-			}
-		}
-		if(md.getTime() > 30)
+		if(md.getTime() > 15)
 		{
 			md.setTime(md.getTime() - 5);
 		}

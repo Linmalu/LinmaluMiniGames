@@ -2,7 +2,6 @@ package com.linmalu.minigames.game012;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Horse;
-import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,13 +27,11 @@ public class MiniGameHorse
 	{
 		Horse h = data.getMapData().getWorld().spawn(player.getLocation(), Horse.class);
 		h.setAge(0);
-		h.setVariant(Variant.UNDEAD_HORSE);
+		h.setAgeLock(true);
 		h.setTamed(true);
 		h.getInventory().setSaddle(new ItemStack(Material.SADDLE));
 		h.setJumpStrength(0);
-		h.setMaxHealth(20);
-		h.setHealth(h.getMaxHealth());
 		data.addEntity(h);
-		h.setPassenger(player);
+		h.addPassenger(player);
 	}
 }

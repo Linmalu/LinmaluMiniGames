@@ -44,7 +44,7 @@ public class MiniGameBombChange8
 			player.removePotionEffect(PotionEffectType.SPEED);
 			if(player.getUniqueId().equals(uuid))
 			{
-				data.getMinigame().getHandle().addRandomItem(player);
+				data.getMinigame().getInstance().addRandomItem(player);
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, data.getMapData().getTime(), 0, false, false), true);
 			}
 		}

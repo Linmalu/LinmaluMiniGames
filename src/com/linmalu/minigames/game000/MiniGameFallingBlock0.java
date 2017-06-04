@@ -31,7 +31,7 @@ public class MiniGameFallingBlock0 implements Runnable
 			else
 			{
 				block.setType(Material.AIR);
-				block.getWorld().spawnFallingBlock(block.getLocation(), Material.STAINED_GLASS, data);
+				block.getWorld().spawnFallingBlock(block.getLocation().add(0.5, 0, 0.5), Material.STAINED_GLASS, data);
 				Bukkit.getScheduler().cancelTask(taskId);
 			}
 		}

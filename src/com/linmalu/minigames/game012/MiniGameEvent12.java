@@ -1,7 +1,7 @@
 package com.linmalu.minigames.game012;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Horse;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -32,7 +32,7 @@ public class MiniGameEvent12 extends MiniGameEvent
 	@EventHandler
 	public void Event(HorseJumpEvent event)
 	{
-		Horse horse = event.getEntity();
+		AbstractHorse horse = event.getEntity();
 		if(checkEvent(horse.getWorld()))
 		{
 			horse.setVelocity(horse.getVelocity().add(horse.getLocation().getDirection().normalize().setY(-1).multiply(event.getPower() != 1 ? event.getPower() * 2 : 8)));

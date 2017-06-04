@@ -29,8 +29,8 @@ public class MiniGameEvent3 extends MiniGameEvent
 			PlayerData pd2 = data.getPlayerData(player2.getUniqueId());
 			if(pd1 != null && pd2 != null && pd1.isLive() && pd2.isLive() && pd1.isCooldown() && pd2.isCooldown())
 			{
-				Material item1 = player1.getItemInHand().getType();
-				Material item2 = player2.getItemInHand().getType();
+				Material item1 = player1.getInventory().getItemInMainHand().getType();
+				Material item2 = player2.getInventory().getItemInMainHand().getType();
 				Material m1 = Material.GOLD_SPADE;
 				Material m2 = Material.GOLD_PICKAXE;
 				Material m3 = Material.GOLD_AXE;

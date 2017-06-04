@@ -8,19 +8,39 @@ import org.bukkit.World;
 public class MapData
 {
 	private World world;
-	private int x1, x2, z1, z2, mapHeight, time, cooldown, score;
+	// private double centerX, centerZ, mapSize;
+	private int x1, z1, x2, z2, mapHeight, time, cooldown, score;
 	private boolean topScore, see;
 
-	public MapData(World world, int x1, int x2, int z1, int z2, int mapHeight, int time, int cooldown, boolean topScore, int score, boolean see)
+	public MapData(World world, int x1, int z1, int x2, int z2, int mapHeight, int time, int cooldown, boolean topScore, int score, boolean see)
 	{
 		this.world = world;
-		this.x1 = x1;
-		this.x2 = x2;
-		this.z1 = z1;
-		this.z2 = z2;
+		if(x1 < x2)
+		{
+			this.x1 = x1;
+			this.x2 = x2;
+		}
+		else
+		{
+			this.x1 = x2;
+			this.x2 = x1;
+		}
+		if(z1 < z2)
+		{
+			this.z1 = z1;
+			this.z2 = z2;
+		}
+		else
+		{
+			this.z1 = z2;
+			this.z2 = z1;
+		}
+		// this.centerX = centerX;
+		// this.centerZ = centerZ;
+		// this.mapSize = mapSize;
 		this.mapHeight = mapHeight;
-		this.time = time;
-		this.cooldown = cooldown;
+		this.time = time * 10;
+		this.cooldown = cooldown * 10;
 		this.topScore = topScore;
 		this.score = score;
 		this.see = see;
@@ -33,18 +53,30 @@ public class MapData
 	{
 		return x1;
 	}
-	public int getX2()
-	{
-		return x2;
-	}
 	public int getZ1()
 	{
 		return z1;
+	}
+	public int getX2()
+	{
+		return x2;
 	}
 	public int getZ2()
 	{
 		return z2;
 	}
+	// public double getCenterX()
+	// {
+	// return centerX;
+	// }
+	// public double getCenterZ()
+	// {
+	// return centerZ;
+	// }
+	// public double getMapSize()
+	// {
+	// return mapSize;
+	// }
 	public int getMapHeight()
 	{
 		return mapHeight;
@@ -73,17 +105,30 @@ public class MapData
 	{
 		return see;
 	}
-	public Location getRandomLocation(int size)
+	public Location getRandomLocation()
 	{
-		return getRandomLocation(size, 0, 0);
+		return getRandomLocation(0, 0);
 	}
-	public Location getRandomLocation(int size, Location loc)
+	public Location getRandomLocation(Location loc)
 	{
-		return getRandomLocation(size, loc.getYaw(), loc.getPitch());
+		return getRandomLocation(loc.getYaw(), loc.getPitch());
 	}
-	public Location getRandomLocation(int size, float yaw, float pitch)
+	public Location getRandomLocation(float yaw, float pitch)
 	{
 		Random ran = new Random();
-		return new Location(world, ran.nextInt(x2 - x1 + 1 - size * 2) + x1 + 0.5 + size, mapHeight, ran.nextInt(z2 - z1 + 1 - size * 2) + z1 + 0.5 + size, yaw, pitch);
+		double x = ran.nextInt(x2 - x1 + 1) + x1 + 0.5D;
+		double z = ran.nextInt(z2 - z1 + 1) + z1 + 0.5D;
+		return new Location(world, x, mapHeight + 1, z, yaw, pitch);
+	}
+	public Location getRandomBlock()
+	{
+		Random ran = new Random();
+		double x = ran.nextInt(x2 - x1 + 1) + x1 + 0.5D;
+		double z = ran.nextInt(z2 - z1 + 1) + z1 + 0.5D;
+		return new Location(world, x, mapHeight, z);
+//		Random ran = new Random();
+//		double x = ran.nextInt((int)mapSize * 2 + 1) - mapSize + 0.5;
+//		double z = ran.nextInt((int)mapSize * 2 + 1) - mapSize + 0.5;
+//		return new Location(world, x, mapHeight, z);
 	}
 }

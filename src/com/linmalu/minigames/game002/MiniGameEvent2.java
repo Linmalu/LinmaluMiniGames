@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
@@ -38,7 +39,7 @@ public class MiniGameEvent2 extends MiniGameEvent
 		{
 			new MiniGameBreakBlock2(block);
 			event.setCancelled(false);
-			minigame.getHandle().addRandomItem(player);
+			minigame.getInstance().addRandomItem(player);
 		}
 	}
 	@EventHandler
@@ -56,9 +57,9 @@ public class MiniGameEvent2 extends MiniGameEvent
 	{
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && event.getHand() == EquipmentSlot.HAND && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
-			minigame.getHandle().useItem(player, true, 0);
+			minigame.getInstance().useItem(player, true, 0);
 		}
 	}
 }

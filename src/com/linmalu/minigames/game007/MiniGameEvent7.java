@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import com.linmalu.minigames.data.Cooldown;
@@ -75,9 +76,9 @@ public class MiniGameEvent7 extends MiniGameEvent
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
 		ItemStack item = event.getItem();
-		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && pd.isSkill() && pd.isCooldown() && item != null && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && pd.isSkill() && pd.isCooldown() && item != null && event.getHand() == EquipmentSlot.HAND && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
-			minigame.getHandle().useItem(player, false, 1);
+			minigame.getInstance().useItem(player, false, 1);
 		}
 	}
 }

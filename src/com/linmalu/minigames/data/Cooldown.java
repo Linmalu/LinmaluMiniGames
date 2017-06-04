@@ -20,7 +20,7 @@ public class Cooldown implements Runnable
 
 	public Cooldown(int time, Player player, boolean invisivilty)
 	{
-		this.time = time * 20;
+		this.time = time * 10;
 		this.player = player;
 		this.invisivilty = invisivilty;
 		pd = data.getPlayerData(player.getUniqueId());
@@ -37,18 +37,18 @@ public class Cooldown implements Runnable
 		{
 			pd.setSkill(false);
 		}
-		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 1L);
+		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 2L);
 	}
 	public void run()
 	{
 		if(data.isGame2() && pd.isLive() && time >= 0 && (invisivilty || (pd.isCooldown() && !invisivilty)))
 		{
-			if(invisivilty && time % 20 == 0)
+			if(invisivilty && time % 10 == 0)
 			{
 				player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 40, 0, false, false), true);
 			}
-			player.setLevel(time / 20);
-			player.setExp(time % 20 * 0.05F);
+			player.setLevel(time / 10);
+			player.setExp(time % 10 * 0.1F);
 			time--;
 		}
 		else

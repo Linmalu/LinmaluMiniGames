@@ -31,7 +31,7 @@ public class MiniGameEvent5 extends MiniGameEvent
 		{
 			if(event.getPacketType() == PacketType.Play.Server.NAMED_SOUND_EFFECT)
 			{
-				if(new WrapperPlayServerNamedSoundEffect(event.getPacket()).getSoundName().contains("sheep"))
+				if(new WrapperPlayServerNamedSoundEffect(event.getPacket()).getSoundEffect().toString().contains("sheep"))
 				{
 					event.setCancelled(true);
 				}

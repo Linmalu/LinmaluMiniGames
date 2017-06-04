@@ -1,25 +1,72 @@
 package com.linmalu.minigames.data;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+import com.linmalu.library.api.LinmaluConfig;
 import com.linmalu.minigames.Main;
 
 public class PlayerData
 {
+	private static final LinmaluConfig config = new LinmaluConfig(new File(Main.getMain().getDataFolder(), "players.yml"));
+
+	public static PlayerData getPlayerData(UUID uuid)
+	{
+		if(config.isSet(uuid.toString()))
+		{
+			PlayerData pd = new PlayerData();
+			pd.uuid = uuid;
+			try
+			{
+				pd.gm = GameMode.valueOf(config.getString(uuid.toString() + ".gm"));
+			}
+			catch(Exception e)
+			{
+				pd.gm = GameMode.SURVIVAL;
+			}
+			pd.allowFlight = config.getBoolean(uuid.toString() + ".allowFlight", false);
+			pd.flying = config.getBoolean(uuid.toString() + ".flying", false);
+			pd.maxHealth = config.getDouble(uuid.toString() + ".maxHealth", 20D);
+			pd.health = config.getDouble(uuid.toString() + ".health", 20D);
+			pd.healthScale = config.getDouble(uuid.toString() + ".healthScale", 20D);
+			pd.level = config.getInt(uuid.toString() + ".level", 0);
+			pd.exp = (float)config.getDouble(uuid.toString() + ".exp", 0D);
+			pd.food = config.getInt(uuid.toString() + ".food", 20);
+			World w = Bukkit.getWorld(config.getString(uuid.toString() + ".world", "world"));
+			if(w == null)
+			{
+				w = Bukkit.getWorlds().get(0);
+			}
+			pd.loc = config.getVector(uuid.toString() + ".loc", w.getSpawnLocation().toVector()).toLocation(w);
+			List<ItemStack> inv = config.getListData(uuid.toString() + ".armors");
+			pd.armors = inv.toArray(new ItemStack[inv.size()]);
+			inv = config.getListData(uuid.toString() + ".items");
+			pd.items = inv.toArray(new ItemStack[inv.size()]);
+			return pd;
+		}
+		return null;
+	}
+
 	private UUID uuid;
 	private String name;
 	private boolean live;
 	private GameMode gm;
 	private boolean allowFlight;
 	private boolean flying;
+	private float flySpeed;
+	private float walkSpeed;
 	private double maxHealth;
 	private double health;
 	private double healthScale;
@@ -35,6 +82,9 @@ public class PlayerData
 	private boolean cooldown;
 	private boolean observer;
 
+	private PlayerData()
+	{
+	}
 	public PlayerData(Player player, int number)
 	{
 		uuid = player.getUniqueId();
@@ -43,9 +93,11 @@ public class PlayerData
 		gm = player.getGameMode();
 		allowFlight = player.getAllowFlight();
 		flying = player.isFlying();
-		maxHealth = player.getMaxHealth();
-		health = player.getHealth();
+		flySpeed = player.getFlySpeed();
+		walkSpeed = player.getWalkSpeed();
 		healthScale = player.getHealthScale();
+		maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+		health = player.getHealth();
 		level = player.getLevel();
 		exp = player.getExp();
 		food = player.getFoodLevel();
@@ -58,6 +110,28 @@ public class PlayerData
 		cooldown = true;
 		observer = false;
 	}
+	public void save()
+	{
+		if(!config.isSet(uuid.toString()))
+		{
+			config.set(uuid.toString() + ".name", name);
+			config.set(uuid.toString() + ".gm", gm.toString());
+			config.set(uuid.toString() + ".allowFlight", allowFlight);
+			config.set(uuid.toString() + ".flying", flying);
+			config.set(uuid.toString() + ".flySpeed", flySpeed);
+			config.set(uuid.toString() + ".walkSpeed", walkSpeed);
+			config.set(uuid.toString() + ".healthScale", healthScale);
+			config.set(uuid.toString() + ".maxHealth", maxHealth);
+			config.set(uuid.toString() + ".health", health);
+			config.set(uuid.toString() + ".level", level);
+			config.set(uuid.toString() + ".exp", exp);
+			config.set(uuid.toString() + ".food", food);
+			config.set(uuid.toString() + ".world", loc.getWorld().getName());
+			config.set(uuid.toString() + ".loc", loc.toVector());
+			config.set(uuid.toString() + ".armors", Arrays.asList(armors));
+			config.set(uuid.toString() + ".items", Arrays.asList(items));
+		}
+	}
 	public void setPlayer()
 	{
 		Player player = Bukkit.getPlayer(uuid);
@@ -66,24 +140,29 @@ public class PlayerData
 			gm = player.getGameMode();
 			allowFlight = player.getAllowFlight();
 			flying = player.isFlying();
-			maxHealth = player.getMaxHealth();
-			health = player.getHealth();
 			healthScale = player.getHealthScale();
+			maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+			health = player.getHealth();
 			level = player.getLevel();
 			exp = player.getExp();
 			food = player.getFoodLevel();
 			loc = player.getLocation();
 			armors = player.getInventory().getArmorContents();
 			items = player.getInventory().getContents();
-			player.setMaxHealth(20);
-			player.setHealth(20);
-			player.setHealthScale(20);
-			player.setFoodLevel(20);
-			player.setHealth(player.getMaxHealth());
-			player.getInventory().clear();
-			player.getInventory().setArmorContents(null);
 			player.setGameMode(GameMode.SURVIVAL);
 			player.setAllowFlight(false);
+			player.setFlying(false);
+			player.setFlySpeed(0.1F);
+			player.setWalkSpeed(0.2F);
+			player.setHealthScale(20);
+			player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+			player.setHealth(20);
+			player.setLevel(0);
+			player.setExp(0);
+			player.setFoodLevel(20);
+			player.getInventory().setArmorContents(null);
+			player.getInventory().clear();
+			save();
 		}
 	}
 	public void resetPlayer()
@@ -108,20 +187,20 @@ public class PlayerData
 			player.setGameMode(gm);
 			player.setAllowFlight(allowFlight);
 			player.setFlying(flying);
-			player.setMaxHealth(maxHealth);
-			player.setHealth(health);
 			player.setHealthScale(healthScale);
+			player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
+			player.setHealth(health < maxHealth ? health : maxHealth);
 			player.setLevel(level);
 			player.setExp(exp);
 			player.setFoodLevel(food);
 			player.setFallDistance(0);
 			player.leaveVehicle();
 			player.teleport(loc);
+			config.remove(uuid.toString());
 			if(!Main.getMain().getGameData().isResourcePack())
 			{
 				player.setResourcePack(Main.RESOURCEPACK_DEFAULT);
 			}
-
 		}
 	}
 	public String getName()

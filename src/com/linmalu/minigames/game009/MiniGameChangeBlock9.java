@@ -11,7 +11,7 @@ import com.linmalu.minigames.data.MapData;
 @SuppressWarnings("deprecation")
 public class MiniGameChangeBlock9
 {
-	public MiniGameChangeBlock9()
+	public MiniGameChangeBlock9(boolean random)
 	{
 		MapData md = Main.getMain().getGameData().getMapData();
 		for(int x = md.getX1(); x <= md.getX2(); x++)
@@ -20,9 +20,16 @@ public class MiniGameChangeBlock9
 			{
 				Block block = md.getWorld().getBlockAt(x, md.getMapHeight(), z);
 				{
-					block.setType(Material.WOOL);
-					int r = new Random().nextInt(16);
-					block.setData((byte)r);
+					if(random)
+					{
+						block.setType(Material.WOOL);
+						int r = new Random().nextInt(16);
+						block.setData((byte)r);
+					}
+					else if(block.getData() != Main.getMain().getGameData().getTargetNumber())
+					{
+						block.setType(Material.AIR);
+					}
 				}
 			}
 		}

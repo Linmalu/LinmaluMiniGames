@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.ItemSpawnEvent;
 
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
@@ -31,14 +30,6 @@ public class MiniGameEvent1 extends MiniGameEvent
 					data.diePlayer(player.getUniqueId());
 				}
 			}
-		}
-	}
-	@EventHandler
-	public void Event(ItemSpawnEvent event)
-	{
-		if(checkEvent(event.getEntity().getWorld()))
-		{
-			event.setCancelled(true);
 		}
 	}
 	@EventHandler

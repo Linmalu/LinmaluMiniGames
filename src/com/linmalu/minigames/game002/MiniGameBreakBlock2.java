@@ -27,7 +27,7 @@ public class MiniGameBreakBlock2 implements Runnable
 			block = block.getRelative(BlockFace.UP);
 			if(!block.isEmpty())
 			{
-				block.getWorld().spawnFallingBlock(block.getLocation(), block.getType(), block.getData());
+				block.getWorld().spawnFallingBlock(block.getLocation().add(0.5, 0, 0.5), block.getType(), block.getData());
 				block.setType(Material.AIR);
 			}
 		}

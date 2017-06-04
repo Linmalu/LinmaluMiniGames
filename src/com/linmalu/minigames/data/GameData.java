@@ -2,22 +2,26 @@ package com.linmalu.minigames.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.Team.Option;
+import org.bukkit.scoreboard.Team.OptionStatus;
 
-import com.linmalu.library.api.LinmaluActionbar;
 import com.linmalu.library.api.LinmaluTellraw;
 import com.linmalu.library.api.LinmaluTitle;
 import com.linmalu.minigames.Main;
@@ -25,13 +29,14 @@ import com.linmalu.minigames.api.event.LinmaluMiniGamesEndEvent;
 
 public class GameData
 {
+	private final BossBar bar = Bukkit.createBossBar(Main.getMain().getTitle(), BarColor.WHITE, BarStyle.SOLID);
 	private boolean game1 = false;
 	private boolean game2 = false;
 	private boolean resourcePack = true;
 	private MiniGame minigame;
 	private Scoreboard scoreboard;
 	private MapData mapData;
-	private HashMap<UUID, PlayerData> restorePlayers = new HashMap<>();
+	// private HashMap<UUID, PlayerData> restorePlayers = new HashMap<>();
 	private HashMap<UUID, PlayerData> players = new HashMap<>();
 	private ArrayList<Entity> entitys = new ArrayList<>();
 	private UUID targetPlayer;
@@ -42,41 +47,46 @@ public class GameData
 		game1 = true;
 		game2 = false;
 		this.minigame = minigame;
+		bar.setVisible(true);
 		scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-		Bukkit.broadcastMessage(ChatColor.GREEN + " = = = = = [ Linmalu MiniGames ] = = = = =");
-		Bukkit.broadcastMessage(ChatColor.GREEN + "미니게임버전 : " + ChatColor.YELLOW + Main.getMain().getDescription().getVersion());
-		Bukkit.broadcastMessage(ChatColor.YELLOW + "제작자 : " + ChatColor.AQUA + "린마루(Linmalu)" + ChatColor.WHITE + " - http://blog.linmalu.com");
-		Bukkit.broadcastMessage(ChatColor.YELLOW + "서버리소스팩이 켜져있다면 미니게임용 리소스팩이 적용됩니다.");
+		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.GREEN + " = = = = = [ Linmalu MiniGames ] = = = = =");
+		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.GREEN + "서버버전 : " + ChatColor.YELLOW + Bukkit.getBukkitVersion());
+		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.GREEN + "미니게임버전 : " + ChatColor.YELLOW + Main.getMain().getDescription().getVersion());
+		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "제작자 : " + ChatColor.AQUA + "린마루(Linmalu)" + ChatColor.WHITE + " - http://blog.linmalu.com");
+		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "서버리소스팩이 켜져있다면 미니게임용 리소스팩이 적용됩니다.");
 		int number = 0;
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
 			LinmaluTellraw.sendCmd(player, "/linmaluminigames 취소", ChatColor.GOLD + "미니게임에 참가를 원하지 않을 경우 클릭하세요.");
 			LinmaluTellraw.sendCmd(player, "/linmaluminigames 관전", ChatColor.GOLD + "미니게임을 구경만 원할 경우 클릭하세요.");
 			players.put(player.getUniqueId(), new PlayerData(player, number++));
-			LinmaluTitle.sendMessage(player, ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + minigame.toString() + "게임", 20, 200, 20);
-			LinmaluActionbar.sendMessage(player, ChatColor.YELLOW + "게임맵으로 이동까지 " + ChatColor.GOLD + "10" + ChatColor.YELLOW + "초전");
+			// LinmaluTitle.sendMessage(player, ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + minigame.toString() + "게임", 20, 200, 20);
+			// LinmaluActionbar.sendMessage(player, ChatColor.YELLOW + "게임맵으로 이동까지 " + ChatColor.GOLD + "10" + ChatColor.YELLOW + "초전");
 		}
-		new CreateWorldTimer();
+		new GameTimer();
 	}
 	public void GameStop()
 	{
 		game1 = false;
 		game2 = false;
+		bar.removeAll();
+		bar.setVisible(false);
 		for(Entity en : entitys)
 		{
 			en.eject();
 			en.remove();
 		}
-		for(UUID uuid : players.keySet())
-		{
-			players.get(uuid).resetPlayer();
-		}
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
+			PlayerData pd = PlayerData.getPlayerData(player.getUniqueId());
+			if(pd != null)
+			{
+				pd.resetPlayer();
+			}
 			if(player.getWorld().getName().equals(Main.WORLD_NAME))
 			{
 				player.kickPlayer("맵삭제를 위해 강퇴됩니다.");
-				restorePlayers.put(player.getUniqueId(), players.get(player.getUniqueId()));
+				// restorePlayers.put(player.getUniqueId(), players.get(player.getUniqueId()));
 			}
 		}
 		if(mapData != null)
@@ -110,7 +120,7 @@ public class GameData
 	}
 	public Location teleportPlayer(Player player)
 	{
-		Location loc = mapData.getRandomLocation(1, player.getLocation());
+		Location loc = mapData.getRandomLocation(player.getLocation());
 		for(int y = mapData.getWorld().getMaxHeight(); y >= 0; y--)
 		{
 			if(!mapData.getWorld().getBlockAt(loc.getBlockX(), y, loc.getBlockZ()).isEmpty())
@@ -182,15 +192,15 @@ public class GameData
 			}
 		}
 	}
-	public void restorePlayer(Player player)
-	{
-		PlayerData pd = restorePlayers.get(player.getUniqueId());
-		if(pd != null)
-		{
-			pd.resetPlayer();
-			restorePlayers.remove(player.getUniqueId());
-		}
-	}
+	// public void restorePlayer(Player player)
+	// {
+	// PlayerData pd = restorePlayers.get(player.getUniqueId());
+	// if(pd != null)
+	// {
+	// pd.resetPlayer();
+	// restorePlayers.remove(player.getUniqueId());
+	// }
+	// }
 	public void setGamePlayer()
 	{
 		Team live = scoreboard.getTeam("생존자");
@@ -202,7 +212,7 @@ public class GameData
 		live.setCanSeeFriendlyInvisibles(mapData.isSee());
 		if(!mapData.isSee())
 		{
-			live.setNameTagVisibility(NameTagVisibility.NEVER);
+			live.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
 		}
 		Team die = scoreboard.getTeam("탈락자");
 		if(die == null)
@@ -241,7 +251,7 @@ public class GameData
 			{
 				die.addEntry(player.getName());
 			}
-			minigame.getHandle().moveWorld(player);
+			minigame.getInstance().moveWorld(player);
 			setScoreboard(player);
 			if(!isResourcePack())
 			{
@@ -266,6 +276,10 @@ public class GameData
 				diePlayer(uuid);
 			}
 		}
+	}
+	public BossBar getBossbar()
+	{
+		return bar;
 	}
 	public boolean isGame1()
 	{
@@ -318,7 +332,7 @@ public class GameData
 	{
 		this.mapData = mapData;
 	}
-	public ArrayList<Player> getPlayers()
+	public List<Player> getPlayers()
 	{
 		ArrayList<Player> list = new ArrayList<>();
 		for(UUID uuid : players.keySet())
@@ -331,7 +345,7 @@ public class GameData
 		}
 		return list;
 	}
-	public ArrayList<Player> getLivePlayers()
+	public List<Player> getLivePlayers()
 	{
 		ArrayList<Player> list = new ArrayList<>();
 		for(UUID uuid : players.keySet())
@@ -372,7 +386,7 @@ public class GameData
 	{
 		entitys.add(entity);
 	}
-	public ArrayList<Entity> getEntitys()
+	public List<Entity> getEntitys()
 	{
 		return entitys;
 	}
