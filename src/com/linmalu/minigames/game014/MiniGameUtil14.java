@@ -28,30 +28,11 @@ public class MiniGameUtil14 extends MiniGameUtil
 			return new MaterialData(Material.WOOD);
 		}
 		return new MaterialData(Material.AIR);
-		// cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, Material.WOOD);
-		// return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
 	{
 	}
-	// @Override
-	// public void reload() throws IOException
-	// {
-	// mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE) , 10);
-	// mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE), 2);
-	// timeDefault = config.getInt(getConfigPath(TIME_DEFAULT), 180);
-	// timePlayer = config.getInt(getConfigPath(TIME_PLAYER), 10);
-	// x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-	// time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-	// topScore = true;
-	// see = true;
-	// config.remove(minigame.toString());
-	// config.set(getConfigPath(MAP_DEFAULT_SIZE), mapDefault);
-	// config.set(getConfigPath(MAP_PLAYER_SIZE), mapPlayer);
-	// config.set(getConfigPath(TIME_DEFAULT), timeDefault);
-	// config.set(getConfigPath(TIME_PLAYER), timePlayer);
-	// }
 	@Override
 	public void startTimer()
 	{

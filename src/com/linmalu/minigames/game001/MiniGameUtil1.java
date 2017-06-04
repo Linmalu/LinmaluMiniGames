@@ -30,22 +30,11 @@ public class MiniGameUtil1 extends MiniGameUtil
 			return new MaterialData(Material.IRON_BLOCK);
 		}
 		return new MaterialData(Material.AIR);
-//		cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, Material.IRON_BLOCK);
-//		return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
 	{
 	}
-//	@Override
-//	public void reload()
-//	{
-//		mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE), 5);
-//		mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE), 1);
-//		x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-//		mapHeight = 30;
-//		time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-//	}
 	@Override
 	public void startTimer()
 	{

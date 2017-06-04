@@ -24,26 +24,11 @@ public class MiniGameUtil7 extends MiniGameUtil
 	public MaterialData getChunkData(int y)
 	{
 		return new MaterialData(Material.AIR);
-		// return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
 	{
 	}
-	// @Override
-	// public void reload() throws IOException
-	// {
-	// if(!config.contains(minigame.toString()))
-	// {
-	// config.set(getConfigPath(TIME_DEFAULT), 180);
-	// config.set(getConfigPath(TIME_PLAYER), 10);
-	// }
-	// timeDefault = config.getInt(getConfigPath(TIME_DEFAULT));
-	// timePlayer = config.getInt(getConfigPath(TIME_PLAYER));
-	// time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-	// topScore = true;
-	// see = true;
-	// }
 	@Override
 	public void startTimer()
 	{

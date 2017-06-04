@@ -30,8 +30,6 @@ public class MiniGameUtil9 extends MiniGameUtil
 			return new MaterialData(Material.WOOL);
 		}
 		return new MaterialData(Material.AIR);
-		// cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, Material.WOOL);
-		// return cd;
 	}
 	@Override
 	public MapData getMapData(World world)
@@ -42,20 +40,6 @@ public class MiniGameUtil9 extends MiniGameUtil
 	public void addRandomItem(Player player)
 	{
 	}
-	// @Override
-	// public void reload() throws IOException
-	// {
-	// if(!config.contains(minigame.toString()))
-	// {
-	// config.set(getConfigPath(MAP_DEFAULT_SIZE), 5);
-	// config.set(getConfigPath(MAP_PLAYER_SIZE), 1);
-	// }
-	// mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE));
-	// mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE));
-	// x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-	// time = 5;
-	// cooldown = 2;
-	// }
 	@Override
 	public void startTimer()
 	{

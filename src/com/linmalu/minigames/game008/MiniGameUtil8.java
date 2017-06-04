@@ -29,8 +29,6 @@ public class MiniGameUtil8 extends MiniGameUtil
 			return new MaterialData(Material.REDSTONE_BLOCK);
 		}
 		return new MaterialData(Material.AIR);
-		// cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, Material.REDSTONE_BLOCK);
-		// return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
@@ -38,24 +36,6 @@ public class MiniGameUtil8 extends MiniGameUtil
 		GameItem.setItemStack(player, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄);
 		player.getInventory().setHelmet(GameItem.폭탄.getItemStack());
 	}
-	// @Override
-	// public void reload() throws IOException
-	// {
-	// if(!config.contains(minigame.toString()))
-	// {
-	// config.set(getConfigPath(MAP_DEFAULT_SIZE), 5);
-	// config.set(getConfigPath(MAP_PLAYER_SIZE), 1);
-	// config.set(getConfigPath(TIME_DEFAULT), 10);
-	// config.set(getConfigPath(TIME_PLAYER), 0);
-	// }
-	// mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE));
-	// mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE));
-	// timeDefault = config.getInt(getConfigPath(TIME_DEFAULT));
-	// timePlayer = config.getInt(getConfigPath(TIME_PLAYER));
-	// x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-	// time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-	// cooldown = 3;
-	// }
 	@Override
 	public void startTimer()
 	{

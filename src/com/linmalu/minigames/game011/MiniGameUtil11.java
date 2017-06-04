@@ -26,26 +26,11 @@ public class MiniGameUtil11 extends MiniGameUtil
 			return new MaterialData(Material.WOOL, (byte)5);
 		}
 		return new MaterialData(Material.AIR);
-		// cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, new MaterialData(Material.WOOL, (byte)5));
-		// return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
 	{
 	}
-	// @Override
-	// public void reload() throws IOException
-	// {
-	// if(!config.contains(minigame.toString()))
-	// {
-	// config.set(getConfigPath(MAP_DEFAULT_SIZE), 10);
-	// config.set(getConfigPath(MAP_PLAYER_SIZE), 2);
-	// }
-	// mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE));
-	// mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE));
-	// x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-	// time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-	// }
 	@Override
 	public void startTimer()
 	{

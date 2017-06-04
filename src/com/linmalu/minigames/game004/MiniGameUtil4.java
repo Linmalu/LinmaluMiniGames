@@ -29,11 +29,6 @@ public class MiniGameUtil4 extends MiniGameUtil
 			return new MaterialData(Material.SNOW_BLOCK);
 		}
 		return new MaterialData(Material.AIR);
-//		for(int y = MAP_DEFAULT_HEIGHT; y < mapHeight; y += 3)
-//		{
-//			cd.setRegion(0, y, 0, 16, y + 1, 16, Material.SNOW_BLOCK);
-//		}
-//		return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
@@ -63,21 +58,6 @@ public class MiniGameUtil4 extends MiniGameUtil
 				break;
 		}
 	}
-//	@Override
-//	public void reload() throws IOException
-//	{
-//		if(!config.contains(minigame.toString()))
-//		{
-//			config.set(getConfigPath(MAP_DEFAULT_SIZE), 10);
-//			config.set(getConfigPath(MAP_PLAYER_SIZE), 2);
-//			config.set(getConfigPath(MAP_HEIGHT), 3);
-//		}
-//		mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE));
-//		mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE));
-//		mapHeight = config.getInt(getConfigPath(MAP_HEIGHT)) * 3 + MAP_DEFAULT_HEIGHT;
-//		x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-//		time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-//	}
 	@Override
 	public void startTimer()
 	{

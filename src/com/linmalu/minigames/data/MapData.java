@@ -8,7 +8,6 @@ import org.bukkit.World;
 public class MapData
 {
 	private World world;
-	// private double centerX, centerZ, mapSize;
 	private int x1, z1, x2, z2, mapHeight, time, cooldown, score;
 	private boolean topScore, see;
 
@@ -35,9 +34,6 @@ public class MapData
 			this.z1 = z2;
 			this.z2 = z1;
 		}
-		// this.centerX = centerX;
-		// this.centerZ = centerZ;
-		// this.mapSize = mapSize;
 		this.mapHeight = mapHeight;
 		this.time = time * 10;
 		this.cooldown = cooldown * 10;
@@ -65,18 +61,6 @@ public class MapData
 	{
 		return z2;
 	}
-	// public double getCenterX()
-	// {
-	// return centerX;
-	// }
-	// public double getCenterZ()
-	// {
-	// return centerZ;
-	// }
-	// public double getMapSize()
-	// {
-	// return mapSize;
-	// }
 	public int getMapHeight()
 	{
 		return mapHeight;
@@ -126,9 +110,5 @@ public class MapData
 		double x = ran.nextInt(x2 - x1 + 1) + x1 + 0.5D;
 		double z = ran.nextInt(z2 - z1 + 1) + z1 + 0.5D;
 		return new Location(world, x, mapHeight, z);
-//		Random ran = new Random();
-//		double x = ran.nextInt((int)mapSize * 2 + 1) - mapSize + 0.5;
-//		double z = ran.nextInt((int)mapSize * 2 + 1) - mapSize + 0.5;
-//		return new Location(world, x, mapHeight, z);
 	}
 }

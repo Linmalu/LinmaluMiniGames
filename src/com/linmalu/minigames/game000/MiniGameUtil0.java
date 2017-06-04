@@ -24,21 +24,11 @@ public class MiniGameUtil0 extends MiniGameUtil
 			return new MaterialData(Material.STAINED_GLASS);
 		}
 		return new MaterialData(Material.AIR);
-		// cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, Material.STAINED_GLASS);
-		// return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
 	{
 	}
-	// @Override
-	// public void reload()
-	// {
-	// mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE), 20);
-	// mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE), 2);
-	// x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-	// time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-	// }
 	@Override
 	public void startTimer()
 	{

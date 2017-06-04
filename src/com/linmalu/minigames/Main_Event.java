@@ -111,7 +111,6 @@ public class Main_Event implements Listener
 			{
 				pd.resetPlayer();
 			}
-			// data.restorePlayer(player);
 		}
 		if(data.isResourcePack())
 		{

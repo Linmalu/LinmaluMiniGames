@@ -36,7 +36,6 @@ public class GameData
 	private MiniGame minigame;
 	private Scoreboard scoreboard;
 	private MapData mapData;
-	// private HashMap<UUID, PlayerData> restorePlayers = new HashMap<>();
 	private HashMap<UUID, PlayerData> players = new HashMap<>();
 	private ArrayList<Entity> entitys = new ArrayList<>();
 	private UUID targetPlayer;
@@ -50,6 +49,7 @@ public class GameData
 		bar.setVisible(true);
 		scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.GREEN + " = = = = = [ Linmalu MiniGames ] = = = = =");
+		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.GREEN + "미니게임 : " + ChatColor.YELLOW + minigame.toString());
 		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.GREEN + "서버버전 : " + ChatColor.YELLOW + Bukkit.getBukkitVersion());
 		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.GREEN + "미니게임버전 : " + ChatColor.YELLOW + Main.getMain().getDescription().getVersion());
 		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "제작자 : " + ChatColor.AQUA + "린마루(Linmalu)" + ChatColor.WHITE + " - http://blog.linmalu.com");
@@ -60,8 +60,6 @@ public class GameData
 			LinmaluTellraw.sendCmd(player, "/linmaluminigames 취소", ChatColor.GOLD + "미니게임에 참가를 원하지 않을 경우 클릭하세요.");
 			LinmaluTellraw.sendCmd(player, "/linmaluminigames 관전", ChatColor.GOLD + "미니게임을 구경만 원할 경우 클릭하세요.");
 			players.put(player.getUniqueId(), new PlayerData(player, number++));
-			// LinmaluTitle.sendMessage(player, ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + minigame.toString() + "게임", 20, 200, 20);
-			// LinmaluActionbar.sendMessage(player, ChatColor.YELLOW + "게임맵으로 이동까지 " + ChatColor.GOLD + "10" + ChatColor.YELLOW + "초전");
 		}
 		new GameTimer();
 	}
@@ -86,7 +84,6 @@ public class GameData
 			if(player.getWorld().getName().equals(Main.WORLD_NAME))
 			{
 				player.kickPlayer("맵삭제를 위해 강퇴됩니다.");
-				// restorePlayers.put(player.getUniqueId(), players.get(player.getUniqueId()));
 			}
 		}
 		if(mapData != null)
@@ -192,15 +189,6 @@ public class GameData
 			}
 		}
 	}
-	// public void restorePlayer(Player player)
-	// {
-	// PlayerData pd = restorePlayers.get(player.getUniqueId());
-	// if(pd != null)
-	// {
-	// pd.resetPlayer();
-	// restorePlayers.remove(player.getUniqueId());
-	// }
-	// }
 	public void setGamePlayer()
 	{
 		Team live = scoreboard.getTeam("생존자");

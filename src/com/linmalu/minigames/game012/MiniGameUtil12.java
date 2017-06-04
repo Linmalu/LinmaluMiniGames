@@ -21,20 +21,11 @@ public class MiniGameUtil12 extends MiniGameUtil
 	public MaterialData getChunkData(int y)
 	{
 		return new MaterialData(Material.AIR);
-		// return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
 	{
 	}
-	// @Override
-	// public void reload() throws IOException
-	// {
-	// time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-	// topScore = true;
-	// score = 3;
-	// }
-	@Override
 	public void startTimer()
 	{
 		for(int x = 2; x <= 12; x++)

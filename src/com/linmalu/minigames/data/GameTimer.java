@@ -50,7 +50,6 @@ public class GameTimer implements Runnable
 			{
 				endTimer();
 			}
-			// Bukkit.broadcastMessage(type.toString());
 		}
 		else
 		{
@@ -79,8 +78,7 @@ public class GameTimer implements Runnable
 		{
 			case 맵이동:
 			case 게임준비:
-				// TODO 디버깅용으로 시간 변경 : 기본 100
-				maxtime = time = 20;
+				maxtime = time = 100;
 				break;
 			case 게임타이머:
 				time = data.getMapData().getTime();
@@ -150,67 +148,6 @@ public class GameTimer implements Runnable
 		{
 			time++;
 		}
-		// if(data.isGame2())
-		// {
-		// String msg = String.format(ChatColor.YELLOW + "%02d" + ChatColor.GOLD + " : " + ChatColor.YELLOW + "%02d" + ChatColor.GOLD + " : " + ChatColor.YELLOW + "%02d", time / 20 / 60, time / 20 % 60, time % 20 * 5);
-		// float health = 100F;
-		// if(cooldown > 0)
-		// {
-		// msg = String.format(Main.getMain().getTitle() + ChatColor.GOLD + "%02d" + ChatColor.YELLOW + "초", cooldown / 20);
-		// health = cooldown / data.getMapData().getCooldown();
-		// }
-		// else if(timerStart && cooldown == 0)
-		// {
-		// startTimer();
-		// }
-		// else if(timer)
-		// {
-		// health = (float)time / data.getMapData().getTime();
-		// if(time == 0)
-		// {
-		// endTimer();
-		// }
-		// else
-		// {
-		// time--;
-		// }
-		// }
-		// else
-		// {
-		// if(data.getMapData().isTopScore())
-		// {
-		// for(Player player : data.getPlayers())
-		// {
-		// if(data.getPlayerData(player.getUniqueId()).getScore() >= data.getMapData().getScore())
-		// {
-		// endGame(player.getUniqueId());
-		// return;
-		// }
-		// }
-		// }
-		// time++;
-		// }
-		// for(Player player : data.getPlayers())
-		// {
-		// bar.addPlayer(player);
-		// }
-		// bar.setTitle(msg);
-		// bar.setProgress(health);
-		// if(cooldown == 0)
-		// {
-		// data.setObjectiveDisplayName(" " + msg);
-		// runTimer();
-		// }
-		// else
-		// {
-		// cooldown--;
-		// }
-		// }
-		// else
-		// {
-		// Bukkit.getScheduler().cancelTask(taskId);
-		// bar.setVisible(false);
-		// }
 	}
 	private void endTimer()
 	{
@@ -270,28 +207,14 @@ public class GameTimer implements Runnable
 						}
 					}
 				}
-				// else
-				// {
-				// type = TimerType.쿨타임타이머;
-				// setTime(data.getMapData().getCooldown());
-				// data.setObjectiveDisplayName("");
-				// }
 				data.getMinigame().getInstance().endTimer();
 				break;
 			case 쿨타임타이머:
 				if(data.getMapData().getCooldown() > 0)
 				{
 					type = TimerType.게임타이머;
-					// maxtime = time = data.getMapData().getTime();
-					// Bukkit.broadcastMessage("T : " + data.getMapData().getTime() + " / " + maxtime + " / " + time);
-					// setTime(data.getMapData().getCooldown());
-					// data.setObjectiveDisplayName("");
 				}
 				break;
-			// default:
-			// Bukkit.getScheduler().cancelTask(taskId);
-			//// bar.setVisible(false);
-			// break;
 		}
 	}
 	public int getTime()

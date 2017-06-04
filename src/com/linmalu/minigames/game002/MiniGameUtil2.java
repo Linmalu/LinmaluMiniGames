@@ -21,10 +21,6 @@ public class MiniGameUtil2 extends MiniGameUtil
 		mapDefault = 6;
 		mapPlayer = 1;
 		mapHeight = 20;
-//		score = 0;
-		// TODO 확인해야하는곳
-		// topScore = true;
-		// score = mapHeight - MAP_DEFAULT_HEIGHT;
 	}
 	@Override
 	public MaterialData getChunkData(int y)
@@ -34,8 +30,6 @@ public class MiniGameUtil2 extends MiniGameUtil
 			return new MaterialData(Material.QUARTZ_BLOCK);
 		}
 		return new MaterialData(Material.AIR);
-		// cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, Material.QUARTZ_BLOCK);
-		// return cd;
 	}
 	@Override
 	public MapData getMapData(World world)
@@ -64,17 +58,6 @@ public class MiniGameUtil2 extends MiniGameUtil
 				break;
 		}
 	}
-	// @Override
-	// public void reload()
-	// {
-	// mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE), 5);
-	// mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE), 1);
-	// mapHeight = config.getInt(getConfigPath(MAP_HEIGHT), 20) + MAP_DEFAULT_HEIGHT;
-	// x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-	// time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-	// topScore = true;
-	// score = mapHeight - MAP_DEFAULT_HEIGHT;
-	// }
 	@Override
 	public void startTimer()
 	{

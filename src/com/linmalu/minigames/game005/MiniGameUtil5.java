@@ -24,26 +24,11 @@ public class MiniGameUtil5 extends MiniGameUtil
 			return new MaterialData(Material.ENDER_STONE);
 		}
 		return new MaterialData(Material.AIR);
-		// cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, Material.ENDER_STONE);
-		// return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
 	{
 	}
-	// @Override
-	// public void reload() throws IOException
-	// {
-	// if(!config.contains(minigame.toString()))
-	// {
-	// config.set(getConfigPath(MAP_DEFAULT_SIZE), 20);
-	// config.set(getConfigPath(MAP_PLAYER_SIZE), 1);
-	// }
-	// mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE));
-	// mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE));
-	// x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-	// time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-	// }
 	@Override
 	public void startTimer()
 	{

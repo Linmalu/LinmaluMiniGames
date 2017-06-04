@@ -67,7 +67,6 @@ public abstract class MiniGameUtil
 
 	public abstract MaterialData getChunkData(int y);
 	public abstract void addRandomItem(Player player);
-	// public abstract void reload();
 	public abstract void startTimer();
 	public abstract void runTimer(GameTimer timer);
 	public abstract void endTimer();
@@ -75,24 +74,15 @@ public abstract class MiniGameUtil
 	protected final GameData data = Main.getMain().getGameData();
 	protected final MiniGame minigame;
 	protected final String[] msgs;
-	// protected final File file;
-	// protected final LinmaluConfig config;
 	protected int mapDefault, mapPlayer, x1, z1, x2, z2, score, mapHeight, time, timeDefault, timePlayer, cooldown;
-	// protected double centerX, centerZ, mapSize;
 	protected boolean topScore, see;
 
 	public MiniGameUtil(MiniGame minigame, String[] msgs)
 	{
 		this.minigame = minigame;
 		this.msgs = msgs;
-		// file = new File(Main.getMain().getDataFolder(), minigame.toString() + ".yml");
-		// config = new LinmaluConfig(file);
-		// mapDefault = mapPlayer = time = timeDefault = timePlayer = cooldown = score = 0;
 		mapHeight = MAP_DEFAULT_HEIGHT;
 		mapDefault = mapPlayer = score = mapHeight = timeDefault = timePlayer = -1;
-		// centerX = centerZ = 0.5D;
-		// mapSize = 0;
-		// topScore = see = false;
 	}
 	public String getConfigPath(String path)
 	{
@@ -225,7 +215,6 @@ public abstract class MiniGameUtil
 				{
 					throw e;
 				}
-				// int x1, x2, z1, z2;
 				switch(number)
 				{
 					case 0:
@@ -242,16 +231,7 @@ public abstract class MiniGameUtil
 						z1 = 1;
 						z2 = 13;
 						break;
-					// default:
-					// x1 = x2 = z1 = z2 = 0;
-					// break;
 				}
-				// if(x1 != 0 && x2 != 0 && z1 != 0 && z2 != 0)
-				// {
-				// centerX += (x2 - x1) / 2D + x1;
-				// centerZ += (z2 - z1) / 2D + z1;
-				// mapSize = x2 - x1 > z2 - z1 ? (x2 - x1) / 2D : (z2 - z1) / 2D;
-				// }
 			}
 		}
 		catch(Exception e)
@@ -266,7 +246,6 @@ public abstract class MiniGameUtil
 			@Override
 			public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid biome)
 			{
-				// return getChunkData(Bukkit.createChunkData(world), x, z, world.getSeed());
 				ChunkData cd = Bukkit.createChunkData(world);
 				if(minigame == MiniGame.블록부수기)
 				{
@@ -344,11 +323,6 @@ public abstract class MiniGameUtil
 			world.setTime(6000L);
 		}
 		world.setDifficulty(Difficulty.NORMAL);
-		// world.getWorldBorder().setCenter(centerX, centerZ);
-		// if(mapSize > 0)
-		// {
-		// world.getWorldBorder().setSize(mapSize * 2);
-		// }
 		data.setMapData(getMapData(world));
 	}
 	public void moveWorld(Player player)

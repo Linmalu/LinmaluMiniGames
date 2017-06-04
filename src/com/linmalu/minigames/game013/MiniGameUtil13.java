@@ -27,29 +27,6 @@ public class MiniGameUtil13 extends MiniGameUtil
 	public MaterialData getChunkData(int y)
 	{
 		return new MaterialData(Material.AIR);
-		// Random random = new Random(seed);
-		// for(int y = MAP_DEFAULT_HEIGHT; y <= mapHeight; y++)
-		// {
-		// int ran = random.nextInt(blockItems.length);
-		// for(int x = 0; x < 16; x++)
-		// {
-		// for(int z = 0; z < 16; z++)
-		// {
-		// if(y != MAP_DEFAULT_HEIGHT && y != mapHeight && Math.abs(chunkX * 16 + x) % 5 == 2 && Math.abs(chunkZ * 16 + z) % 5 == 2)
-		// {
-		// if(y < mapHeight - 2)
-		// {
-		// cd.setBlock(x, y, z, blockItems[ran].getMaterial());
-		// }
-		// }
-		// else
-		// {
-		// cd.setBlock(x, y, z, Material.BARRIER);
-		// }
-		// }
-		// }
-		// }
-		// return cd;
 	}
 	@Override
 	public void moveWorld(Player player)
@@ -69,16 +46,6 @@ public class MiniGameUtil13 extends MiniGameUtil
 	public void addRandomItem(Player player)
 	{
 	}
-	// @Override
-	// public void reload() throws IOException
-	// {
-	// mapHeight = config.getInt(getConfigPath(MAP_HEIGHT), 50) + MAP_DEFAULT_HEIGHT;
-	// time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-	// topScore = true;
-	// score = mapHeight - 13;
-	// config.remove(minigame.toString());
-	// config.set(getConfigPath(MAP_HEIGHT), mapHeight - MAP_DEFAULT_HEIGHT);
-	// }
 	@Override
 	public void startTimer()
 	{

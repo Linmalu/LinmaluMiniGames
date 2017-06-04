@@ -33,34 +33,11 @@ public class MiniGameUtil6 extends MiniGameUtil
 			return new MaterialData(Material.SNOW_BLOCK);
 		}
 		return new MaterialData(Material.AIR);
-		// cd.setRegion(0, MAP_DEFAULT_HEIGHT, 0, 16, MAP_DEFAULT_HEIGHT + 1, 16, Material.SNOW_BLOCK);
-		// return cd;
 	}
 	@Override
 	public void addRandomItem(Player player)
 	{
 	}
-
-	// @Override
-	// public void reload() throws IOException
-	// {
-	// if(!config.contains(minigame.toString()))
-	// {
-	// config.set(getConfigPath(MAP_DEFAULT_SIZE), 10);
-	// config.set(getConfigPath(MAP_PLAYER_SIZE), 2);
-	// config.set(getConfigPath(TIME_DEFAULT), 180);
-	// config.set(getConfigPath(TIME_PLAYER), 10);
-	// }
-	// mapDefault = config.getInt(getConfigPath(MAP_DEFAULT_SIZE));
-	// mapPlayer = config.getInt(getConfigPath(MAP_PLAYER_SIZE));
-	// timeDefault = config.getInt(getConfigPath(TIME_DEFAULT));
-	// timePlayer = config.getInt(getConfigPath(TIME_PLAYER));
-	// x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-	// time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
-	// topScore = true;
-	// see = true;
-	// }
-
 	@Override
 	public void startTimer()
 	{
