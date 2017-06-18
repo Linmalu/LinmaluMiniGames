@@ -9,8 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.linmalu.library.api.LinmaluActionbar;
 import com.linmalu.library.api.LinmaluRanking;
-import com.linmalu.library.api.LinmaluTitle;
 import com.linmalu.minigames.Main;
 
 public class GameTimer implements Runnable
@@ -65,7 +65,7 @@ public class GameTimer implements Runnable
 			case 게임준비:
 				return ChatColor.GREEN + data.getMinigame().toString() + "게임 시작 " + ChatColor.YELLOW + (time / 10) + ChatColor.GREEN + "초전";
 			case 게임타이머:
-				return String.format(ChatColor.YELLOW + "%02d" + ChatColor.GOLD + " : " + ChatColor.YELLOW + "%02d" + ChatColor.GOLD + " : " + ChatColor.YELLOW + "%02d", time / 10 / 60, time / 10 % 60, time % 10 * 11);
+				return String.format(ChatColor.YELLOW + "%02d" + ChatColor.GOLD + " : " + ChatColor.YELLOW + "%02d" + ChatColor.GOLD + " : " + ChatColor.YELLOW + "%02d", time / 10 / 60, time / 10 % 60, (time % 10) * 11);
 			case 쿨타임타이머:
 				return String.format(ChatColor.GREEN + "게임 재시작 " + ChatColor.YELLOW + "%02d" + ChatColor.GOLD + "초전", time / 10);
 			default:
@@ -78,19 +78,13 @@ public class GameTimer implements Runnable
 		{
 			case 맵이동:
 			case 게임준비:
+				//TODO 디버깅용 시간조절
 				maxtime = time = 100;
+//				maxtime = time = 20;
 				break;
 			case 게임타이머:
-				time = data.getMapData().getTime();
-				if(timer)
-				{
-					score = data.getMapData().getScore();
-					maxtime = time;
-				}
-				else
-				{
-					maxtime = 0;
-				}
+				maxtime = time = data.getMapData().getTime();
+				score = data.getMapData().getScore();
 				data.setGameItem();
 				data.getMinigame().getInstance().startTimer();
 				break;
@@ -102,14 +96,8 @@ public class GameTimer implements Runnable
 	{
 		String message = getMessage();
 		data.getBossbar().setProgress(maxtime > 0D ? (time > maxtime ? 1 : time / (double)maxtime) : 1D);
-		if(time % 10 == 0)
-		{
-			data.getBossbar().setTitle(Main.getMain().getTitle() + message);
-		}
-		data.getPlayers().forEach(player ->
-		{
-			data.getBossbar().addPlayer(player);
-		});
+		data.getBossbar().setTitle(Main.getMain().getTitle() + message);
+		data.getPlayers().forEach(data.getBossbar()::addPlayer);
 		switch(type)
 		{
 			case 맵이동:
@@ -118,13 +106,13 @@ public class GameTimer implements Runnable
 				{
 					data.getPlayers().forEach(player ->
 					{
-						// LinmaluActionbar.sendMessage(player, message);
-						LinmaluTitle.sendMessage(player, Main.getMain().getTitle(), message, 0, 40, 0);
+						LinmaluActionbar.sendMessage(player, message);
+						player.sendTitle(Main.getMain().getTitle(), message, 0, 40, 0);
 					});
 				}
 				break;
 			case 게임타이머:
-				if(!timer && data.getMapData().isTopScore())
+				if(score > 0)
 				{
 					for(Player player : data.getPlayers())
 					{
@@ -167,14 +155,10 @@ public class GameTimer implements Runnable
 				{
 					type = TimerType.쿨타임타이머;
 					time = data.getMapData().getCooldown();
-					data.setObjectiveDisplayName("");
 				}
 				else
 				{
-					timer = false;
-					maxtime = -1;
-					time = 0;
-					if(data.getMapData().isTopScore() && data.getMapData().getScore() == 0)
+					if(data.getMapData().getScore() >= 0)
 					{
 						Map<UUID, Integer> map = new HashMap<>();
 						for(Player player : data.getPlayers())
@@ -196,16 +180,16 @@ public class GameTimer implements Runnable
 								break;
 							}
 						}
-						if(uuid == null)
-						{
-							score = top + 1;
-							data.getScore(ChatColor.YELLOW + "목표점수").setScore(score);
-						}
-						else
+						if(uuid != null && score > 0)
 						{
 							endGame(uuid);
 						}
+						score = top + 1;
+						data.getScore(ChatColor.YELLOW + "목표점수").setScore(score);
 					}
+					timer = false;
+					maxtime = -1;
+					time = 0;
 				}
 				data.getMinigame().getInstance().endTimer();
 				break;

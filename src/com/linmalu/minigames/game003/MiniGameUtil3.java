@@ -16,8 +16,9 @@ public class MiniGameUtil3 extends MiniGameUtil
 		mapDefault = 5;
 		mapPlayer = 1;
 		timeDefault = 180;
-		timePlayer = 10;
-		score = 0;
+		timePlayer = 0;
+		scoreDefault = 5;
+		scorePlayer = 1;
 		see = true;
 	}
 	@Override

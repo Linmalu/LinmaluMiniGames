@@ -16,8 +16,9 @@ public class MiniGameUtil7 extends MiniGameUtil
 	{
 		super(minigame, new String[]{" = = = = = [ 총 싸 움 게 임 ] = = = = =", "총싸움 게임은 총을 쏘는 게임입니다.", "총은 우 클릭으로 쏠 수 있습니다.", "총의 쿨타임은 1초입니다.", "총에 맞을 경우 무작위 한 위치에서 재시작합니다.", "제한시간 안에 점수가 높은 플레이어가 승리합니다."});
 		timeDefault = 180;
-		timePlayer = 10;
-		score = 0;
+		timePlayer = 0;
+		scoreDefault = 10;
+		scorePlayer = 1;
 		see = true;
 	}
 	@Override

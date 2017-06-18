@@ -9,9 +9,9 @@ public class MapData
 {
 	private World world;
 	private int x1, z1, x2, z2, mapHeight, time, cooldown, score;
-	private boolean topScore, see;
+	private boolean see;
 
-	public MapData(World world, int x1, int z1, int x2, int z2, int mapHeight, int time, int cooldown, boolean topScore, int score, boolean see)
+	public MapData(World world, int x1, int z1, int x2, int z2, int mapHeight, int time, int cooldown, int score, boolean see)
 	{
 		this.world = world;
 		if(x1 < x2)
@@ -35,9 +35,8 @@ public class MapData
 			this.z2 = z1;
 		}
 		this.mapHeight = mapHeight;
-		this.time = time * 10;
+		this.time = time > 0 ? time * 10 : 0;
 		this.cooldown = cooldown * 10;
-		this.topScore = topScore;
 		this.score = score;
 		this.see = see;
 	}
@@ -76,10 +75,6 @@ public class MapData
 	public int getCooldown()
 	{
 		return cooldown;
-	}
-	public boolean isTopScore()
-	{
-		return topScore;
 	}
 	public int getScore()
 	{

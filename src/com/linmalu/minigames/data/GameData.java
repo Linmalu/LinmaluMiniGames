@@ -23,7 +23,6 @@ import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
 
 import com.linmalu.library.api.LinmaluTellraw;
-import com.linmalu.library.api.LinmaluTitle;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.api.event.LinmaluMiniGamesEndEvent;
 
@@ -102,7 +101,7 @@ public class GameData
 		if(game1 && !game2 && !player.getWorld().getName().equals(Main.WORLD_NAME) && players.containsKey(player.getUniqueId()))
 		{
 			players.remove(player.getUniqueId());
-			LinmaluTitle.sendMessage(player, ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + "게임참가를 취소했습니다.", 0, 40, 20);
+			player.sendTitle(ChatColor.GREEN + "미니게임천국", ChatColor.GOLD + "게임참가를 취소했습니다.", 0, 40, 20);
 			player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "게임 참가를 취소했습니다.");
 		}
 	}
@@ -157,7 +156,7 @@ public class GameData
 				team = scoreboard.registerNewTeam("탈락자");
 			}
 			team.addEntry(pd.getName());
-			if(!mapData.isTopScore())
+			if(mapData.getScore() <= 0)
 			{
 				getScore(ChatColor.YELLOW + "남은인원수").setScore(playerCount);
 			}
@@ -181,7 +180,7 @@ public class GameData
 						{
 							Bukkit.broadcastMessage(ChatColor.YELLOW + p.getName() + ChatColor.GREEN + "님이 " + ChatColor.GOLD + minigame.toString() + ChatColor.GREEN + "게임의 우승자입니다.");
 						}
-						LinmaluTitle.sendMessage(ChatColor.YELLOW + "우승자 : " + ChatColor.GOLD + p.getName(), ChatColor.GREEN + minigame.toString() + "게임", 20, 100, 20);
+						Bukkit.getOnlinePlayers().forEach(p1 -> p1.sendTitle(ChatColor.YELLOW + "우승자 : " + ChatColor.GOLD + p.getName(), ChatColor.GREEN + minigame.toString() + "게임", 20, 100, 20));
 						break;
 					}
 				}
@@ -215,7 +214,7 @@ public class GameData
 		}
 		ob.setDisplaySlot(DisplaySlot.SIDEBAR);
 		setObjectiveDisplayName("");
-		if(mapData.isTopScore())
+		if(mapData.getScore() > 0)
 		{
 			ob.getScore(ChatColor.YELLOW + "목표점수").setScore(mapData.getScore());
 		}

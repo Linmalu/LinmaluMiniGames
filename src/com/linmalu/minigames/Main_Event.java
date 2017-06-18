@@ -273,14 +273,14 @@ public class Main_Event implements Listener
 				}
 				else
 				{
-					if(pd.isLive() && !data.getMapData().isTopScore())
+					if(pd.isLive() && data.getMapData().getScore() < 0)
 					{
 						data.diePlayer(player.getUniqueId());
 					}
 					else
 					{
 						data.teleportPlayer(player);
-						if(pd.isCooldown())
+						if(pd.isLive() && pd.isCooldown())
 						{
 							new Cooldown(10, player, true);
 						}

@@ -21,6 +21,8 @@ public class MiniGameUtil2 extends MiniGameUtil
 		mapDefault = 6;
 		mapPlayer = 1;
 		mapHeight = 20;
+		timeDefault = 120;
+		timePlayer = 0;
 	}
 	@Override
 	public MaterialData getChunkData(int y)
@@ -34,8 +36,7 @@ public class MiniGameUtil2 extends MiniGameUtil
 	@Override
 	public MapData getMapData(World world)
 	{
-		topScore = true;
-		return new MapData(world, x1, z1, x2, z2, mapHeight >= 0 ? mapHeight : MAP_DEFAULT_HEIGHT, time, cooldown, topScore, mapHeight - MAP_DEFAULT_HEIGHT, see);
+		return new MapData(world, x1, z1, x2, z2, mapHeight >= 0 ? mapHeight : MAP_DEFAULT_HEIGHT, time, cooldown, mapHeight - MAP_DEFAULT_HEIGHT, see);
 	}
 	@Override
 	public void addRandomItem(Player player)

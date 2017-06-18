@@ -37,7 +37,8 @@ public abstract class MiniGameUtil
 {
 	protected static final String MAP_DEFAULT_SIZE = "기본맵 크기";
 	protected static final String MAP_PLAYER_SIZE = "인원수 추가 게임맵 크기";
-	protected static final String MAP_SCORE = "목표점수";
+	protected static final String SCORE_DEFAULT = "기본 목표점수";
+	protected static final String SCORE_PLAYER = "플레이어 추가 목표점수";
 	protected static final String MAP_HEIGHT = "게임맵 높이";
 	protected static final String TIME_DEFAULT = "기본 제한 시간(초)";
 	protected static final String TIME_PLAYER = "인원수 추가 제한 시간(초)";
@@ -74,15 +75,15 @@ public abstract class MiniGameUtil
 	protected final GameData data = Main.getMain().getGameData();
 	protected final MiniGame minigame;
 	protected final String[] msgs;
-	protected int mapDefault, mapPlayer, x1, z1, x2, z2, score, mapHeight, time, timeDefault, timePlayer, cooldown;
-	protected boolean topScore, see;
+	protected int mapDefault, mapPlayer, x1, z1, x2, z2, scoreDefault, score, scorePlayer, mapHeight, time, timeDefault, timePlayer, cooldown;
+	protected boolean see;
 
 	public MiniGameUtil(MiniGame minigame, String[] msgs)
 	{
 		this.minigame = minigame;
 		this.msgs = msgs;
 		mapHeight = MAP_DEFAULT_HEIGHT;
-		mapDefault = mapPlayer = score = mapHeight = timeDefault = timePlayer = -1;
+		mapDefault = mapPlayer = scoreDefault = scorePlayer = mapHeight = timeDefault = timePlayer = -1;
 	}
 	public String getConfigPath(String path)
 	{
@@ -106,13 +107,20 @@ public abstract class MiniGameUtil
 				mapPlayer = data;
 			}
 		}
-		if(score >= 0)
+		if(scoreDefault >= 0)
 		{
-			topScore = true;
-			int data = config.getInt(getConfigPath(MAP_SCORE), score);
+			int data = config.getInt(getConfigPath(SCORE_DEFAULT), scoreDefault);
 			if(data >= 0)
 			{
-				score = data;
+				scoreDefault = data;
+			}
+		}
+		if(scorePlayer >= 0)
+		{
+			int data = config.getInt(getConfigPath(SCORE_PLAYER), scorePlayer);
+			if(data >= 0)
+			{
+				scorePlayer = data;
 			}
 		}
 		if(mapHeight >= 0)
@@ -140,7 +148,6 @@ public abstract class MiniGameUtil
 			}
 		}
 	}
-
 	public void save()
 	{
 		config.remove(minigame.toString());
@@ -152,9 +159,13 @@ public abstract class MiniGameUtil
 		{
 			config.set(getConfigPath(MAP_PLAYER_SIZE), mapPlayer);
 		}
-		if(score >= 0)
+		if(scoreDefault >= 0)
 		{
-			config.set(getConfigPath(MAP_SCORE), score);
+			config.set(getConfigPath(SCORE_DEFAULT), scoreDefault);
+		}
+		if(scorePlayer >= 0)
+		{
+			config.set(getConfigPath(SCORE_PLAYER), scorePlayer);
 		}
 		if(mapHeight - MAP_DEFAULT_HEIGHT >= 0)
 		{
@@ -181,12 +192,13 @@ public abstract class MiniGameUtil
 	}
 	public MapData getMapData(World world)
 	{
-		return new MapData(world, x1, z1, x2, z2, mapHeight >= 0 ? mapHeight : MAP_DEFAULT_HEIGHT, time, cooldown, topScore, score, see);
+		return new MapData(world, x1, z1, x2, z2, mapHeight >= 0 ? mapHeight : MAP_DEFAULT_HEIGHT, time, cooldown, score, see);
 	}
 	public void CreateWrold()
 	{
-		x2 = z2 = mapDefault + (Main.getMain().getGameData().getPlayerAllCount() * mapPlayer);
-		time = (timeDefault + (Main.getMain().getGameData().getPlayerAllCount() * timePlayer));
+		x2 = z2 = mapDefault + (data.getPlayerAllCount() * mapPlayer);
+		time = timeDefault + (data.getPlayerAllCount() * timePlayer);
+		score = scoreDefault + (data.getPlayerAllCount() * scorePlayer);
 		try
 		{
 			File file = new File("./" + Main.WORLD_NAME + "/region/");

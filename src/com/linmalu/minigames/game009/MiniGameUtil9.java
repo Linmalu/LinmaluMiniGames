@@ -34,7 +34,7 @@ public class MiniGameUtil9 extends MiniGameUtil
 	@Override
 	public MapData getMapData(World world)
 	{
-		return new MapData(world, x1, z1, x2, z2, mapHeight >= 0 ? mapHeight : MAP_DEFAULT_HEIGHT, 5, cooldown, topScore, score, see);
+		return new MapData(world, x1, z1, x2, z2, mapHeight >= 0 ? mapHeight : MAP_DEFAULT_HEIGHT, 5, cooldown, score, see);
 	}
 	@Override
 	public void addRandomItem(Player player)

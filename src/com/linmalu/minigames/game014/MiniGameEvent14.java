@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import com.comphenix.packetwrapper.WrapperPlayServerEntityMetadata;
 import com.comphenix.packetwrapper.WrapperPlayServerNamedEntitySpawn;
 import com.comphenix.packetwrapper.WrapperPlayServerNamedSoundEffect;
 import com.comphenix.packetwrapper.WrapperPlayServerSpawnEntityLiving;
@@ -16,6 +17,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
+import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.linmalu.minigames.data.Cooldown;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
@@ -26,7 +28,7 @@ public class MiniGameEvent14 extends MiniGameEvent
 	public MiniGameEvent14(MiniGame minigame)
 	{
 		super(minigame);
-		registerPacketEvent(PacketType.Play.Server.NAMED_SOUND_EFFECT, PacketType.Play.Server.SPAWN_ENTITY_LIVING);
+		registerPacketEvent(PacketType.Play.Server.NAMED_SOUND_EFFECT, PacketType.Play.Server.SPAWN_ENTITY_LIVING, PacketType.Play.Server.ENTITY_METADATA);
 	}
 	@EventHandler
 	public void Event(EntityDamageByEntityEvent event)
@@ -85,23 +87,31 @@ public class MiniGameEvent14 extends MiniGameEvent
 				{
 					WrapperPlayServerNamedEntitySpawn packet = new WrapperPlayServerNamedEntitySpawn();
 					packet.setEntityID(entity.getEntityID());
+					packet.setPlayerUUID(event.getPlayer().getUniqueId());
 					packet.setX(entity.getX());
 					packet.setY(entity.getY());
 					packet.setZ(entity.getZ());
 					packet.setPitch(entity.getHeadPitch());
-					packet.setPlayerUUID(event.getPlayer().getUniqueId());
-					// packet.setMetadata(WrappedDataWatcher.getEntityWatcher(event.getPlayer()));
-					WrappedDataWatcher data = WrappedDataWatcher.getEntityWatcher(event.getPlayer());
-					data.setObject(new WrappedDataWatcherObject(13, Registry.get(Byte.class)), (byte)0x00);
-					packet.setMetadata(data);
+					packet.setMetadata(WrappedDataWatcher.getEntityWatcher(event.getPlayer()));
 					packet.sendPacket(event.getPlayer());
-					// WrapperPlayServerEntityMetadata em = new WrapperPlayServerEntityMetadata();
-					// em.setEntityID(entity.getEntityID());
-					// WrappedDataWatcher data = WrappedDataWatcher.getEntityWatcher(event.getPlayer());
-					// data.setObject(new WrappedDataWatcherObject(13, Registry.get(Byte.class)), (byte)0x00);
-					// em.setMetadata(data.getWatchableObjects());
-					// em.sendPacket(event.getPlayer());
 					event.setCancelled(true);
+				}
+			}
+			else if(event.getPacketType() == PacketType.Play.Server.ENTITY_METADATA)
+			{
+				WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(event.getPacket());
+				boolean check = true;
+				for(WrappedWatchableObject data : packet.getMetadata())
+				{
+					if(data.getIndex() == 13)
+					{
+						check = false;
+						data.setValue((byte)127);
+					}
+				}
+				if(check)
+				{
+					packet.getMetadata().add(new WrappedWatchableObject(new WrappedDataWatcherObject(13, Registry.get(Byte.class)), (byte)127));
 				}
 			}
 		}
