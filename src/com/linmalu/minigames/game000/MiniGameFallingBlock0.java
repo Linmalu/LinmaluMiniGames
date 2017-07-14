@@ -3,6 +3,7 @@ package com.linmalu.minigames.game000;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.FallingBlock;
 
 import com.linmalu.minigames.Main;
 
@@ -31,7 +32,8 @@ public class MiniGameFallingBlock0 implements Runnable
 			else
 			{
 				block.setType(Material.AIR);
-				block.getWorld().spawnFallingBlock(block.getLocation().add(0.5, 0, 0.5), Material.STAINED_GLASS, data);
+				FallingBlock fb = block.getWorld().spawnFallingBlock(block.getLocation().add(0.5, 0, 0.5), Material.STAINED_GLASS, data);
+				Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getMain(), () -> fb.remove(), 15L);
 				Bukkit.getScheduler().cancelTask(taskId);
 			}
 		}

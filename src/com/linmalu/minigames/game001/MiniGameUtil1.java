@@ -38,10 +38,6 @@ public class MiniGameUtil1 extends MiniGameUtil
 	@Override
 	public void startTimer()
 	{
-		for(Player player : data.getLivePlayers())
-		{
-			GameItem.setItemStack(player, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루, GameItem.모루);
-		}
 	}
 	@SuppressWarnings("deprecation")
 	@Override

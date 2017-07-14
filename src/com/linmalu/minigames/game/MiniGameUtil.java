@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.linmalu.library.api.LinmaluConfig;
+import com.linmalu.library.api.LinmaluMath;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.Cooldown;
 import com.linmalu.minigames.data.GameData;
@@ -384,7 +385,7 @@ public abstract class MiniGameUtil
 				case 느림:
 					for(Player p : data.getLivePlayers())
 					{
-						if(!player.getUniqueId().equals(p.getUniqueId()))
+						if(!player.getUniqueId().equals(p.getUniqueId()) && LinmaluMath.distance(p.getLocation(), player.getLocation()) < 15)
 						{
 							p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1, false, false), true);
 							p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 100, 1, false, false), true);
@@ -395,7 +396,7 @@ public abstract class MiniGameUtil
 				case 어둠:
 					for(Player p : data.getLivePlayers())
 					{
-						if(!player.getUniqueId().equals(p.getUniqueId()))
+						if(!player.getUniqueId().equals(p.getUniqueId()) && LinmaluMath.distance(p.getLocation(), player.getLocation()) < 15)
 						{
 							p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 0, false, false), true);
 							p.sendMessage(gameItem.getItemStack().getItemMeta().getDisplayName() + ChatColor.YELLOW + " 아이템 효과에 걸렸습니다.");

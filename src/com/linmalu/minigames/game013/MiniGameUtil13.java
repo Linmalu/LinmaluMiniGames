@@ -22,6 +22,8 @@ public class MiniGameUtil13 extends MiniGameUtil
 	{
 		super(minigame, new String[]{" = = = = = [ 블 록 부 수 기 게 임 ] = = = = =", "블록부수기 게임은 불록을 빨리 부수는 게임입니다.", "블록을 먼저 부수는 플레이어가 승리합니다."});
 		mapHeight = 50;
+		timeDefault = 180;
+		timePlayer = 0;
 	}
 	@Override
 	public MaterialData getChunkData(int y)

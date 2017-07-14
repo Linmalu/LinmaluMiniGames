@@ -165,9 +165,9 @@ public class Main_Command implements CommandExecutor
 		{
 			sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최소인원 2명이 되지 않습니다.");
 		}
-		else if(minigame == MiniGame.땅따먹기 && Bukkit.getOnlinePlayers().size() > 16)
+		else if(minigame == MiniGame.땅따먹기 && Bukkit.getOnlinePlayers().size() > 48)
 		{
-			sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최대인원 16명이 넘습니다.");
+			sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최대인원 48명이 넘습니다.");
 		}
 		else if(minigame == MiniGame.경마)
 		{

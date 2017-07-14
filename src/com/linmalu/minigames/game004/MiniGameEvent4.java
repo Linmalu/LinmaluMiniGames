@@ -1,9 +1,11 @@
 package com.linmalu.minigames.game004;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.linmalu.minigames.data.MiniGame;
@@ -35,6 +37,18 @@ public class MiniGameEvent4 extends MiniGameEvent
 		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
 			minigame.getInstance().useItem(player, true, 0);
+		}
+	}
+	@EventHandler
+	public void Event(ProjectileHitEvent event)
+	{
+		if(checkEvent(event.getEntity().getWorld()))
+		{
+			Block block = event.getHitBlock();
+			if(block != null)
+			{
+				block.breakNaturally();
+			}
 		}
 	}
 }

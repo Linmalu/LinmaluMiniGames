@@ -78,9 +78,9 @@ public class GameTimer implements Runnable
 		{
 			case 맵이동:
 			case 게임준비:
-				//TODO 디버깅용 시간조절
+				// TODO 디버깅용 시간조절
 				maxtime = time = 100;
-//				maxtime = time = 20;
+				// maxtime = time = 20;
 				break;
 			case 게임타이머:
 				maxtime = time = data.getMapData().getTime();
