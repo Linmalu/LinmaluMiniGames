@@ -6,20 +6,23 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
+import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
+import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
+//폭탄피하기
 public class MiniGameUtil8 extends MiniGameUtil
 {
 	public MiniGameUtil8(MiniGame minigame)
 	{
-		super(minigame, new String[]{" = = = = = [ 폭 탄 피 하 기 게 임 ] = = = = =", "폭탄피하기 게임은 폭탄을 피해서 도망가는 게임입니다.", "폭탄이 된 사람에게 맞으면 폭탄을 넘겨받게 됩니다.", "제한시간이 지나면 폭탄이 터지며 탈락합니다.", "1명이 남을 때까지 게임이 진행됩니다."});
-		mapDefault = 20;
-		mapPlayer = 0;
-		timeDefault = 10;
-		timePlayer = 0;
-		cooldown = 5;
+		super(minigame);
+		configs.put(ConfigData.MAP_DEFAULT_SIZE, 20);
+		configs.put(ConfigData.MAP_PLAYER_SIZE, 0);
+		configs.put(ConfigData.TIME_DEFAULT, 10);
+		configs.put(ConfigData.TIME_PLAYER, 0);
+		configs.put(ConfigData.COOLDOWN, 5);
 	}
 	@Override
 	public MaterialData getChunkData(int y)
@@ -33,8 +36,8 @@ public class MiniGameUtil8 extends MiniGameUtil
 	@Override
 	public void addRandomItem(Player player)
 	{
-		GameItem.setItemStack(player, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄, GameItem.폭탄);
-		player.getInventory().setHelmet(GameItem.폭탄.getItemStack());
+		ItemData.setItemStack(player, ItemData.폭탄, ItemData.폭탄, ItemData.폭탄, ItemData.폭탄, ItemData.폭탄, ItemData.폭탄, ItemData.폭탄, ItemData.폭탄, ItemData.폭탄);
+		player.getInventory().setHelmet(ItemData.폭탄.getItemStack());
 	}
 	@Override
 	public void startTimer()

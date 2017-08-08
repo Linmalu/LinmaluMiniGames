@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
+import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
@@ -24,7 +25,7 @@ public class MiniGameEvent2 extends MiniGameEvent
 	@EventHandler
 	public void Event(BlockCanBuildEvent event)
 	{
-		if(checkEvent(event.getBlock().getWorld()) && (event.getMaterial() == Material.STAINED_CLAY || event.getMaterial() == Material.WOOL))
+		if(checkEvent(event.getBlock().getWorld()) && event.getMaterial() == Material.WOOL)
 		{
 			event.setBuildable(true);
 		}
@@ -35,7 +36,7 @@ public class MiniGameEvent2 extends MiniGameEvent
 		Block block = event.getBlock();
 		Player player = event.getPlayer();
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && (block.getType() == Material.WOOL || block.getType() == Material.STAINED_CLAY))
+		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && block.getType() == Material.WOOL)
 		{
 			new MiniGameBreakBlock2(block);
 			event.setCancelled(false);
@@ -59,7 +60,7 @@ public class MiniGameEvent2 extends MiniGameEvent
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
 		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && event.getHand() == EquipmentSlot.HAND && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
-			minigame.getInstance().useItem(player, true, 0);
+			ItemData.useItem(player, true, 0);
 		}
 	}
 }

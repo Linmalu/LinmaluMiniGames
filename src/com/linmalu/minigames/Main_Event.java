@@ -31,7 +31,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.linmalu.library.api.LinmaluAutoRespawn;
 import com.linmalu.library.api.LinmaluVersion;
-import com.linmalu.minigames.data.Cooldown;
 import com.linmalu.minigames.data.GameData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
@@ -82,7 +81,7 @@ public class Main_Event implements Listener
 		final PlayerData pd = data.getPlayerData(player.getUniqueId());
 		if(data.isGame2() && pd != null)
 		{
-			event.setRespawnLocation(data.teleportPlayer(player));
+			event.setRespawnLocation(data.teleport(player));
 		}
 	}
 	@EventHandler(priority = EventPriority.LOW)
@@ -96,7 +95,7 @@ public class Main_Event implements Listener
 		if(data.isGame1() && data.getPlayerData(player.getUniqueId()) != null)
 		{
 			data.setScoreboard(player);
-			data.teleportPlayer(player);
+			data.teleport(player);
 			if(!data.isResourcePack())
 			{
 				player.setResourcePack(Main.RESOURCEPACK_MINIGAMES);
@@ -263,21 +262,17 @@ public class Main_Event implements Listener
 			{
 				if(!data.isGame2())
 				{
-					data.teleportPlayer(player);
+					data.teleport(player);
 				}
 				else
 				{
-					if(pd.isLive() && data.getMapData().getScore() < 0)
+					if(pd.isLive() && !data.getMapData().isTopScore())
 					{
 						data.diePlayer(player.getUniqueId());
 					}
 					else
 					{
-						data.teleportPlayer(player);
-						if(pd.isLive() && pd.isCooldown())
-						{
-							new Cooldown(10, player, true);
-						}
+						data.teleport(player);
 					}
 				}
 			}

@@ -8,23 +8,26 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
+import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
+//땅파기
 public class MiniGameUtil4 extends MiniGameUtil
 {
 	public MiniGameUtil4(MiniGame minigame)
 	{
-		super(minigame, new String[]{" = = = = = [ 땅 파 기 게 임 ] = = = = =", "땅파기 게임은 블록을 부셔서 다른 플레이어를 떨어트리는 게임입니다.", "서로 공격할 수 있습니다.", "블록을 부시면 일정 확률로 아이템이 나옵니다.", "떨어지면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."});
-		mapDefault = 10;
-		mapPlayer = 2;
-		mapHeight = 6;
+		super(minigame);
+		configs.put(ConfigData.MAP_HEIGHT, 6);
+		configs.put(ConfigData.MAP_DEFAULT_SIZE, 10);
+		configs.put(ConfigData.MAP_PLAYER_SIZE, 2);
 	}
 	@Override
 	public MaterialData getChunkData(int y)
 	{
-		if(MAP_DEFAULT_HEIGHT <= y && y <= mapHeight && (y - MAP_DEFAULT_HEIGHT) % 3 == 0)
+		if(MAP_DEFAULT_HEIGHT <= y && y <= MAP_DEFAULT_HEIGHT + getConfigData(ConfigData.MAP_HEIGHT) && (y - MAP_DEFAULT_HEIGHT) % 3 == 0)
 		{
 			return new MaterialData(Material.SNOW_BLOCK);
 		}
@@ -36,25 +39,25 @@ public class MiniGameUtil4 extends MiniGameUtil
 		switch(new Random().nextInt(100))
 		{
 			case 0:
-				GameItem.addItemStack(player, GameItem.속도);
+				ItemData.addItemStack(player, ItemData.속도);
 				break;
 			case 1:
-				GameItem.addItemStack(player, GameItem.점프);
+				ItemData.addItemStack(player, ItemData.점프);
 				break;
 			case 2:
-				GameItem.addItemStack(player, GameItem.투명);
+				ItemData.addItemStack(player, ItemData.투명);
 				break;
 			case 3:
-				GameItem.addItemStack(player, GameItem.느림);
+				ItemData.addItemStack(player, ItemData.느림);
 				break;
 			case 4:
-				GameItem.addItemStack(player, GameItem.어둠);
+				ItemData.addItemStack(player, ItemData.어둠);
 				break;
 			case 5:
-				GameItem.addItemStack(player, GameItem.이동);
+				ItemData.addItemStack(player, ItemData.이동);
 				break;
 			default:
-				GameItem.addItemStack(player, GameItem.눈덩이);
+				ItemData.addItemStack(player, ItemData.눈덩이);
 				break;
 		}
 	}
@@ -63,7 +66,7 @@ public class MiniGameUtil4 extends MiniGameUtil
 	{
 		for(Player player : data.getLivePlayers())
 		{
-			GameItem.setItemStack(player, GameItem.삽);
+			ItemData.setItemStack(player, ItemData.삽);
 		}
 	}
 	@Override

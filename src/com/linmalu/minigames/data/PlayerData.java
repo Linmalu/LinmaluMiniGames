@@ -137,6 +137,13 @@ public class PlayerData
 		Player player = Bukkit.getPlayer(uuid);
 		if(player != null)
 		{
+			for(PotionEffectType potion : PotionEffectType.values())
+			{
+				if(potion != null)
+				{
+					player.removePotionEffect(potion);
+				}
+			}
 			gm = player.getGameMode();
 			allowFlight = player.getAllowFlight();
 			flying = player.isFlying();

@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffectType;
 
+import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
@@ -52,7 +53,7 @@ public class MiniGameEvent0 extends MiniGameEvent
 		PlayerData pd = data.getPlayerData(player.getUniqueId());
 		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && pd.isSkill() && event.getHand() == EquipmentSlot.HAND && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
-			minigame.getInstance().useItem(player, false, 20);
+			ItemData.useItem(player, false, 20);
 		}
 	}
 }

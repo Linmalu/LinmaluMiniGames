@@ -1,17 +1,20 @@
 package com.linmalu.minigames.game014;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
+import org.bukkit.util.Vector;
 
 import com.comphenix.packetwrapper.WrapperPlayServerSpawnEntityLiving;
 import com.linmalu.library.api.LinmaluMath;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.GameData;
+import com.linmalu.minigames.data.MapData;
 
 public class MiniGameMoving14 implements Runnable
 {
@@ -25,8 +28,9 @@ public class MiniGameMoving14 implements Runnable
 		{
 			Sheep sheep = data.getMapData().getWorld().spawn(data.getMapData().getRandomLocation(), Sheep.class);
 			sheep.setTicksLived(100);
+			data.teleport(sheep);
 			data.addEntity(sheep);
-			sheeps.put(sheep, null);
+			sheeps.put(sheep, sheep.getLocation().clone());
 		}
 		for(Player player : data.getLivePlayers())
 		{
@@ -51,28 +55,26 @@ public class MiniGameMoving14 implements Runnable
 			{
 				if(!sheep.isDead())
 				{
-					if(sheep.getLocation().getY() == data.getMapData().getMapHeight())
+					MapData md = data.getMapData();
+					if(LinmaluMath.distance(sheeps.get(sheep), sheep.getLocation()) > 5 || sheep.getTicksLived() > 100)
 					{
-						Location loc = sheeps.get(sheep);
-						if(loc != null && loc.distance(sheep.getLocation()) > 1 && sheep.getTicksLived() > 100)
+						if(sheep.getTicksLived() > 130 && sheep.getTicksLived() < 200)
 						{
-							float angle = (float)LinmaluMath.yawAngle(loc, sheep.getLocation());
-							loc = sheep.getLocation();
-							loc.setYaw(angle);
-							loc.setPitch(0);
-							sheep.teleport(loc);
-							sheep.setVelocity(loc.getDirection().multiply(0.2F));
+							continue;
 						}
-						else
-						{
-							loc = data.getMapData().getRandomLocation();
-							sheeps.put(sheep, loc);
-						}
+						Location loc = sheep.getLocation();
+						loc.setYaw(new Random().nextInt(360));
+						sheep.teleport(loc);
+						sheep.setTicksLived(new Random().nextInt(200) + 1);
+						sheeps.put(sheep, sheep.getLocation().clone());
 					}
-					else
+					if(!sheep.getLocation().toVector().setY(0).isInAABB(new Vector(md.getX1() + 0.5D, 0, md.getZ1() + 0.5D), new Vector(md.getX2() + 0.5D, 1, md.getZ2() + 0.5D)))
 					{
-						sheeps.put(sheep, null);
+						Location loc = sheep.getLocation();
+						loc.setYaw((float)LinmaluMath.yawAngle(new Location(sheep.getWorld(), md.getX2() - ((md.getX2() - md.getX1()) / 2) + 0.5D, md.getMapHeight() + 1, md.getZ2() - ((md.getZ2() - md.getZ1()) / 2) + 0.5D), sheep.getLocation()));
+						sheep.teleport(loc);
 					}
+					sheep.setVelocity(sheep.getLocation().getDirection().multiply(0.25D).setY(0));
 				}
 			}
 		}

@@ -6,19 +6,22 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
+import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
+//총싸움
 public class MiniGameUtil7 extends MiniGameUtil
 {
 	public MiniGameUtil7(MiniGame minigame)
 	{
-		super(minigame, new String[]{" = = = = = [ 총 싸 움 게 임 ] = = = = =", "총싸움 게임은 총을 쏘는 게임입니다.", "총은 우 클릭으로 쏠 수 있습니다.", "총의 쿨타임은 1초입니다.", "총에 맞을 경우 무작위 한 위치에서 재시작합니다.", "제한시간 안에 점수가 높은 플레이어가 승리합니다."});
-		timeDefault = 180;
-		timePlayer = 0;
-		scoreDefault = 10;
-		scorePlayer = 1;
+		super(minigame);
+		configs.put(ConfigData.TIME_DEFAULT, 180);
+		configs.put(ConfigData.TIME_PLAYER, 0);
+		configs.put(ConfigData.SCORE_DEFAULT, 10);
+		configs.put(ConfigData.SCORE_PLAYER, 1);
 		see = true;
 	}
 	@Override
@@ -35,7 +38,7 @@ public class MiniGameUtil7 extends MiniGameUtil
 	{
 		for(Player player : data.getLivePlayers())
 		{
-			GameItem.setItemStack(player, GameItem.총, GameItem.총, GameItem.총, GameItem.총, GameItem.총, GameItem.총, GameItem.총, GameItem.총, GameItem.총);
+			ItemData.setItemStack(player, ItemData.총, ItemData.총, ItemData.총, ItemData.총, ItemData.총, ItemData.총, ItemData.총, ItemData.총, ItemData.총);
 		}
 	}
 	@Override

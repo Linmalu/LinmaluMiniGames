@@ -3,24 +3,27 @@ package com.linmalu.minigames.game009;
 import java.util.Random;
 
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
+import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
+//양털찾기
 public class MiniGameUtil9 extends MiniGameUtil
 {
 	public MiniGameUtil9(MiniGame minigame)
 	{
-		super(minigame, new String[]{" = = = = = [ 양 털 찾 기 게 임 ] = = = = =", "양털찾기 게임은 제한시간 안에 양털을 찾는 게임입니다.", "제한시간이 되면 지정되지 않은 양털은 모두 사라집니다.", "떨어지면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."});
-		mapDefault = 20;
-		mapPlayer = 0;
-		cooldown = 2;
+		super(minigame);
+		configs.put(ConfigData.MAP_DEFAULT_SIZE, 20);
+		configs.put(ConfigData.MAP_PLAYER_SIZE, 0);
+		configs.put(ConfigData.TIME_DEFAULT, 5);
+		configs.put(ConfigData.TIME_PLAYER, 0);
+		configs.put(ConfigData.COOLDOWN, 2);
 	}
 	@Override
 	public MaterialData getChunkData(int y)
@@ -30,11 +33,6 @@ public class MiniGameUtil9 extends MiniGameUtil
 			return new MaterialData(Material.WOOL);
 		}
 		return new MaterialData(Material.AIR);
-	}
-	@Override
-	public MapData getMapData(World world)
-	{
-		return new MapData(world, x1, z1, x2, z2, mapHeight >= 0 ? mapHeight : MAP_DEFAULT_HEIGHT, 5, cooldown, score, see);
 	}
 	@Override
 	public void addRandomItem(Player player)

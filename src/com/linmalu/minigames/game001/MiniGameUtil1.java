@@ -8,19 +8,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
+import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
+//모루피하기
 public class MiniGameUtil1 extends MiniGameUtil
 {
 	public MiniGameUtil1(MiniGame minigame)
 	{
-		super(minigame, new String[]{" = = = = = [ 모 루 피 하 기 게 임 ] = = = = =", "모루피하기 게임은 하늘에서 떨어지는 모루를 피하는 게임입니다.", "시간이 지날수록 떨어지는 블록은 늘어납니다.", "모루 맞으면 탈락이 되며, 1명이 남을 때까지 게임이 진행됩니다."});
-		mapDefault = 10;
-		mapPlayer = 1;
-		mapHeight = 20;
+		super(minigame);
+		configs.put(ConfigData.MAP_DEFAULT_SIZE, 10);
+		configs.put(ConfigData.MAP_PLAYER_SIZE, 1);
+		configs.put(ConfigData.MAP_HEIGHT, 20);
 	}
 	@Override
 	public MaterialData getChunkData(int y)
@@ -39,16 +41,15 @@ public class MiniGameUtil1 extends MiniGameUtil
 	public void startTimer()
 	{
 	}
-	@SuppressWarnings("deprecation")
 	@Override
 	public void runTimer(GameTimer timer)
 	{
 		MapData md = data.getMapData();
 		int time = timer.getTime();
-		for(int i = 0; i < time / 10 / 10 + 1; i++)
+		for(int i = 0; i < time / 100 + 1; i++)
 		{
 			Random ran = new Random();
-			FallingBlock fb = md.getWorld().spawnFallingBlock(data.getMapData().getRandomLocation(), Material.ANVIL, (byte)0);
+			FallingBlock fb = md.getWorld().spawnFallingBlock(data.getMapData().getRandomLocation(), new MaterialData(Material.ANVIL));
 			float x1, z1;
 			x1 = ran.nextFloat();
 			if(ran.nextInt(2) == 0)

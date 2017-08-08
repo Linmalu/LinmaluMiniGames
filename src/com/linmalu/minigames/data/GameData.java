@@ -114,9 +114,11 @@ public class GameData
 			player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "게임관전을 선택했습니다.");
 		}
 	}
-	public Location teleportPlayer(Player player)
+	public Location teleport(Entity entity)
 	{
-		Location loc = mapData.getRandomLocation(player.getLocation());
+		Location loc = mapData.getRandomLocation();
+		loc.setYaw(entity.getLocation().getYaw());
+		loc.setPitch(entity.getLocation().getPitch());
 		for(int y = mapData.getWorld().getMaxHeight(); y >= 0; y--)
 		{
 			if(!mapData.getWorld().getBlockAt(loc.getBlockX(), y, loc.getBlockZ()).isEmpty())
@@ -133,9 +135,9 @@ public class GameData
 				break;
 			}
 		}
-		player.leaveVehicle();
-		player.setFallDistance(0);
-		player.teleport(loc);
+		entity.leaveVehicle();
+		entity.setFallDistance(0);
+		entity.teleport(loc);
 		return loc;
 	}
 	public void diePlayer(UUID uuid)

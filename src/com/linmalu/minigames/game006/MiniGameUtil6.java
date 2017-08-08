@@ -9,21 +9,23 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 
+//땅따먹기
 public class MiniGameUtil6 extends MiniGameUtil
 {
 	public MiniGameUtil6(MiniGame minigame)
 	{
-		super(minigame, new String[]{" = = = = = [ 땅 따 먹 기 게 임 ] = = = = =", "땅따먹기 게임은 자신의 아래에 있는 블록이 자신의 블록으로 바뀌는 게임입니다.", "최대 인원은 48명입니다.", "서로 공격할 수 있으며 맞을 경우 10초 동안 게임에 참여할 수 없습니다.", "제한시간 안에 점수가 높은 플레이어가 승리합니다."});
-		mapDefault = 10;
-		mapPlayer = 2;
-		timeDefault = 180;
-		timePlayer = 0;
-		scoreDefault = 100;
-		scorePlayer = 10;
+		super(minigame);
+		configs.put(ConfigData.MAP_DEFAULT_SIZE, 10);
+		configs.put(ConfigData.MAP_PLAYER_SIZE, 2);
+		configs.put(ConfigData.TIME_DEFAULT, 180);
+		configs.put(ConfigData.TIME_PLAYER, 0);
+		configs.put(ConfigData.SCORE_DEFAULT, 100);
+		configs.put(ConfigData.SCORE_PLAYER, 10);
 		see = true;
 	}
 	@Override

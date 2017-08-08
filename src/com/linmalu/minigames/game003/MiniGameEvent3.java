@@ -52,7 +52,7 @@ public class MiniGameEvent3 extends MiniGameEvent
 	{
 		pd.addScore();
 		new Cooldown(10, player, true);
-		data.teleportPlayer(player);
+		data.teleport(player);
 		for(Player p : data.getPlayers())
 		{
 			p.sendMessage(ChatColor.GOLD + pd.getName() + ChatColor.YELLOW + "님이 " + ChatColor.GOLD + player.getName() + ChatColor.YELLOW + "님을 이겼습니다.");

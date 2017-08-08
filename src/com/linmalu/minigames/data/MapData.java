@@ -9,9 +9,9 @@ public class MapData
 {
 	private World world;
 	private int x1, z1, x2, z2, mapHeight, time, cooldown, score;
-	private boolean see;
+	private boolean topScore, see;
 
-	public MapData(World world, int x1, int z1, int x2, int z2, int mapHeight, int time, int cooldown, int score, boolean see)
+	public MapData(World world, int x1, int z1, int x2, int z2, int mapHeight, int time, int cooldown, int score, boolean topScore, boolean see)
 	{
 		this.world = world;
 		if(x1 < x2)
@@ -38,6 +38,7 @@ public class MapData
 		this.time = time > 0 ? time * 10 : 0;
 		this.cooldown = cooldown * 10;
 		this.score = score;
+		this.topScore = topScore;
 		this.see = see;
 	}
 	public World getWorld()
@@ -80,26 +81,15 @@ public class MapData
 	{
 		return score;
 	}
+	public boolean isTopScore()
+	{
+		return topScore;
+	}
 	public boolean isSee()
 	{
 		return see;
 	}
 	public Location getRandomLocation()
-	{
-		return getRandomLocation(0, 0);
-	}
-	public Location getRandomLocation(Location loc)
-	{
-		return getRandomLocation(loc.getYaw(), loc.getPitch());
-	}
-	public Location getRandomLocation(float yaw, float pitch)
-	{
-		Random ran = new Random();
-		double x = ran.nextInt(x2 - x1 + 1) + x1 + 0.5D;
-		double z = ran.nextInt(z2 - z1 + 1) + z1 + 0.5D;
-		return new Location(world, x, mapHeight + 1, z, yaw, pitch);
-	}
-	public Location getRandomBlock()
 	{
 		Random ran = new Random();
 		double x = ran.nextInt(x2 - x1 + 1) + x1 + 0.5D;

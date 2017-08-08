@@ -14,6 +14,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import com.linmalu.minigames.data.Cooldown;
+import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
@@ -64,7 +65,7 @@ public class MiniGameEvent7 extends MiniGameEvent
 					}
 					pd1.addScore();
 					new Cooldown(0, player2, true);
-					data.teleportPlayer(player2);
+					data.teleport(player2);
 					event.setCancelled(true);
 				}
 			}
@@ -78,7 +79,7 @@ public class MiniGameEvent7 extends MiniGameEvent
 		ItemStack item = event.getItem();
 		if(checkEvent(player.getWorld()) && pd != null && pd.isLive() && pd.isSkill() && pd.isCooldown() && item != null && event.getHand() == EquipmentSlot.HAND && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
 		{
-			minigame.getInstance().useItem(player, false, 1);
+			ItemData.useItem(player, false, 1);
 		}
 	}
 }

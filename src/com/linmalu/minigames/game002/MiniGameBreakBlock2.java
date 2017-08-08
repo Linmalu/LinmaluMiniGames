@@ -22,7 +22,7 @@ public class MiniGameBreakBlock2 implements Runnable
 	@SuppressWarnings("deprecation")
 	public void run()
 	{
-		if(data.isGame2() && block.getLocation().getBlockY() <= data.getMapData().getMapHeight())
+		if(data.isGame2() && block.getLocation().getBlockY() <= data.getMapData().getMapHeight() + data.getMapData().getScore())
 		{
 			block = block.getRelative(BlockFace.UP);
 			if(!block.isEmpty())
