@@ -59,7 +59,7 @@ public class MiniGameNoMoving0 implements Runnable
 		{
 			for(int z = z1 - 1; z <= z1 + 1; z++)
 			{
-				Block block = player.getWorld().getBlockAt(x, 10, z);
+				Block block = player.getWorld().getBlockAt(x, player.getLocation().getBlockY() - 1, z);
 				if(block.getType() == Material.STAINED_GLASS && block.getData() == 0)
 				{
 					new MiniGameFallingBlock0(block);

@@ -47,7 +47,7 @@ public class MiniGameEvent14 extends MiniGameEvent
 					{
 						pd1.addScore();
 						new Cooldown(0, player2, true);
-						data.teleport(player2);
+						minigame.getInstance().teleport(player2);
 					}
 				}
 				else if(event.getEntity() instanceof Sheep)

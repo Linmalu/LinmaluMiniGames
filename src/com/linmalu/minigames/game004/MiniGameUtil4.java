@@ -8,11 +8,11 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
+import com.linmalu.minigames.types.ConfigType;
 
 //땅파기
 public class MiniGameUtil4 extends MiniGameUtil
@@ -20,14 +20,14 @@ public class MiniGameUtil4 extends MiniGameUtil
 	public MiniGameUtil4(MiniGame minigame)
 	{
 		super(minigame);
-		configs.put(ConfigData.MAP_HEIGHT, 6);
-		configs.put(ConfigData.MAP_DEFAULT_SIZE, 10);
-		configs.put(ConfigData.MAP_PLAYER_SIZE, 2);
+		setConfigData(ConfigType.MAP_HEIGHT, 3);
+		setConfigData(ConfigType.MAP_DEFAULT_SIZE, 10);
+		setConfigData(ConfigType.MAP_PLAYER_SIZE, 2);
 	}
 	@Override
 	public MaterialData getChunkData(int y)
 	{
-		if(MAP_DEFAULT_HEIGHT <= y && y <= MAP_DEFAULT_HEIGHT + getConfigData(ConfigData.MAP_HEIGHT) && (y - MAP_DEFAULT_HEIGHT) % 3 == 0)
+		if(MAP_DEFAULT_HEIGHT <= y && y <= MAP_DEFAULT_HEIGHT + (getConfigInt(ConfigType.MAP_HEIGHT) * 3) && (y - MAP_DEFAULT_HEIGHT) % 3 == 0)
 		{
 			return new MaterialData(Material.SNOW_BLOCK);
 		}

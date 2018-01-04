@@ -4,11 +4,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
-import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
+import com.linmalu.minigames.types.ConfigType;
 
 //눈치
 public class MiniGameUtil3 extends MiniGameUtil
@@ -16,12 +16,12 @@ public class MiniGameUtil3 extends MiniGameUtil
 	public MiniGameUtil3(MiniGame minigame)
 	{
 		super(minigame);
-		configs.put(ConfigData.MAP_DEFAULT_SIZE, 5);
-		configs.put(ConfigData.MAP_PLAYER_SIZE, 1);
-		configs.put(ConfigData.TIME_DEFAULT, 180);
-		configs.put(ConfigData.TIME_PLAYER, 0);
-		configs.put(ConfigData.SCORE_DEFAULT, 5);
-		configs.put(ConfigData.SCORE_PLAYER, 1);
+		setConfigData(ConfigType.MAP_DEFAULT_SIZE, 5);
+		setConfigData(ConfigType.MAP_PLAYER_SIZE, 1);
+		setConfigData(ConfigType.TIME_DEFAULT, 180);
+		setConfigData(ConfigType.TIME_PLAYER, 0);
+		setConfigData(ConfigType.SCORE_DEFAULT, 5);
+		setConfigData(ConfigType.SCORE_PLAYER, 1);
 		see = true;
 	}
 	@Override

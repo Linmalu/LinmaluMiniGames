@@ -4,11 +4,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
-import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
+import com.linmalu.minigames.types.ConfigType;
 
 //달리기
 public class MiniGameUtil0 extends MiniGameUtil
@@ -16,8 +16,8 @@ public class MiniGameUtil0 extends MiniGameUtil
 	public MiniGameUtil0(MiniGame minigame)
 	{
 		super(minigame);
-		configs.put(ConfigData.MAP_DEFAULT_SIZE, 20);
-		configs.put(ConfigData.MAP_PLAYER_SIZE, 2);
+		setConfigData(ConfigType.MAP_DEFAULT_SIZE, 20);
+		setConfigData(ConfigType.MAP_PLAYER_SIZE, 2);
 	}
 	@Override
 	public MaterialData getChunkData(int y)

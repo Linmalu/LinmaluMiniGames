@@ -1,12 +1,12 @@
 package com.linmalu.minigames.game005;
 
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
 
+import com.comphenix.packetwrapper.WrapperPlayServerEntityHeadRotation;
+import com.comphenix.packetwrapper.WrapperPlayServerEntityTeleport;
 import com.linmalu.library.api.LinmaluMath;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.GameData;
@@ -14,73 +14,66 @@ import com.linmalu.minigames.data.PlayerData;
 
 public class MiniGameMoving5 implements Runnable
 {
+	private int delay = 10;
 	private final GameData data = Main.getMain().getGameData();
-	private final ArrayList<Sheep> sheeps = new ArrayList<>();
-	private final int taskId;
 	private final Player player;
+	private final Location loc;
 	private int count;
 
-	public MiniGameMoving5(Player player)
+	public MiniGameMoving5(Player player, Location loc)
 	{
 		this.player = player;
-		count = 0;
-		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 2L);
+		this.loc = loc;
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getMain(), this, delay);
 	}
 	public void run()
 	{
-		if(data.isGame2() && data.getPlayerData(player.getUniqueId()).isLive())
+		try
 		{
-			count++;
-			Location loc = player.getLocation();
-			loc.setPitch(10);
-			player.setVelocity(loc.getDirection().multiply(0.4F));
-			boolean one = true;
-			for(Sheep sheep : sheeps)
+			if(data.isGame2())
 			{
-				if(one)
+				if(data.getPlayerData(player.getUniqueId()).isLive())
 				{
-					one = false;
-					continue;
-				}
-				for(Player p : data.getPlayers())
-				{
-					PlayerData pd = data.getPlayerData(p.getUniqueId());
-					if(pd != null && pd.isLive() && !sheep.isDead() && p.getLocation().distance(sheep.getLocation()) < 1)
+					if(data.getPlayerEntitys().get(player.getUniqueId()).size() > count)
 					{
-						data.diePlayer(p.getUniqueId());
+						Entity e = data.getPlayerEntitys().get(player.getUniqueId()).get(count);
+						if(!e.isDead())
+						{
+							WrapperPlayServerEntityTeleport tp = new WrapperPlayServerEntityTeleport();
+							tp.setEntityID(e.getEntityId());
+							tp.setX(loc.getX());
+							tp.setY(loc.getY());
+							tp.setZ(loc.getZ());
+							tp.setYaw(loc.getYaw());
+							tp.setPitch(loc.getPitch());
+							tp.setOnGround(e.isOnGround());
+							WrapperPlayServerEntityHeadRotation head = new WrapperPlayServerEntityHeadRotation();
+							head.setEntityID(e.getEntityId());
+							head.setHeadYaw((byte)(loc.getYaw() * 256 / 360));
+							for(Player p : data.getPlayers())
+							{
+								tp.sendPacket(p);
+								head.sendPacket(p);
+								PlayerData pd = data.getPlayerData(p.getUniqueId());
+								if(count > 0 && pd != null && pd.isLive() && LinmaluMath.distance(p.getLocation(), loc) < 1)
+								{
+									data.diePlayer(p.getUniqueId());
+								}
+							}
+							count++;
+							Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getMain(), this, delay);
+						}
 					}
 				}
-			}
-			for(Sheep sheep : sheeps)
-			{
-				if(sheep.isDead())
+				else
 				{
-					continue;
+					data.getPlayerEntitys().get(player.getUniqueId()).forEach(Entity::remove);
 				}
-				float speed = sheep.getLocation().distance(loc) < 1 ? 0.2F : 0.8F;
-				float angle = (float)LinmaluMath.yawAngle(loc, sheep.getLocation());
-				loc = sheep.getLocation();
-				loc.setYaw(angle);
-				loc.setPitch(10);
-				sheep.teleport(loc);
-				sheep.setVelocity(loc.getDirection().multiply(speed));
-			}
-			if(count % 20 == 0)
-			{
-				Sheep sheep = player.getWorld().spawn(loc, Sheep.class);
-				sheep.setCustomName("jeb_");
-				sheeps.add(sheep);
-				data.addEntity(sheep);
 			}
 		}
-		else
+		catch(Exception e)
 		{
-			for(Sheep sheep : sheeps)
-			{
-				sheep.remove();
-			}
-			sheeps.clear();
-			Bukkit.getScheduler().cancelTask(taskId);
+			e.printStackTrace();
 		}
 	}
 }

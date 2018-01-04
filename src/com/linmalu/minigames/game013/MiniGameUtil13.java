@@ -4,18 +4,19 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.linmalu.library.api.LinmaluPlayer;
-import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameUtil;
+import com.linmalu.minigames.types.ConfigType;
 
 //블록부수기
 public class MiniGameUtil13 extends MiniGameUtil
@@ -23,10 +24,10 @@ public class MiniGameUtil13 extends MiniGameUtil
 	public MiniGameUtil13(MiniGame minigame)
 	{
 		super(minigame);
-		configs.put(ConfigData.TIME_DEFAULT, 180);
-		configs.put(ConfigData.TIME_PLAYER, 0);
-		configs.put(ConfigData.SCORE_DEFAULT, 50);
-		configs.put(ConfigData.SCORE_PLAYER, 0);
+		setConfigData(ConfigType.TIME_DEFAULT, 180);
+		setConfigData(ConfigType.TIME_PLAYER, 0);
+		setConfigData(ConfigType.SCORE_DEFAULT, 50);
+		setConfigData(ConfigType.SCORE_PLAYER, 0);
 	}
 	@Override
 	public MaterialData getChunkData(int y)
@@ -34,10 +35,12 @@ public class MiniGameUtil13 extends MiniGameUtil
 		return new MaterialData(Material.AIR);
 	}
 	@Override
-	public void moveWorld(Player player)
+	public Location teleport(Entity entity)
 	{
-		PlayerData pd = data.getPlayerData(player.getUniqueId());
-		player.teleport(new Location(data.getMapData().getWorld(), (4 * pd.getNumber()) + 2, MAP_DEFAULT_HEIGHT + 1, 2));
+		PlayerData pd = data.getPlayerData(entity.getUniqueId());
+		Location loc = new Location(data.getMapData().getWorld(), (4 * pd.getNumber()) + 2, MAP_DEFAULT_HEIGHT + 1, 2);
+		entity.teleport(loc);
+		return loc;
 	}
 	@Override
 	public void addRandomItem(Player player)

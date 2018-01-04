@@ -6,11 +6,11 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
+import com.linmalu.minigames.types.ConfigType;
 
 //총싸움
 public class MiniGameUtil7 extends MiniGameUtil
@@ -18,10 +18,10 @@ public class MiniGameUtil7 extends MiniGameUtil
 	public MiniGameUtil7(MiniGame minigame)
 	{
 		super(minigame);
-		configs.put(ConfigData.TIME_DEFAULT, 180);
-		configs.put(ConfigData.TIME_PLAYER, 0);
-		configs.put(ConfigData.SCORE_DEFAULT, 10);
-		configs.put(ConfigData.SCORE_PLAYER, 1);
+		setConfigData(ConfigType.TIME_DEFAULT, 180);
+		setConfigData(ConfigType.TIME_PLAYER, 0);
+		setConfigData(ConfigType.SCORE_DEFAULT, 10);
+		setConfigData(ConfigType.SCORE_PLAYER, 1);
 		see = true;
 	}
 	@Override

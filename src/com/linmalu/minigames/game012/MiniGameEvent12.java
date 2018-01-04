@@ -1,15 +1,21 @@
 package com.linmalu.minigames.game012;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.AbstractHorse;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.HorseJumpEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
+import org.bukkit.event.vehicle.VehicleUpdateEvent;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
+import com.linmalu.minigames.Main;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
 import com.linmalu.minigames.game.MiniGameEvent;
@@ -21,11 +27,35 @@ public class MiniGameEvent12 extends MiniGameEvent
 		super(minigame);
 	}
 	@EventHandler
+	public void Event(VehicleMoveEvent event)
+	{
+		Bukkit.broadcastMessage(event.getEventName());
+	}
+	@EventHandler
+	public void Event(VehicleUpdateEvent event)
+	{
+		Bukkit.broadcastMessage(event.getEventName());
+	}
+	@EventHandler
 	public void Event(VehicleExitEvent event)
 	{
 		Location loc = event.getExited().getLocation();
 		if(checkEvent(loc.getWorld()) && loc.getY() > 0)
 		{
+			Bukkit.broadcastMessage(event.getEventName());
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getMain(), () -> event.getVehicle().addPassenger(event.getExited()));
+			// Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getMain(), () ->
+			// {
+			// // event.getVehicle().eject();
+			// Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getMain(), () ->
+			// {
+			// event.getVehicle().setVelocity(new Vector(0, 5, 0));
+			// Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getMain(), () ->
+			// {
+			// event.getVehicle().addPassenger(event.getExited());
+			// });
+			// });
+			// });
 			event.setCancelled(true);
 		}
 	}
@@ -35,7 +65,18 @@ public class MiniGameEvent12 extends MiniGameEvent
 		AbstractHorse horse = event.getEntity();
 		if(checkEvent(horse.getWorld()))
 		{
-			horse.setVelocity(horse.getVelocity().add(horse.getLocation().getDirection().normalize().setY(-1).multiply(event.getPower() != 1 ? event.getPower() * 2 : 8)));
+			// horse.eject();
+			// horse.getPassengers().forEach(horse::removePassenger);
+			// TODO
+			Bukkit.broadcastMessage(event.getEventName() + " / " + event.getPower());
+			// Arrow arrow = horse.getWorld().spawn(horse.getLocation().add(0, 0, 0), Arrow.class);
+			if(horse.getPassengers().get(0) instanceof ProjectileSource)
+			{
+				Arrow arrow = ((ProjectileSource)horse.getPassengers().get(0)).launchProjectile(Arrow.class, horse.getLocation().getDirection().multiply(event.getPower() != 1 ? event.getPower() * 2 : 8));
+				arrow.addPassenger(horse);
+			}
+			// arrow.setVelocity(horse.getLocation().getDirection().normalize().setY(1).multiply(event.getPower() != 1 ? event.getPower() * 2 : 8));
+			// horse.setVelocity(horse.getVelocity().add(horse.getLocation().getDirection().normalize().setY(-1).multiply(event.getPower() != 1 ? event.getPower() * 2 : 8)));
 		}
 	}
 	@EventHandler
@@ -60,21 +101,21 @@ public class MiniGameEvent12 extends MiniGameEvent
 				Location loc = player.getLocation();
 				switch(pd.getScore())
 				{
-				case 0:
-					loc.setX(7);
-					loc.setY(22);
-					loc.setZ(7);
-					break;
-				case 1:
-					loc.setX(96);
-					loc.setY(30);
-					loc.setZ(111);
-					break;
-				case 2:
-					loc.setX(268);
-					loc.setY(30);
-					loc.setZ(24);
-					break;
+					case 0:
+						loc.setX(7);
+						loc.setY(22);
+						loc.setZ(7);
+						break;
+					case 1:
+						loc.setX(96);
+						loc.setY(30);
+						loc.setZ(111);
+						break;
+					case 2:
+						loc.setX(268);
+						loc.setY(30);
+						loc.setZ(24);
+						break;
 				}
 				player.teleport(loc);
 				new MiniGameHorse(player);

@@ -1,5 +1,10 @@
 package com.linmalu.minigames;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 import com.linmalu.library.api.LinmaluMain;
 import com.linmalu.minigames.data.DeleteWorld;
 import com.linmalu.minigames.data.GameData;
@@ -22,10 +27,24 @@ public class Main extends LinmaluMain
 	public void onEnable()
 	{
 		super.onEnable();
+		if(!getDataFolder().exists())
+		{
+			getDataFolder().mkdirs();
+		}
+		for(String name : new String[]{"world0", "world1", "ko_kr.lang"})
+		{
+			try(InputStream in = MiniGame.class.getResourceAsStream("/res/" + name))
+			{
+				Files.copy(in, new File(Main.getMain().getDataFolder(), name).toPath(), StandardCopyOption.REPLACE_EXISTING);
+			}
+			catch(Exception e)
+			{
+			}
+		}
 		gamedata = new GameData();
 		registerCommand(new Main_Command());
 		registerEvents(new Main_Event());
-		MiniGame.initialize();
+		getGameData().reload();
 		new DeleteWorld();
 	}
 	@Override

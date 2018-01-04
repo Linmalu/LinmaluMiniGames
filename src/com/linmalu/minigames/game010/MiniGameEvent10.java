@@ -35,7 +35,7 @@ public class MiniGameEvent10 extends MiniGameEvent
 		Vehicle vehicle = event.getVehicle();
 		if(checkEvent(vehicle.getWorld()) && vehicle.getType() == EntityType.MINECART)
 		{
-			vehicle.getPassengers().forEach(entity -> entity.leaveVehicle());
+			vehicle.eject();
 			event.setCancelled(true);
 		}
 	}

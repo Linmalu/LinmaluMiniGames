@@ -1,17 +1,22 @@
 package com.linmalu.minigames.data;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -22,26 +27,62 @@ import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
 
+import com.linmalu.library.api.LinmaluConfig;
 import com.linmalu.library.api.LinmaluTellraw;
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.api.event.LinmaluMiniGamesEndEvent;
+import com.linmalu.minigames.types.ConfigType;
 
 public class GameData
 {
+	private final LinmaluConfig config = new LinmaluConfig(new File(Main.getMain().getDataFolder(), "config.yml"));
 	private final BossBar bar = Bukkit.createBossBar(Main.getMain().getTitle(), BarColor.WHITE, BarStyle.SOLID);
 	private boolean game1 = false;
 	private boolean game2 = false;
-	private boolean resourcePack = true;
 	private MiniGame minigame;
 	private Scoreboard scoreboard;
 	private MapData mapData;
-	private HashMap<UUID, PlayerData> players = new HashMap<>();
-	private ArrayList<Entity> entitys = new ArrayList<>();
+	private Map<UUID, PlayerData> players = new HashMap<>();
+	private List<Entity> entitys = new ArrayList<>();
+	private Map<UUID, List<Entity>> playerEntitys = new HashMap<>();
 	private UUID targetPlayer;
 	private int targetNumber;
 
-	public void GameStart(MiniGame minigame)
+	public void reload()
 	{
+		config.reload();
+		Arrays.asList(MiniGame.values()).forEach(mg -> mg.getInstance().reload());
+		config.clear();
+		config.set(ConfigType.VERSION.getName(), Main.getMain().getDescription().getVersion());
+		config.set(ConfigType.LANGUAGE.getName(), "KO_KR");
+		if(!config.isBoolean(ConfigType.RESOURCE_PACK.getName()))
+		{
+			config.set(ConfigType.RESOURCE_PACK.getName(), true);
+		}
+		Arrays.asList(MiniGame.values()).forEach(mg -> mg.getInstance().save());
+	}
+	public void GameStart(CommandSender sender, MiniGame minigame)
+	{
+		GameStart(sender, minigame, null, 0, 0, 0, 0);
+	}
+	public void GameStart(CommandSender sender, MiniGame minigame, World world, int x1, int z1, int x2, int z2)
+	{
+		// TODO 디버깅
+		// if(Bukkit.getOnlinePlayers().size() < 1)
+		if(Bukkit.getOnlinePlayers().size() < 2)
+		{
+			sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최소인원 2명이 되지 않습니다.");
+			return;
+		}
+		else if(minigame == MiniGame.땅따먹기 && Bukkit.getOnlinePlayers().size() > 48)
+		{
+			sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최대인원 48명이 넘습니다.");
+			return;
+		}
+		else if(minigame == MiniGame.경마)
+		{
+			minigame = MiniGame.달리기;
+		}
 		game1 = true;
 		game2 = false;
 		this.minigame = minigame;
@@ -56,11 +97,15 @@ public class GameData
 		int number = 0;
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			LinmaluTellraw.sendCmd(player, "/linmaluminigames 취소", ChatColor.GOLD + "미니게임에 참가를 원하지 않을 경우 클릭하세요.");
-			LinmaluTellraw.sendCmd(player, "/linmaluminigames 관전", ChatColor.GOLD + "미니게임을 구경만 원할 경우 클릭하세요.");
-			players.put(player.getUniqueId(), new PlayerData(player, number++));
+			if((sender instanceof Player && ((Player)sender).getWorld() == player.getWorld()) || sender instanceof ConsoleCommandSender)
+			{
+				LinmaluTellraw.sendCmd(player, "/linmaluminigames 취소", ChatColor.GOLD + "미니게임에 참가를 원하지 않을 경우 클릭하세요.");
+				LinmaluTellraw.sendCmd(player, "/linmaluminigames 관전", ChatColor.GOLD + "미니게임을 구경만 원할 경우 클릭하세요.");
+				players.put(player.getUniqueId(), new PlayerData(player, number++));
+			}
 		}
 		new GameTimer();
+		minigame.getInstance().CreateWrold(world, x1, z1, x2, z2);
 	}
 	public void GameStop()
 	{
@@ -68,10 +113,15 @@ public class GameData
 		game2 = false;
 		bar.removeAll();
 		bar.setVisible(false);
-		for(Entity en : entitys)
+		for(Entity e : entitys)
 		{
-			en.eject();
-			en.remove();
+			e.eject();
+			e.remove();
+		}
+		for(List<Entity> list : playerEntitys.values())
+		{
+			list.forEach(Entity::remove);
+			list.clear();
 		}
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
@@ -92,6 +142,7 @@ public class GameData
 		mapData = null;
 		players.clear();
 		entitys.clear();
+		playerEntitys.clear();
 		game1 = false;
 		Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.GREEN + "게임이 종료되었습니다.");
 		new DeleteWorld();
@@ -113,32 +164,6 @@ public class GameData
 			players.get(player.getUniqueId()).setObserver();
 			player.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "게임관전을 선택했습니다.");
 		}
-	}
-	public Location teleport(Entity entity)
-	{
-		Location loc = mapData.getRandomLocation();
-		loc.setYaw(entity.getLocation().getYaw());
-		loc.setPitch(entity.getLocation().getPitch());
-		for(int y = mapData.getWorld().getMaxHeight(); y >= 0; y--)
-		{
-			if(!mapData.getWorld().getBlockAt(loc.getBlockX(), y, loc.getBlockZ()).isEmpty())
-			{
-				if(y == 0)
-				{
-					y = 50;
-				}
-				else
-				{
-					y += 1;
-				}
-				loc.setY(y);
-				break;
-			}
-		}
-		entity.leaveVehicle();
-		entity.setFallDistance(0);
-		entity.teleport(loc);
-		return loc;
 	}
 	public void diePlayer(UUID uuid)
 	{
@@ -240,7 +265,7 @@ public class GameData
 			{
 				die.addEntry(player.getName());
 			}
-			minigame.getInstance().moveWorld(player);
+			minigame.getInstance().teleport(player);
 			setScoreboard(player);
 			if(!isResourcePack())
 			{
@@ -251,7 +276,9 @@ public class GameData
 	public void setGameItem()
 	{
 		game2 = true;
+		// TODO 디버깅
 		if(players.size() < 2)
+		// if(players.size() < 1)
 		{
 			Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최소인원 2명이 되지 않습니다.");
 			GameStop();
@@ -265,6 +292,10 @@ public class GameData
 				diePlayer(uuid);
 			}
 		}
+	}
+	public LinmaluConfig getConfig()
+	{
+		return config;
 	}
 	public BossBar getBossbar()
 	{
@@ -280,11 +311,11 @@ public class GameData
 	}
 	public boolean isResourcePack()
 	{
-		return resourcePack;
+		return config.getBoolean(ConfigType.RESOURCE_PACK.getName(), true);
 	}
 	public void setResourcePack(boolean resourcePack)
 	{
-		this.resourcePack = resourcePack;
+		config.set(ConfigType.RESOURCE_PACK.getName(), resourcePack);
 	}
 	public MiniGame getMinigame()
 	{
@@ -378,6 +409,10 @@ public class GameData
 	public List<Entity> getEntitys()
 	{
 		return entitys;
+	}
+	public Map<UUID, List<Entity>> getPlayerEntitys()
+	{
+		return playerEntitys;
 	}
 	public UUID getTargetPlayer()
 	{

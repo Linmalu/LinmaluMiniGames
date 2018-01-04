@@ -1,9 +1,9 @@
 package com.linmalu.minigames.data;
 
-import java.util.Random;
-
 import org.bukkit.Location;
 import org.bukkit.World;
+
+import com.linmalu.library.api.LinmaluMath;
 
 public class MapData
 {
@@ -91,9 +91,6 @@ public class MapData
 	}
 	public Location getRandomLocation()
 	{
-		Random ran = new Random();
-		double x = ran.nextInt(x2 - x1 + 1) + x1 + 0.5D;
-		double z = ran.nextInt(z2 - z1 + 1) + z1 + 0.5D;
-		return new Location(world, x, mapHeight, z);
+		return LinmaluMath.getRandomVector(x1, z1, x2, z2).setY(mapHeight).toLocation(world);
 	}
 }

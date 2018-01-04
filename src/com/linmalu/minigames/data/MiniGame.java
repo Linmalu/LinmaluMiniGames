@@ -1,12 +1,7 @@
 package com.linmalu.minigames.data;
 
-import java.io.File;
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.linmalu.minigames.Main;
 import com.linmalu.minigames.game.MiniGameEvent;
@@ -34,20 +29,16 @@ public enum MiniGame
 
 	public MiniGameUtil getInstance()
 	{
+		if(instance == null)
+		{
+			instance = getLinmaluClsss(MiniGameUtil.class, this);
+			Main.getMain().registerEvents(getLinmaluClsss(MiniGameEvent.class, this));
+		}
 		return instance;
 	}
 	public String getName()
 	{
-		return LanguageData.getLanguage("minigame" + ordinal());
-	}
-	public List<String> getGamerule()
-	{
-		return LanguageData.getLanguages("minigame" + ordinal() + "_rule");
-	}
-	private void InitializationField()
-	{
-		instance = getLinmaluClsss(MiniGameUtil.class, getMiniGame());
-		Main.getMain().registerEvents(getLinmaluClsss(MiniGameEvent.class, getMiniGame()));
+		return "minigame" + ordinal();
 	}
 	private <T> T getLinmaluClsss(Class<T> cast, Object ... args)
 	{
@@ -74,34 +65,5 @@ public enum MiniGame
 			e.printStackTrace();
 		}
 		return null;
-	}
-	private MiniGame getMiniGame()
-	{
-		return valueOf(toString());
-	}
-
-	private static boolean initialize = false;
-
-	public static void initialize()
-	{
-		if(!initialize)
-		{
-			initialize = true;
-			for(MiniGame mg : values())
-			{
-				mg.InitializationField();
-			}
-			MiniGameUtil.reloadConfig();
-			for(String name : new String[]{"world0", "world1", "ko_kr.lang"})
-			{
-				try(InputStream in = MiniGame.class.getResourceAsStream("/res/" + name))
-				{
-					Files.copy(in, new File(Main.getMain().getDataFolder(), name).toPath(), StandardCopyOption.REPLACE_EXISTING);
-				}
-				catch(Exception e)
-				{
-				}
-			}
-		}
 	}
 }

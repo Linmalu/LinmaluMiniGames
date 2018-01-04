@@ -5,10 +5,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
-import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
+import com.linmalu.minigames.types.ConfigType;
 
 //신호등블럭
 public class MiniGameUtil11 extends MiniGameUtil
@@ -16,8 +16,8 @@ public class MiniGameUtil11 extends MiniGameUtil
 	public MiniGameUtil11(MiniGame minigame)
 	{
 		super(minigame);
-		configs.put(ConfigData.MAP_DEFAULT_SIZE, 10);
-		configs.put(ConfigData.MAP_PLAYER_SIZE, 2);
+		setConfigData(ConfigType.MAP_DEFAULT_SIZE, 10);
+		setConfigData(ConfigType.MAP_PLAYER_SIZE, 2);
 	}
 	@SuppressWarnings("deprecation")
 	@Override

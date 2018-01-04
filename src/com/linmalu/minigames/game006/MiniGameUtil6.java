@@ -9,10 +9,10 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
+import com.linmalu.minigames.types.ConfigType;
 
 //땅따먹기
 public class MiniGameUtil6 extends MiniGameUtil
@@ -20,12 +20,12 @@ public class MiniGameUtil6 extends MiniGameUtil
 	public MiniGameUtil6(MiniGame minigame)
 	{
 		super(minigame);
-		configs.put(ConfigData.MAP_DEFAULT_SIZE, 10);
-		configs.put(ConfigData.MAP_PLAYER_SIZE, 2);
-		configs.put(ConfigData.TIME_DEFAULT, 180);
-		configs.put(ConfigData.TIME_PLAYER, 0);
-		configs.put(ConfigData.SCORE_DEFAULT, 100);
-		configs.put(ConfigData.SCORE_PLAYER, 10);
+		setConfigData(ConfigType.MAP_DEFAULT_SIZE, 10);
+		setConfigData(ConfigType.MAP_PLAYER_SIZE, 2);
+		setConfigData(ConfigType.TIME_DEFAULT, 180);
+		setConfigData(ConfigType.TIME_PLAYER, 0);
+		setConfigData(ConfigType.SCORE_DEFAULT, 100);
+		setConfigData(ConfigType.SCORE_PLAYER, 10);
 		see = true;
 	}
 	@Override

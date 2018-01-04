@@ -9,11 +9,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
-import com.linmalu.minigames.data.ConfigData;
 import com.linmalu.minigames.data.GameTimer;
 import com.linmalu.minigames.data.MapData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
+import com.linmalu.minigames.types.ConfigType;
 
 //카트타기
 public class MiniGameUtil10 extends MiniGameUtil
@@ -21,12 +21,12 @@ public class MiniGameUtil10 extends MiniGameUtil
 	public MiniGameUtil10(MiniGame minigame)
 	{
 		super(minigame);
-		configs.put(ConfigData.MAP_HEIGHT, 20);
-		configs.put(ConfigData.MAP_DEFAULT_SIZE, 5);
-		configs.put(ConfigData.MAP_PLAYER_SIZE, 1);
-		configs.put(ConfigData.TIME_DEFAULT, 10);
-		configs.put(ConfigData.TIME_PLAYER, 0);
-		configs.put(ConfigData.COOLDOWN, 5);
+		setConfigData(ConfigType.MAP_HEIGHT, 20);
+		setConfigData(ConfigType.MAP_DEFAULT_SIZE, 5);
+		setConfigData(ConfigType.MAP_PLAYER_SIZE, 1);
+		setConfigData(ConfigType.TIME_DEFAULT, 10);
+		setConfigData(ConfigType.TIME_PLAYER, 0);
+		setConfigData(ConfigType.COOLDOWN, 5);
 	}
 	@Override
 	public MaterialData getChunkData(int y)

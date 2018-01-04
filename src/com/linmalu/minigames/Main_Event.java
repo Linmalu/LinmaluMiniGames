@@ -2,8 +2,6 @@ package com.linmalu.minigames;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,21 +14,20 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.linmalu.library.api.LinmaluAutoRespawn;
-import com.linmalu.library.api.LinmaluVersion;
+import com.linmalu.library.api.LinmaluServer;
 import com.linmalu.minigames.data.GameData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.data.PlayerData;
@@ -81,7 +78,7 @@ public class Main_Event implements Listener
 		final PlayerData pd = data.getPlayerData(player.getUniqueId());
 		if(data.isGame2() && pd != null)
 		{
-			event.setRespawnLocation(data.teleport(player));
+			event.setRespawnLocation(data.getMinigame().getInstance().teleport(player));
 		}
 	}
 	@EventHandler(priority = EventPriority.LOW)
@@ -90,12 +87,12 @@ public class Main_Event implements Listener
 		Player player = event.getPlayer();
 		if(player.isOp())
 		{
-			LinmaluVersion.check(Main.getMain(), player);
+			LinmaluServer.version(Main.getMain(), player);
 		}
 		if(data.isGame1() && data.getPlayerData(player.getUniqueId()) != null)
 		{
 			data.setScoreboard(player);
-			data.teleport(player);
+			data.getMinigame().getInstance().teleport(player);
 			if(!data.isResourcePack())
 			{
 				player.setResourcePack(Main.RESOURCEPACK_MINIGAMES);
@@ -143,9 +140,9 @@ public class Main_Event implements Listener
 		}
 	}
 	@EventHandler(priority = EventPriority.LOW)
-	public void Event(PlayerPickupItemEvent event)
+	public void Event(EntityPickupItemEvent event)
 	{
-		if(data.isGame1() && event.getPlayer().getWorld().getName().equals(Main.WORLD_NAME))
+		if(data.isGame1() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
 		{
 			event.getItem().remove();
 			event.setCancelled(true);
@@ -229,22 +226,23 @@ public class Main_Event implements Listener
 			}
 		}
 	}
-	@EventHandler(priority = EventPriority.LOW)
-	public void Event(ProjectileHitEvent event)
-	{
-		if(data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
-		{
-			Entity entity = event.getHitEntity();
-			if(entity != null && entity.getType() == EntityType.PLAYER)
-			{
-				PlayerData pd = data.getPlayerData(entity.getUniqueId());
-				if(pd != null && pd.isLive())
-				{
-					((Player)entity).damage(1, (Entity)event.getEntity().getShooter());
-				}
-			}
-		}
-	}
+	// TODO 눈덩이 맞을때 데미지 확인
+	// @EventHandler(priority = EventPriority.LOW)
+	// public void Event(ProjectileHitEvent event)
+	// {
+	// if(data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
+	// {
+	// Entity entity = event.getHitEntity();
+	// if(entity != null && entity.getType() == EntityType.PLAYER)
+	// {
+	// PlayerData pd = data.getPlayerData(entity.getUniqueId());
+	// if(pd != null && pd.isLive())
+	// {
+	// ((Player)entity).damage(1, (Entity)event.getEntity().getShooter());
+	// }
+	// }
+	// }
+	// }
 	@EventHandler(priority = EventPriority.LOW)
 	public void Event(PlayerMoveEvent event)
 	{
@@ -260,20 +258,13 @@ public class Main_Event implements Listener
 			int yTo = event.getTo().getBlockY();
 			if(yFrom != yTo && yTo < 0)
 			{
-				if(!data.isGame2())
+				if(data.isGame2() && pd.isLive() && !data.getMapData().isTopScore())
 				{
-					data.teleport(player);
+					data.diePlayer(player.getUniqueId());
 				}
 				else
 				{
-					if(pd.isLive() && !data.getMapData().isTopScore())
-					{
-						data.diePlayer(player.getUniqueId());
-					}
-					else
-					{
-						data.teleport(player);
-					}
+					data.getMinigame().getInstance().teleport(player);
 				}
 			}
 		}

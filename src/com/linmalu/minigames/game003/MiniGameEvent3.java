@@ -24,7 +24,7 @@ public class MiniGameEvent3 extends MiniGameEvent
 		if(checkEvent(event.getEntity().getWorld()) && event.getEntity() instanceof Player && event.getDamager() instanceof Player)
 		{
 			Player player1 = (Player)event.getDamager();
-			Player player2 = (Player) event.getEntity();
+			Player player2 = (Player)event.getEntity();
 			PlayerData pd1 = data.getPlayerData(player1.getUniqueId());
 			PlayerData pd2 = data.getPlayerData(player2.getUniqueId());
 			if(pd1 != null && pd2 != null && pd1.isLive() && pd2.isLive() && pd1.isCooldown() && pd2.isCooldown())
@@ -52,7 +52,7 @@ public class MiniGameEvent3 extends MiniGameEvent
 	{
 		pd.addScore();
 		new Cooldown(10, player, true);
-		data.teleport(player);
+		minigame.getInstance().teleport(player);
 		for(Player p : data.getPlayers())
 		{
 			p.sendMessage(ChatColor.GOLD + pd.getName() + ChatColor.YELLOW + "님이 " + ChatColor.GOLD + player.getName() + ChatColor.YELLOW + "님을 이겼습니다.");

@@ -2,6 +2,7 @@ package com.linmalu.minigames.game000;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -35,10 +36,9 @@ public class MiniGameEvent0 extends MiniGameEvent
 			int yTo = event.getTo().getBlockY();
 			int zFrom = event.getFrom().getBlockZ();
 			int zTo = event.getTo().getBlockZ();
-			int mapHeight = data.getMapData().getMapHeight();
-			if(!player.hasPotionEffect(PotionEffectType.INVISIBILITY) && yTo == mapHeight + 1 && (xFrom != xTo || yFrom != yTo || zFrom != zTo))
+			if(!player.hasPotionEffect(PotionEffectType.INVISIBILITY) && (xFrom != xTo || yFrom != yTo || zFrom != zTo))
 			{
-				Block block = player.getWorld().getBlockAt(xTo, mapHeight, zTo);
+				Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
 				if(block.getType() == Material.STAINED_GLASS && block.getData() == 0)
 				{
 					new MiniGameFallingBlock0(block);

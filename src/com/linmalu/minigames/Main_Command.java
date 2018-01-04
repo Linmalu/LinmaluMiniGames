@@ -7,17 +7,17 @@ import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import com.linmalu.library.api.LinmaluServer;
 import com.linmalu.library.api.LinmaluTellraw;
-import com.linmalu.library.api.LinmaluVersion;
 import com.linmalu.minigames.data.GameData;
 import com.linmalu.minigames.data.MiniGame;
-import com.linmalu.minigames.game.MiniGameUtil;
 
 public class Main_Command implements CommandExecutor
 {
@@ -31,11 +31,11 @@ public class Main_Command implements CommandExecutor
 			public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args)
 			{
 				ArrayList<String> list = new ArrayList<>();
-				if(args.length == 1 && sender.isOp())
+				if(sender.isOp() && args.length == 1)
 				{
-					for(MiniGame game : MiniGame.values())
+					for(MiniGame mg : MiniGame.values())
 					{
-						list.add(game.toString());
+						list.add(mg.toString());
 					}
 					list.add("랜덤");
 					list.add("종료");
@@ -45,7 +45,18 @@ public class Main_Command implements CommandExecutor
 					list.add("리로드");
 					list.add("reload");
 				}
-				return list.stream().filter(msg -> msg.toLowerCase().startsWith(args[args.length - 1].toLowerCase())).count() == 0 ? list : list.stream().filter(msg -> msg.toLowerCase().startsWith(args[args.length - 1].toLowerCase())).collect(Collectors.toList());
+				else if(sender.isOp() && args.length == 2)
+				{
+					for(MiniGame mg : MiniGame.values())
+					{
+						if(args[0].equalsIgnoreCase(mg.toString()))
+						{
+							list.addAll(Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList()));
+							break;
+						}
+					}
+				}
+				return list.stream().filter(msg -> msg.toLowerCase().startsWith(args[args.length - 1].toLowerCase())).count() == 0 ? list : list.stream().filter(msg -> msg.toLowerCase().startsWith(args[args.length - 1].toLowerCase())).sorted().collect(Collectors.toList());
 			}
 		});
 	}
@@ -88,7 +99,7 @@ public class Main_Command implements CommandExecutor
 				}
 				else if(args[0].equals("랜덤"))
 				{
-					setGame(sender, MiniGame.values()[new Random().nextInt(MiniGame.values().length)]);
+					data.GameStart(sender, MiniGame.values()[new Random().nextInt(MiniGame.values().length)]);
 					return true;
 				}
 				else if(args[0].equals("리소스팩적용"))
@@ -113,19 +124,24 @@ public class Main_Command implements CommandExecutor
 				}
 				else if(args[0].equals("리로드") || args[0].equalsIgnoreCase("reload"))
 				{
-					MiniGameUtil.reloadConfig();
+					data.reload();
 					sender.sendMessage(Main.getMain().getTitle() + ChatColor.GREEN + "설정파일을 다시 불러왔습니다.");
 					return true;
 				}
-				else
+			}
+			for(MiniGame game : MiniGame.values())
+			{
+				if(args[0].equals(game.toString()))
 				{
-					for(MiniGame game : MiniGame.values())
+					if(args.length == 1)
 					{
-						if(args[0].equals(game.toString()))
-						{
-							setGame(sender, game);
-							return true;
-						}
+						data.GameStart(sender, game);
+						return true;
+					}
+					else if(args.length == 6)
+					{
+						data.GameStart(sender, game, Bukkit.getWorld(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]));
+						return true;
 					}
 				}
 			}
@@ -150,32 +166,13 @@ public class Main_Command implements CommandExecutor
 			LinmaluTellraw.sendChat(sender, "/" + label + " 리소스팩적용", ChatColor.GOLD + "/" + label + " 리소스팩적용" + ChatColor.GRAY + " : 미니게임천국 리소스팩 적용");
 			LinmaluTellraw.sendChat(sender, "/" + label + " 리소스팩취소", ChatColor.GOLD + "/" + label + " 리소스팩취소" + ChatColor.GRAY + " : 미니게임천국 리소스팩 취소");
 			new LinmaluTellraw(ChatColor.GREEN + "미니게임종류 : " + sb.toString()).changeChatText().sendMessage(sender);
-			sender.sendMessage(ChatColor.YELLOW + "제작자 : " + ChatColor.AQUA + "린마루(Linmalu)" + ChatColor.WHITE + " - http://blog.linmalu.com");
-			LinmaluVersion.check(Main.getMain(), sender);
+			sender.sendMessage(ChatColor.YELLOW + "린마루(Linmalu) : " + ChatColor.WHITE + "http://blog.linmalu.com");
+			LinmaluServer.version(Main.getMain(), sender);
 		}
 		else
 		{
 			sender.sendMessage(ChatColor.RED + "권한이 없습니다.");
 		}
 		return true;
-	}
-	private void setGame(CommandSender sender, MiniGame minigame)
-	{
-		if(Bukkit.getOnlinePlayers().size() < 2)
-		{
-			sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최소인원 2명이 되지 않습니다.");
-		}
-		else if(minigame == MiniGame.땅따먹기 && Bukkit.getOnlinePlayers().size() > 48)
-		{
-			sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최대인원 48명이 넘습니다.");
-		}
-		else if(minigame == MiniGame.경마)
-		{
-			data.GameStart(MiniGame.달리기);
-		}
-		else
-		{
-			data.GameStart(minigame);
-		}
 	}
 }

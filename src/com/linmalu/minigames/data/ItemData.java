@@ -128,7 +128,7 @@ public enum ItemData
 					}
 					break;
 				case 이동:
-					data.teleport(player);
+					data.getMinigame().getInstance().teleport(player);
 					break;
 				case 느림:
 					for(Player p : data.getLivePlayers())

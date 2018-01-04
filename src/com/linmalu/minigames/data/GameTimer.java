@@ -17,7 +17,10 @@ public class GameTimer implements Runnable
 {
 	private enum TimerType
 	{
-		맵이동, 게임준비, 게임타이머, 쿨타임타이머
+		맵이동,
+		게임준비,
+		게임타이머,
+		쿨타임타이머
 	};
 
 	private final int taskId;
@@ -27,10 +30,10 @@ public class GameTimer implements Runnable
 	private int maxtime = 0;
 	private int time = 0;
 	private int score = 0;
+	private int count = 0;
 
 	public GameTimer()
 	{
-		data.getMinigame().getInstance().CreateWrold();
 		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getMain(), this, 0L, 2L);
 	}
 	public void run()
@@ -79,8 +82,8 @@ public class GameTimer implements Runnable
 			case 맵이동:
 			case 게임준비:
 				// TODO 디버깅용 시간조절
-//				 maxtime = time = 100;
-				maxtime = time = 20;
+				maxtime = time = 100;
+				// maxtime = time = 20;
 				break;
 			case 게임타이머:
 				maxtime = time = data.getMapData().getTime();
@@ -123,6 +126,7 @@ public class GameTimer implements Runnable
 						}
 					}
 				}
+				count++;
 				data.getMinigame().getInstance().runTimer(this);
 				break;
 			case 쿨타임타이머:
@@ -208,6 +212,10 @@ public class GameTimer implements Runnable
 	public void setTime(int time)
 	{
 		this.time = time;
+	}
+	public int getCount()
+	{
+		return count;
 	}
 	private void endGame(UUID uuid)
 	{

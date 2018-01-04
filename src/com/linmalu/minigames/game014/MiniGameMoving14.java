@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
@@ -26,9 +27,20 @@ public class MiniGameMoving14 implements Runnable
 	{
 		for(int i = 0; i < data.getPlayerAllCount() * 10; i++)
 		{
-			Sheep sheep = data.getMapData().getWorld().spawn(data.getMapData().getRandomLocation(), Sheep.class);
+			Location loc = data.getMapData().getRandomLocation();
+			loc.setY(50);
+			for(int y = loc.getWorld().getMaxHeight(); y > 0; y--)
+			{
+				if(loc.getWorld().getBlockAt(loc.getBlockX(), y, loc.getBlockZ()).getType() != Material.AIR)
+				{
+					loc.setY(y + 1);
+					break;
+				}
+			}
+			Sheep sheep = data.getMapData().getWorld().spawn(loc, Sheep.class);
+			sheep.setSilent(true);
+			// sheep.setAI(false);
 			sheep.setTicksLived(100);
-			data.teleport(sheep);
 			data.addEntity(sheep);
 			sheeps.put(sheep, sheep.getLocation().clone());
 		}
