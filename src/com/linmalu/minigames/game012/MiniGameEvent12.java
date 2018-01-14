@@ -10,8 +10,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.HorseJumpEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
-import org.bukkit.event.vehicle.VehicleMoveEvent;
-import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
@@ -27,22 +25,11 @@ public class MiniGameEvent12 extends MiniGameEvent
 		super(minigame);
 	}
 	@EventHandler
-	public void Event(VehicleMoveEvent event)
-	{
-		Bukkit.broadcastMessage(event.getEventName());
-	}
-	@EventHandler
-	public void Event(VehicleUpdateEvent event)
-	{
-		Bukkit.broadcastMessage(event.getEventName());
-	}
-	@EventHandler
 	public void Event(VehicleExitEvent event)
 	{
 		Location loc = event.getExited().getLocation();
 		if(checkEvent(loc.getWorld()) && loc.getY() > 0)
 		{
-			Bukkit.broadcastMessage(event.getEventName());
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getMain(), () -> event.getVehicle().addPassenger(event.getExited()));
 			// Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getMain(), () ->
 			// {
@@ -67,8 +54,6 @@ public class MiniGameEvent12 extends MiniGameEvent
 		{
 			// horse.eject();
 			// horse.getPassengers().forEach(horse::removePassenger);
-			// TODO
-			Bukkit.broadcastMessage(event.getEventName() + " / " + event.getPower());
 			// Arrow arrow = horse.getWorld().spawn(horse.getLocation().add(0, 0, 0), Arrow.class);
 			if(horse.getPassengers().get(0) instanceof ProjectileSource)
 			{

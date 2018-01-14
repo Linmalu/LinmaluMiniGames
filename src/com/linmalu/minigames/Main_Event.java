@@ -2,6 +2,8 @@ package com.linmalu.minigames;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,6 +20,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -227,22 +230,22 @@ public class Main_Event implements Listener
 		}
 	}
 	// TODO 눈덩이 맞을때 데미지 확인
-	// @EventHandler(priority = EventPriority.LOW)
-	// public void Event(ProjectileHitEvent event)
-	// {
-	// if(data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
-	// {
-	// Entity entity = event.getHitEntity();
-	// if(entity != null && entity.getType() == EntityType.PLAYER)
-	// {
-	// PlayerData pd = data.getPlayerData(entity.getUniqueId());
-	// if(pd != null && pd.isLive())
-	// {
-	// ((Player)entity).damage(1, (Entity)event.getEntity().getShooter());
-	// }
-	// }
-	// }
-	// }
+	@EventHandler(priority = EventPriority.LOW)
+	public void Event(ProjectileHitEvent event)
+	{
+		if(data.isGame2() && event.getEntity().getWorld().getName().equals(Main.WORLD_NAME))
+		{
+			Entity entity = event.getHitEntity();
+			if(entity != null && entity.getType() == EntityType.PLAYER)
+			{
+				PlayerData pd = data.getPlayerData(entity.getUniqueId());
+				if(pd != null && pd.isLive())
+				{
+					((Player)entity).damage(1, (Entity)event.getEntity().getShooter());
+				}
+			}
+		}
+	}
 	@EventHandler(priority = EventPriority.LOW)
 	public void Event(PlayerMoveEvent event)
 	{

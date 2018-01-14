@@ -42,7 +42,9 @@ public abstract class MiniGameUtil
 
 	protected final GameData data = Main.getMain().getGameData();
 	protected final MiniGame minigame;
-	protected boolean see;
+	protected boolean see = false;
+	protected boolean barrier = true;
+
 	private Map<ConfigType, Object> configs = new LinkedHashMap<>();
 
 	public MiniGameUtil(MiniGame minigame)
@@ -218,11 +220,11 @@ public abstract class MiniGameUtil
 								{
 									if(x >= 0 && z >= 0 && (x * 16) + numX < data.getPlayerAllCount() * 4 && (z * 16) + numZ < 4)
 									{
-										if(numX % 4 == 0 || numX % 4 == 3 || numZ % 4 == 0 || numZ % 4 == 3 || y == height || y == height + 4)
+										if(numX % 4 == 0 || numX % 4 == 3 || numZ % 4 == 0 || numZ % 4 == 3 || y == height || y == height + 5)
 										{
 											cd.setBlock(numX, y, numZ, Material.BARRIER);
 										}
-										else if(y == height + 3)
+										else if(y == height + 4)
 										{
 											cd.setBlock(numX, y, numZ, MiniGameBlockItem13.DIRT.getMaterial());
 										}
@@ -240,7 +242,7 @@ public abstract class MiniGameUtil
 							for(int j = 0; j <= 15; j++)
 							{
 								int numZ = (z * 16) + j;
-								if(x3 - 1 == numX || x4 + 1 == numX || z3 - 1 == numZ || z4 + 1 == numZ)
+								if(barrier && (x3 - 1 == numX || x4 + 1 == numX || z3 - 1 == numZ || z4 + 1 == numZ))
 								{
 									cd.setRegion(i, 0, j, i + 1, world.getMaxHeight(), j + 1, Material.BARRIER);
 								}

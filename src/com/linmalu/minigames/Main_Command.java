@@ -129,19 +129,22 @@ public class Main_Command implements CommandExecutor
 					return true;
 				}
 			}
-			for(MiniGame game : MiniGame.values())
+			if(args.length >= 1)
 			{
-				if(args[0].equals(game.toString()))
+				for(MiniGame game : MiniGame.values())
 				{
-					if(args.length == 1)
+					if(args[0].equals(game.toString()))
 					{
-						data.GameStart(sender, game);
-						return true;
-					}
-					else if(args.length == 6)
-					{
-						data.GameStart(sender, game, Bukkit.getWorld(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]));
-						return true;
+						if(args.length == 1)
+						{
+							data.GameStart(sender, game);
+							return true;
+						}
+						else if(args.length == 6)
+						{
+							data.GameStart(sender, game, Bukkit.getWorld(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]));
+							return true;
+						}
 					}
 				}
 			}

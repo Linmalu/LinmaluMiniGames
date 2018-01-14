@@ -35,7 +35,8 @@ public enum ItemData
 	총(Material.GOLD_HOE),
 	폭탄(Material.TNT),
 	도끼(Material.DIAMOND_AXE),
-	곡괭이(Material.DIAMOND_PICKAXE);
+	곡괭이(Material.DIAMOND_PICKAXE),
+	활(Material.BOW);
 
 	private final ItemStack item;
 
@@ -133,7 +134,7 @@ public enum ItemData
 				case 느림:
 					for(Player p : data.getLivePlayers())
 					{
-						if(!player.getUniqueId().equals(p.getUniqueId()) && LinmaluMath.distance(p.getLocation(), player.getLocation()) < 15)
+						if(!player.getUniqueId().equals(p.getUniqueId()) && LinmaluMath.distance(p.getLocation(), player.getLocation()) < 10)
 						{
 							p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1, false, false), true);
 							p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 100, 1, false, false), true);
@@ -144,7 +145,7 @@ public enum ItemData
 				case 어둠:
 					for(Player p : data.getLivePlayers())
 					{
-						if(!player.getUniqueId().equals(p.getUniqueId()) && LinmaluMath.distance(p.getLocation(), player.getLocation()) < 15)
+						if(!player.getUniqueId().equals(p.getUniqueId()) && LinmaluMath.distance(p.getLocation(), player.getLocation()) < 10)
 						{
 							p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 0, false, false), true);
 							p.sendMessage(ItemData.getItemStack().getItemMeta().getDisplayName() + ChatColor.YELLOW + " 아이템 효과에 걸렸습니다.");

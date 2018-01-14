@@ -23,11 +23,12 @@ public class MiniGameUtil4 extends MiniGameUtil
 		setConfigData(ConfigType.MAP_HEIGHT, 3);
 		setConfigData(ConfigType.MAP_DEFAULT_SIZE, 10);
 		setConfigData(ConfigType.MAP_PLAYER_SIZE, 2);
+		barrier = false;
 	}
 	@Override
 	public MaterialData getChunkData(int y)
 	{
-		if(MAP_DEFAULT_HEIGHT <= y && y <= MAP_DEFAULT_HEIGHT + (getConfigInt(ConfigType.MAP_HEIGHT) * 3) && (y - MAP_DEFAULT_HEIGHT) % 3 == 0)
+		if(MAP_DEFAULT_HEIGHT <= y && y < MAP_DEFAULT_HEIGHT + (getConfigInt(ConfigType.MAP_HEIGHT) * 3) && (y - MAP_DEFAULT_HEIGHT) % 3 == 0)
 		{
 			return new MaterialData(Material.SNOW_BLOCK);
 		}

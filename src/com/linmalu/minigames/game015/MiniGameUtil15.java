@@ -1,32 +1,35 @@
-package com.linmalu.minigames.game011;
+package com.linmalu.minigames.game015;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
 import com.linmalu.minigames.data.GameTimer;
+import com.linmalu.minigames.data.ItemData;
 import com.linmalu.minigames.data.MiniGame;
 import com.linmalu.minigames.game.MiniGameUtil;
 import com.linmalu.minigames.types.ConfigType;
 
-//신호등블럭
-public class MiniGameUtil11 extends MiniGameUtil
+//활쏘기
+public class MiniGameUtil15 extends MiniGameUtil
 {
-	public MiniGameUtil11(MiniGame minigame)
+	public MiniGameUtil15(MiniGame minigame)
 	{
 		super(minigame);
-		setConfigData(ConfigType.MAP_DEFAULT_SIZE, 10);
+		setConfigData(ConfigType.MAP_DEFAULT_SIZE, 15);
 		setConfigData(ConfigType.MAP_PLAYER_SIZE, 2);
-		barrier = false;
+		setConfigData(ConfigType.TIME_DEFAULT, 180);
+		setConfigData(ConfigType.TIME_PLAYER, 0);
+		setConfigData(ConfigType.SCORE_DEFAULT, 10);
+		setConfigData(ConfigType.SCORE_PLAYER, 1);
+		see = true;
 	}
-	@SuppressWarnings("deprecation")
 	@Override
 	public MaterialData getChunkData(int y)
 	{
 		if(y == MAP_DEFAULT_HEIGHT)
 		{
-			return new MaterialData(Material.WOOL, (byte)5);
+			return new MaterialData(Material.WOOD);
 		}
 		return new MaterialData(Material.AIR);
 	}
@@ -37,16 +40,14 @@ public class MiniGameUtil11 extends MiniGameUtil
 	@Override
 	public void startTimer()
 	{
+		for(Player player : data.getLivePlayers())
+		{
+			ItemData.setItemStack(player, ItemData.양털가위);
+		}
 	}
 	@Override
-	@SuppressWarnings("deprecation")
 	public void runTimer(GameTimer timer)
 	{
-		Block block = data.getMapData().getRandomLocation().getBlock();
-		if(block.getType() == Material.WOOL && block.getData() == 5)
-		{
-			new MiniGameChangeBlock11(block);
-		}
 	}
 	@Override
 	public void endTimer()

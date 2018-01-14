@@ -68,8 +68,8 @@ public class GameData
 	public void GameStart(CommandSender sender, MiniGame minigame, World world, int x1, int z1, int x2, int z2)
 	{
 		// TODO 디버깅
-		// if(Bukkit.getOnlinePlayers().size() < 1)
-		if(Bukkit.getOnlinePlayers().size() < 2)
+		// if(Bukkit.getOnlinePlayers().size() < 2)
+		if(Bukkit.getOnlinePlayers().size() < (Main.debug ? 1 : 2))
 		{
 			sender.sendMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최소인원 2명이 되지 않습니다.");
 			return;
@@ -277,8 +277,8 @@ public class GameData
 	{
 		game2 = true;
 		// TODO 디버깅
-		if(players.size() < 2)
-		// if(players.size() < 1)
+		// if(players.size() < 2)
+		if(players.size() < (Main.debug ? 1 : 2))
 		{
 			Bukkit.broadcastMessage(Main.getMain().getTitle() + ChatColor.YELLOW + "최소인원 2명이 되지 않습니다.");
 			GameStop();
